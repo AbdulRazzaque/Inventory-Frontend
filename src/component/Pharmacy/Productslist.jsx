@@ -101,6 +101,7 @@ const columns2 = [
   { field: 'companyName', headerName: 'companyName',valueGetter:(param)=>param.row.companyName,width:200},
   { field: 'type', headerName: 'Type',valueGetter:(param)=>param.row.type.map((item)=>item),width:150},
   { field: 'unit', headerName: 'Unit',valueGetter:(param)=>param.row.unit.map((item)=>item),width:150},
+  // { field: 'quantity', headerName: 'Quantity',valueGetter:(param)=>param.row.quantity.map((item)=>item),width:150},
   {field:"updatedAt",headerName:"Updated At",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120},
   {field:"createdAt",headerName:"Created At",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
 

@@ -18,7 +18,7 @@ const AdminPanel = () => {
    
 
     try {
-      const res= await axios.post('http://localhost:3002/api/user/createUser', data,
+      const res= await axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/user/createUser`, data,
       {headers:{token:`${accessToken}`}})
       .then(response=>{
       console.log(response, 'res')

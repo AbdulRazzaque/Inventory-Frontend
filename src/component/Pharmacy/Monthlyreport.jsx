@@ -22,11 +22,11 @@ const Monthlyreport = () => {
     { title: 'Sno', field: 'sno' },
     {title:"Date" ,field:"createdAt",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120},
     { title: 'Products Name/unit', field: 'name' },
-    // { title: 'company Name', field: 'companyName' },
-    { title: 'Qauntity', field: 'qauntity' },
+
+    { title: 'Qauntity', field: 'quantity' },
     { title: 'price', field: 'price' },
-    // { title: 'Price', field: 'birthYear', type: 'numeric' },
-    {title: 'total',field: 'birthCity',lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },},
+
+    
   ]);
 
   const [data, setData] = useState([]);
@@ -90,6 +90,7 @@ const onSubmit = (stock) => {
   return (
   <>
       <InventoryNavbar/>
+      <h1 className="text-center my-8 font-bold text-2xl">Monthly Report</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
     <div className='mx-6'>
        <Stack direction="row" spacing={2} margin="23px" justifyContent="center">
@@ -206,7 +207,7 @@ const onSubmit = (stock) => {
 {/* {console.log(rowData.date,'date')} */}
     </ThemeProvider>
   <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative my-2">Print </button></center> 
-  <center> <button type="submit" className=" text-white bg-red-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative my-2">Grand Total = </button></center> 
+  {/* <center> <button type="submit" className=" text-white bg-red-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative my-2">Grand Total = </button></center>  */}
 
     </div>
     </form>

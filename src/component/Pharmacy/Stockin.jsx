@@ -22,7 +22,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import date from 'date-and-time';
-
+import moment from 'moment'
 
 
 // import { useGetProductsQuery, useUpdatePostMutation } from "../../services/stockin";
@@ -41,9 +41,8 @@ const columns = [
   { field: "expriy", headerName: " Expriy", width: 130 },];
 //  var array=[]
 // var b=[]
-var ProductsNames = [];
-var productTypes = [];
-var Units = [];
+
+var grandtotal=[]
 
 const Stockin = () => {
   const [array, setArray] = useState([])
@@ -58,9 +57,9 @@ const Stockin = () => {
   const [selectedSupplier,setSelectedSupplier] = React.useState(null)
   const [productType, setProductType] = useState(null);
   const [unit, setUnit] = useState(null);
-  const [selectedDate,setSelectedDate] = React.useState("")
+  const [selectedDate,setSelectedDate] = React.useState('')
   const [allStocks,setAllStocks] = React.useState([])
-
+  const [sum ,setSum]=useState('')
   const {
     register,
     handleSubmit,
@@ -68,7 +67,7 @@ const Stockin = () => {
     setValue
   } = useForm();
 
-
+console.log(selectedDate)
   const onSubmit = (stock) => {
 
     var obj = {
@@ -78,10 +77,17 @@ const Stockin = () => {
       productType,
       unit,
       expiry:selectedDate,
+      supplier:selectedSupplier.name,
       docNo,
       ...stock
 
     }
+
+    grandtotal.push(obj.price * obj.quantity)
+    const sum = grandtotal.reduce((a,v) =>  a = a + v , 0 )
+    setSum(sum)
+     console.log(sum);
+
     console.log(obj, 'obj')
     axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockIn`,{...obj},{headers:{token:accessToken}})
     .then(res=>{
@@ -118,7 +124,7 @@ const Stockin = () => {
       .catch(err=>{
         if(err.response){
           if(err.response.data){
- 
+
           }
         }
         //console.log(err.response.data)
@@ -244,6 +250,30 @@ const Stockin = () => {
         renderInput={(params) => <TextField fullWidth {...params} />}
       />
       </LocalizationProvider>
+
+
+
+{/* <LocalizationProvider 
+        
+        dateAdapter={AdapterDateFns} >
+        <DesktopDatePicker
+        label="Start Date"
+        inputFormat="dd/MM/yyyy"
+        value={selectedDate}
+      
+        onChange={(newValue) => {
+        var d = moment.parseZone(newValue).local().format("DD/MM/YY")
+          
+          setSelectedDate(d)
+          console.log(d ,'dgsgdgndsjkn')
+         
+        }}
+       
+        renderInput={(params) =>   <TextField fullWidth {...params} />}
+
+        
+      />
+      </LocalizationProvider> */}
       </section>
           </Stack>
 
@@ -296,7 +326,7 @@ const Stockin = () => {
                       <TableRow key={id}>
                         <TableCell align="right">{id + 1}</TableCell>
                         <TableCell align="right">{row.docNo}</TableCell>
-                        <TableCell align="right">{row.supplierId}</TableCell>
+                        <TableCell align="right">{row.supplier}</TableCell>
                         <TableCell align="right">{row.productName}</TableCell>
                         <TableCell align="right">{row.productType}</TableCell>
                         <TableCell align="right">{row.unit}</TableCell>
@@ -307,7 +337,7 @@ const Stockin = () => {
 
 
 
-                        {/* <TableCell align="right">
+                        <TableCell align="right">
                           <button align="right" onClick={()=>{
            setArray(array.filter((i)=> row.suplierNo !== i.suplierNo))
           
@@ -316,7 +346,7 @@ const Stockin = () => {
              <DeleteIcon/>
               </button>
              
-                        </TableCell> */}
+                        </TableCell> 
                       </TableRow>
                     ))}
                   </TableBody>
@@ -331,9 +361,9 @@ const Stockin = () => {
           </div>
         </div>
         <div className='flex justify-center'>
-          <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-2 ">Print </button></center>
-          <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative ">Save </button></center>
-          <center> <button type="submit" className=" text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-3">Grand Total = </button></center>
+          {/* <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-2 ">Print </button></center> */}
+
+          <center> <button type="submit" className=" text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-3">Grand Total ={sum} </button></center>
         </div>
 
       </form>

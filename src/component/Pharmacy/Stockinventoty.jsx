@@ -24,6 +24,8 @@ const Stockinventoty = () => {
   const [selectedDate2,setSelectedDate2] = React.useState("")
   const [allProductType,setAllProductType] = React.useState([])
   const [selectedProductType,setSelectedProductType] = React.useState("")
+  const [Mytotal,setTotal]=useState([])
+  const [display ,setDisplay]=useState()
   //getPrevStockInInfo
   const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw"
   React.useEffect(()=>{
@@ -40,8 +42,11 @@ const Stockinventoty = () => {
     axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getPrevStockInInfo`,{to:date.format(selectedDate,'YYYY/MM/DD'),from:date.format(selectedDate2,'YYYY/MM/DD'),productType:selectedProductType.type},{headers:{token:accessToken}})
     .then(res=>{
       console.log(res)
+      setTotal(res.data.result)
       let arr = res.data.result.map((item,index)=>({...item,id:index+1}))
       setData(arr)
+     
+      console.log(Mytotal,"Geting  Price Only");
     })
 
   }
@@ -116,10 +121,24 @@ const Stockinventoty = () => {
         checkboxSelection
       />
     </div>
-    <div className='flex justify-center'> 
-      <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-2 ">Print </button></center> 
-      <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative ">Grand Total= </button></center> 
-      </div>
+
+    {
+      Mytotal.map((row,id)=>{
+       
+        <p>Hello {parseInt(row.price)}</p> 
+        var plus = row.price
+       var plus1 = plus
+        var totalPrice = plus + plus1
+        
+        console.log(plus,"price");
+        console.log(totalPrice,'all toltal here')
+      })
+    }
+
+     <div className='flex justify-center'  > 
+  
+        <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative ">Grand Total= </button></center> 
+        </div>
     </div>
   ) 
 }

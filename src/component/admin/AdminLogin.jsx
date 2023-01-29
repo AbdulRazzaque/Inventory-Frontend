@@ -13,7 +13,7 @@ const AdminLogin = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = async(data) => {
    try {
-    const res= await axios.post('http://localhost:3002/api/user/loginUser', data,
+    const res= await axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/user/loginUser`, data,
     {headers:{token:`${accessToken}`}})
     .then(response=>{
     console.log(response, 'res')
@@ -58,11 +58,11 @@ const AdminLogin = () => {
               <form className="space-y-4 md:space-y-6"  onSubmit={handleSubmit(onSubmit)} >
                   <div>
                       <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">User Name</label>
-                      <input type="text"   {...register("userName", { required: true })} id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""/>
+                      <input type="text"   {...register("userName", { required: true })} id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required/>
                   </div>
                   <div>
                       <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Password</label>
-                      <input type="password" {...register("password", { required: true })} id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
+                      <input type="password" {...register("password", { required: true })} id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-800 dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
                   </div>
                   <div className="flex items-center justify-between">
                       <div className="flex items-start">
