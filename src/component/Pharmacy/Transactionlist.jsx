@@ -1,14 +1,64 @@
+import axios from 'axios'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link,useParams,useNavigate } from 'react-router-dom'
 import InventoryNavbar from '../Navbar/InventoryNavbar'
+import moment from 'moment'
+import { DataGrid } from '@mui/x-data-grid';
 
-
-const Transactionlist = () => {
+const Transactionlist = (props) => {
+  const params = useParams()
+  const navigate = useNavigate()
+  console.log("transactionlistprops",params)
+  const [data,setData]= React.useState(null)
+  const accessToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw";
+  React.useEffect(()=>{
+    axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getStockDoucments`,{name:params.name},{headers:{token:accessToken}})
+    .then(res=>{
+      console.log(res)
+      if(res.data.msg==="success"){
+        setData(res.data.result)
+      }
+      
+    })
+  },[])
+  const columns2 = [
+    { field: 'id', headerName: 'ID',width:20},
+    { field: 'docNo', headerName: 'Document Number',valueGetter:(param)=>param.row._id.docNo,width:150},
+    { field: 'name', headerName: 'Name',valueGetter:(param)=>params.name,width:150},
+    // { field: 'quantity', headerName: 'Quantity',valueGetter:(param)=>param.row.quantity.map((item)=>item),width:150},
+    {field:"createdAt",headerName:"Created At",valueGetter:(param)=>moment.parseZone(param.row.createdAt[0]).local().format("DD/MM/YY"),width:120}
+  
+  
+  ];
+  //stockoutinfo
   return (
     <div>
         <InventoryNavbar/>
-          <h1 className='text-center my-8 font-bold text-2xl'>Transection List</h1>
-<div className="flex flex-col">
+          <h1 className='text-center my-8 font-bold text-2xl'>Transaction List</h1>
+
+          <h2>Stock In</h2>
+          {data&&<div style={{ height: '40vh', width: '100%' }}>
+                <DataGrid
+                    rows={data.stockin.map((item,index)=>({...item,id:index+1}))}
+                    columns={columns2}
+                    autoPageSize
+                    onRowClick={(item,ev)=>navigate(`/stockininfo/${item.row._id.docNo}`)}
+                />
+            </div>}
+
+            <h2>Stock Out</h2>
+            {data&&<div style={{ height: '40vh', width: '100%' }}>
+                <DataGrid
+                    rows={data.stockout.map((item,index)=>({...item,id:index+1}))}
+                    columns={columns2}
+                    autoPageSize
+                    onRowClick={(item,ev)=>navigate(`/stockoutinfo/${item.row._id.docNo}`)}
+                    // onRowClick={(item,ev)=>props.history.push('/orderdetails',item.row)}
+                />
+            </div>}
+
+{/* <div className="flex flex-col">
   <div className="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
     <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
       <div className="overflow-hidden">
@@ -96,7 +146,7 @@ const Transactionlist = () => {
       </div>
     </div>
   </div>
-</div>
+</div> */}
   </div>
   )
   

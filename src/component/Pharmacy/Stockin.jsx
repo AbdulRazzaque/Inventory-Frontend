@@ -28,6 +28,7 @@ import moment from 'moment'
 // import { useGetProductsQuery, useUpdatePostMutation } from "../../services/stockin";
 import MaterialTable from "material-table";
 import InventoryNavbar from "../Navbar/InventoryNavbar";
+import { Co2Sharp } from "@mui/icons-material";
 const columns = [
   { field: "id", headerName: "SrNO", width: 100 },
   { field: "itemcode", headerName: " Itemcode", width: 130 },
@@ -60,6 +61,7 @@ const Stockin = () => {
   const [selectedDate,setSelectedDate] = React.useState('')
   const [allStocks,setAllStocks] = React.useState([])
   const [sum ,setSum]=useState('')
+  const [flag,setFlag] = React.useState(false)
   const {
     register,
     handleSubmit,
@@ -92,7 +94,10 @@ console.log(selectedDate)
     axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockIn`,{...obj},{headers:{token:accessToken}})
     .then(res=>{
       console.log(res)
-      setAllStocks([...allStocks,obj])
+      setAllStocks([...allStocks,{...obj,_id:res.data.result._id}])
+    })
+    .catch(err=>{
+      console.log(err.response)
     })
     
 
@@ -118,7 +123,10 @@ console.log(selectedDate)
       axios.get(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getStockInDocNo`,{headers:{token:`${accessToken}`}})
       .then(res=>{
         console.log(res)
-        setDocNo(res.data.result)
+        if(res.data.result.length>0){
+          setDocNo(res.data.result[0].docNo+1)
+        }
+        
         
       })
       .catch(err=>{
@@ -131,7 +139,7 @@ console.log(selectedDate)
       })
      getAllSuppliers()
      getAllProducts()
-  }, []);
+  }, [flag]);
   return (
     <div className="">
        <InventoryNavbar/>
@@ -152,6 +160,7 @@ console.log(selectedDate)
                   label="Item code "
                   variant="outlined"
                 />
+                {/* docno cannot be zero */}
                 <TextField
                   type="number"
                   //  value={value}
@@ -241,7 +250,7 @@ console.log(selectedDate)
         
         dateAdapter={AdapterDateFns} >
         <DesktopDatePicker
-        label="Start Date"
+        label="Expiry Date"
         inputFormat="dd/MM/yyyy"
         value={selectedDate}
         onChange={(newValue) => {
@@ -280,6 +289,11 @@ console.log(selectedDate)
               <div className="mt-3 ali">
                 <center>
                   <Button type="submit" variant="contained" alignitems="center"> Add </Button>
+                  <Button onClick={()=>{
+                    setSum("")
+                    setAllStocks([])
+                    setFlag(!flag)
+                    }}>Clear</Button>
                 </center>
               </div>
             </Container>
@@ -332,19 +346,24 @@ console.log(selectedDate)
                         <TableCell align="right">{row.unit}</TableCell>
                         <TableCell align="right">{parseInt(row.price)}</TableCell>
                         <TableCell align="right">{parseInt(row.quantity)}</TableCell>
-                        {/* <TableCell align="right">{row.expiry}</TableCell> */}
+                        <TableCell align="right">{moment.parseZone(row.expiry).local().format("DD/MM/YY")}</TableCell>
                         <TableCell align="right">{parseInt(row.quantity) * parseInt(row.price)}</TableCell>
 
 
 
                         <TableCell align="right">
-                          <button align="right" onClick={()=>{
-           setArray(array.filter((i)=> row.suplierNo !== i.suplierNo))
+                          <Button align="right" onClick={()=>{
+                          axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/deleteStockIn`,{stockInId:row._id,quantity:row.quantity},{headers:{token:accessToken}})
+                          .then(res=>{
+                            console.log(res)
+                            setAllStocks(array.filter((i)=> row._id !== i._id))
+                          })
+                          
           
-              }}>
+                          }}>
           
              <DeleteIcon/>
-              </button>
+              </Button>
              
                         </TableCell> 
                       </TableRow>

@@ -54,10 +54,10 @@ function App() {
         <Route  path="/stockin" element={<Stockin/>} />
         <Route  path="/stockout" element={<Stockout/>} />
         <Route  path="/stockinprint" element={<Stockinprint/>} />
-        <Route  path="/transactionlist" element={<Transactionlist/>} />
+        <Route  path="/transactionlist/:name" element={<Transactionlist/>} />
         <Route  path="/stockoutprint" element={<Stockoutprint/>} />
-        <Route  path="/stockininfo" element={<Stockininfo/>} />
-        <Route  path="/stockoutinfo" element={<Stockoutinfo/>} />
+        <Route  path="/stockininfo/:docNo" element={<Stockininfo/>} />
+        <Route  path="/stockoutinfo/:docNo" element={<Stockoutinfo/>} />
         <Route  path="/monthlyreport" element={<Monthlyreport/>} />
         <Route  path="/stockinventoty" element={<Stockinventoty/>} />
         <Route  path="/stockoutsearch" element={<Stockoutsearch/>} />

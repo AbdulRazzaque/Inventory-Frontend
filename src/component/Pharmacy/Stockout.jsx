@@ -38,8 +38,9 @@ const Stockout = (props) => {
   const [stockOutData, setStockOutData] = React.useState([]);
   let navigate= useNavigate()
 
+  const [error,setError] = React.useState("")
 
-
+  console.log(stockOutData)
   const {
     register,
     handleSubmit,
@@ -53,7 +54,11 @@ const Stockout = (props) => {
       })
       .then((res) => {
         console.log(res);
-        setValue("docNo", res.data.result);
+        if(res.data.result.length>0){
+          //setDocNo(res.data.result[0].docNo)
+          setValue("docNo", res.data.result[0].docNo+1);
+        }
+        
       });
 
     axios
@@ -114,8 +119,14 @@ const Stockout = (props) => {
       )
       .then((res) => {
         console.log(res);
+        setError("")
         setStockOutData([...stockOutData, obj]);
-      });
+      })
+      .catch(err=>{
+        if(err.response){
+          setError(err.response.data)
+        }
+      })
 
       
       
@@ -249,6 +260,10 @@ const Stockout = (props) => {
             />
           </Stack>
 
+          <p className="mt-3" style={{textAlign:"center",fontWeight:"bold",color:"red"}}>
+                {error.length>0?error:null}
+          </p>
+
           <div className="mt-3 ali">
             <center>
            
@@ -339,7 +354,7 @@ const columns = [
     valueGetter: (param) => param.row.doctorName,
     width: 150,
   },
-  {field:"StartDate",headerName:"Start Date",
+  {field:"date",headerName:"Date",
   valueGetter:(param)=>moment.parseZone(param.row.date).local().format("DD/MM/YY")
   ,width:120},
   {

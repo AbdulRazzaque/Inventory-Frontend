@@ -2,8 +2,9 @@ import { Autocomplete, Button, Container, Stack, TextField } from '@mui/material
 import React from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import InventoryNavbar from '../Navbar/InventoryNavbar';
-
-  
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+  import moment from 'moment'
 const columns = [
     { field: 'id', headerName: 'SrNO', width: 70 },
     { field: 'productsname', headerName: 'Products name', width: 130 },
@@ -21,6 +22,18 @@ const columns = [
   
   ];
 const Stockininfo = () => {
+  const [data,setData] = React.useState(null)
+  const accessToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw";
+  const params = useParams()
+  console.log(params)
+  React.useEffect(()=>{
+    axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getStockInByDocNo`,{docNo:params.docNo},{headers:{token:accessToken}})
+    .then(res=>{
+      console.log(res)
+      setData(res.data.result)
+    })
+  },[])
   return (
     <div className=''>
         <InventoryNavbar/>
@@ -70,15 +83,32 @@ const Stockininfo = () => {
         </Container>
 <div className='mx-3'>
        
- <div style={{ height: 800, width: '100%', marginTop:'10px', padding:'5px'}}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={10}
-        rowsPerPageOptions={[10]}
-        // checkboxSelection
-      />
-    </div>
+<table className="ui celled table">
+  <thead>
+    <tr><th>Name</th>
+    <th>Products Type</th>
+    <th>Unit</th>
+    <th>Quantity</th>
+    <th>Price</th>
+    <th>Total</th>
+    <th>Expiry</th>
+  </tr></thead>
+  <tbody>
+    {
+      data&&data[0].doc.map((item,index)=>(
+      <tr key={index}>
+      <td data-label="Name">{item.name}</td>
+      <td data-label="Name">{item.productType}</td>
+      <td data-label="Name">{item.unit}</td>
+      <td data-label="Name">{item.quantity}</td>
+      <td data-label="Name">{item.price}</td>
+      <td data-label="Name">{parseInt(item.price)*parseInt(item.quantity)}</td>
+      <td data-label="Name">{moment.parseZone(item.expiry).local().format("DD/MM/YY")}</td>
+    </tr>
+      ))
+    }
+  </tbody>
+</table>
 
     </div>
   {/* <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative ">Print </button></center>  */}
