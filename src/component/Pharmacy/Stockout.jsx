@@ -120,7 +120,7 @@ const Stockout = (props) => {
       .then((res) => {
         console.log(res);
         setError("")
-        setStockOutData([...stockOutData, obj]);
+        setStockOutData([...stockOutData, {...obj,_id:res.data.result._id}]);
       })
       .catch(err=>{
         if(err.response){
@@ -283,13 +283,57 @@ const Stockout = (props) => {
           padding: "5px",
         }}
       >
-        <DataGrid
+        <table class="ui celled table">
+  <thead>
+    <tr>
+    <th>Sr No</th>
+    <th>Doc No</th>
+    <th>Product Name</th>
+    <th>Location Name</th>
+    <th>Trainer Name</th>
+    <th>Doctor Name</th>
+    <th>Date Name</th>
+    <th>Unit</th>
+    <th>Quantity</th>
+    <th></th>
+  </tr></thead>
+  <tbody>
+    {
+      stockOutData.length>0&&stockOutData.map((item,index)=><tr key={index}>
+        <td data-label="Name">{index+1}</td>
+      <td data-label="Name">{item.docNo}</td>
+      <td data-label="Name">{item.productName}</td>
+      <td data-label="Name">{item.locationName}</td>
+      <td data-label="Name">{item.trainerName}</td>
+      <td data-label="Age">{item.doctorName}</td>
+      <td data-label="Job">{moment.parseZone(item.date).local().format("DD/MM/YY")}</td>
+      <td data-label="Name">{item.unit}</td>
+      <td data-label="Name">{item.quantity}</td>
+      <td>
+        <Button
+        onClick={()=>{
+          axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/deleteStockOut`,{stockOutId:item._id,quantity:parseInt(item.quantity)},{headers:{token:accessToken}})
+          .then(res=>{
+            console.log(res)
+            setStockOutData(stockOutData.filter((i)=> item._id !== i._id))
+          })
+        }}
+        >Delete</Button>
+      </td>
+      </tr>)
+    }
+    <tr>
+      
+    </tr>
+  </tbody>
+</table>
+        {/* <DataGrid
           rows={stockOutData.map((item, index) => ({ ...item, id: index + 1 }))}
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[10]}
           // checkboxSelection
-        />
+        /> */}
       </div>
       <div className="flex justify-center">
         <center>

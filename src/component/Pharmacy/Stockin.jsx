@@ -353,7 +353,7 @@ console.log(selectedDate)
 
                         <TableCell align="right">
                           <Button align="right" onClick={()=>{
-                          axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/deleteStockIn`,{stockInId:row._id,quantity:row.quantity},{headers:{token:accessToken}})
+                          axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/deleteStockIn`,{stockInId:row._id,quantity:parseInt(row.quantity)},{headers:{token:accessToken}})
                           .then(res=>{
                             console.log(res)
                             setAllStocks(array.filter((i)=> row._id !== i._id))
