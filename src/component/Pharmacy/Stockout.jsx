@@ -34,6 +34,7 @@ const Stockout = (props) => {
 
   const [selectedDate, setSelectedDate] = React.useState("");
   const [docNo, setDocNo] = React.useState(0);
+  const [flag,setFlag] = React.useState(false)
 
   const [stockOutData, setStockOutData] = React.useState([]);
   let navigate= useNavigate()
@@ -88,7 +89,7 @@ const Stockout = (props) => {
         console.log(res);
         setAllLocations(res.data.result);
       });
-  }, []);
+  }, [flag]);
 
   // console.log(selectedQuantity,'selectedQuantity');
 
@@ -269,6 +270,9 @@ const Stockout = (props) => {
            
               <Button type="submit" variant="contained" alignitems="center">
                 Add
+              </Button>
+              <Button onClick={()=>setFlag(!flag)}>
+                Clear
               </Button>
             </center>
           </div>
