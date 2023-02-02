@@ -102,7 +102,7 @@ const Stockout = (props) => {
       trainerName: selectedTrainerName,
       doctorName: selectedDoctorName,
       unit: selectedUnit,
-      stockId: selectedStock._id,
+      stockId: selectedStock?selectedStock._id:null,
       quantity: data.quantity,
       date: selectedDate,
       docNo: parseInt(data.docNo),
