@@ -356,7 +356,7 @@ console.log(selectedDate)
                           axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/deleteStockIn`,{stockInId:row._id,quantity:parseInt(row.quantity)},{headers:{token:accessToken}})
                           .then(res=>{
                             console.log(res)
-                            let arr = array.filter((i)=> row._id !== i._id)
+                            let arr = allStocks.filter((i)=> row._id !== i._id)
                             let total = 0
                             arr.map(item=>{
                               total = total +parseInt(item.quantity) * parseInt(item.price)
