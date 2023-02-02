@@ -6,10 +6,15 @@ import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import AdminNavbar from '../Navbar/AdminNavbar'
 import { Alert } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid';
+import {Button} from '@mui/material'
+import moment from 'moment'
 const Addloactaion = () => {
     const [isValid, setIsValid] = useState(false);
+    const [arrayId,setArrayId] = React.useState([])
+    const [flag,setFlag] = React.useState(false)
     const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw"
-   
+    const [data,setData] = React.useState([])
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = async(data,event) => {
         
@@ -32,7 +37,12 @@ const Addloactaion = () => {
      }
  
   }
-  
+  React.useEffect(()=>{
+    axios.get(`${process.env.REACT_APP_DEVELOPMENT}/api/location/getAllLocations`,{headers:{token:accessToken}})
+    .then(res=>{
+      setData(res.data.result)
+    })
+  },[flag])
 
   return (
     <div>
@@ -87,8 +97,45 @@ const Addloactaion = () => {
   </div>
 </div>
 </section>
+<h1>All products</h1>
+    <h3>Total Selected Item: {arrayId.length}</h3>
+    <p>Note: click on the row to select item not on checkbox</p>
+    <Button
+    onClick={()=>{
+        axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/supplier/deleteSuppliers`,{array:arrayId},{headers:{token:accessToken}})
+        .then(res=>{
+            console.log(res)
+            setArrayId([])
+            setFlag(!flag)
+        })
+    }}
+    color="error" className="my-3" variant="contained">Delete Selected Item</Button>
+    <div style={{ height: '80vh', width: '100%' }}>
+                <DataGrid
+                    rows={data.map((item,index)=>({...item,id:index+1}))}
+                    columns={columns2}
+                    autoPageSize
+                    checkboxSelection
+                    onRowClick={(item,ev)=>{
+                        if(arrayId.includes(item.row._id)){
+                            setArrayId(arrayId.filter(i=>i!==item.row._id))
+                        }else{
+                            setArrayId([...arrayId,item.row._id])
+                        }
+                    }}
+                />
+            </div>
 </div>
   )
 }
-
+const columns2 = [
+    { field: 'id', headerName: 'ID',width:20},
+    //{ field: 'brand', headerName: 'Brand Name',valueGetter:(param)=>param.value.name,width:150},
+    { field: 'name', headerName: 'Name',valueGetter:(param)=>param.row.name,width:150},
+    { field: 'trainerName', headerName: 'Trainer Name',valueGetter:(param)=>param.row.trainerName.map(item=>item),width:200},
+    { field: 'doctorName', headerName: 'Doctor Name',valueGetter:(param)=>param.row.doctorName.map(item=>item),width:200},
+    {field:"createdAt",headerName:"Created At",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
+  
+  
+  ];
 export default Addloactaion

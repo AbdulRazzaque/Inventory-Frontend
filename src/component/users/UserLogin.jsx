@@ -19,9 +19,10 @@ const UserLogin = () => {
       {headers:{token:`${accessToken}`}})
       .then(response=>{
       console.log(response, 'res')
+      navigate('/productslist')
       // console.log(response.data.result);
     })
-    navigate('/productslist')
+    //navigate('/productslist')
     // if(){
     //   alert("you are not admin")
     // }
