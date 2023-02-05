@@ -16,6 +16,14 @@ const Addloactaion = () => {
     const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw"
     const [data,setData] = React.useState([])
     const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const getLocations = ()=>{
+        axios.get(`${process.env.REACT_APP_DEVELOPMENT}/api/location/getAllLocations`,{headers:{token:accessToken}})
+        .then(res=>{
+          setData(res.data.result)
+        })
+    }
+
     const onSubmit = async(data,event) => {
         
      try {
@@ -25,6 +33,8 @@ const Addloactaion = () => {
         const res= await axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/location/createLocation`, data,{headers:{token:`${accessToken}`}})
         .then(response=>{
         console.log(response, 'res')
+      getLocations()
+
       })
       setIsValid(true);
             setTimeout(() => {
@@ -38,10 +48,7 @@ const Addloactaion = () => {
  
   }
   React.useEffect(()=>{
-    axios.get(`${process.env.REACT_APP_DEVELOPMENT}/api/location/getAllLocations`,{headers:{token:accessToken}})
-    .then(res=>{
-      setData(res.data.result)
-    })
+    getLocations()
   },[flag])
 
   return (
@@ -102,7 +109,7 @@ const Addloactaion = () => {
     <p>Note: click on the row to select item not on checkbox</p>
     <Button
     onClick={()=>{
-        axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/supplier/deleteSuppliers`,{array:arrayId},{headers:{token:accessToken}})
+        axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/location/deleteLocations`,{array:arrayId},{headers:{token:accessToken}})
         .then(res=>{
             console.log(res)
             setArrayId([])

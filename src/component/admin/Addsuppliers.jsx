@@ -27,6 +27,7 @@ const Addsuppliers = () => {
         {headers:{token:`${accessToken}`}})
         .then(response=>{
         console.log(response, 'res')
+        setFlag(!flag)
       })
       setIsValid(true);
       setTimeout(() => {
