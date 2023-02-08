@@ -1,170 +1,125 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '../../images/banner.png'
+
+import Stockout from './Stockout'
+import { useLocation } from 'react-router-dom';
 import './pdf.css'
+
 const Stockoutpdf = () => {
-    return (
+  useEffect(() => {
+    
+    setTimeout(() => {
+        window.print();            
+    }, 1000);
+  }, [])
+  
+  const text= new Date()
+  const date= text.toLocaleDateString()
+  const location = useLocation();
+  let item = location.state.data;
+  const ref = React.createRef();
+  // let logo= location.state.image
+   const [ imgs, setImgs ] = useState(logo)
+  
+ console.log(location.state.image,'image')
+  console.log(location.state.data, "Stockout");
+
+  // const location = useLocation();
+  // let item = location.state.data
+  // const ref = React.createRef();
+  // console.log(location.state.data, 'Stockout')
+
+  console.log(item, 'data')
+
+
+  return (
+    <div className='background'>
+      <div className="md:px-32 py-2 ">
+        <div className="">
+          <table className="  report-container">
+            <table>
+              <thead className="report-header text-black">
+                <img src={logo} alt="" className='w-[1000px] h-[133px] m-auto ' />
  
-        // <div className=' bg-no-repeat' style={{backgroundImage:"url(images/water.jpg)"}}>
-        <div className='background' >
-    
-        <img src={logo} alt="" className='w-[1000px] h-[133px] m-auto '/>
-    
-      <div class="grid grid-cols-2  ">
-      <div className='font-bold text-lg relative my-3'>Date:</div>
-      
-      <div className='font-bold text-2xl relative right-28 underline'>Drug Issued Form</div>
-    </div>
-      <div class="grid grid-cols-2 gap-24 ">
-      <div className='font-bold ml-1 '>Location:</div>
-      
-      <div className='font-bold text-lg'>Trainer:</div>
-    </div>
-      
-      <div class="md:px-32 py-4  w-full">
-      <div class="">
-        <table class="min-w-full  border-collapse border border-slate-500">
-          <thead class=" text-black">
-            <tr>
-              <th class=" text-center py-1 px-2 uppercase font-semibold text-sm border ">No</th>
-              <th class="w-1/6  py-3 px-11 uppercase font-semibold text-center text-sm border ">Item</th>
-              <th class="text-center py-3  uppercase font-semibold text-sm border ">Unit</th>
-              <th class="text-center py-3 px-0  uppercase font-semibold text-sm border ">Quantity</th>
-            </tr>
-          </thead>
-        <tbody class="text-gray-700">
-          <tr>
-            <td class=" text-center py-1 px-2 border ">1</td>
-            <td class="w-1/6 text-left py-1 px-4 border ">Smith</td>
-            <td class="text-center py-1 px-2 border ">56</td>
-            <td class="text-center py-1 px-0  border ">34</td>
-          </tr>
-          <tr class="">
-            <td class=" text-center py-1 px-2 border ">2</td>
-            <td class="w-1/6 text-left py-1 px-4 border ">Johnson</td>
-            <td class="text-center py-1 border ">434</td>
-            <td class="text-center py-1 px-0  border ">23</td>
-          </tr>
-          <tr>
-            <td class=" text-center py-1 px-2 border ">3</td>
-            <td class="w-1/6 text-left py-1 px-4 border ">Williams</td>
-            <td class="text-center py-1  border ">56</td>
-            <td class="text-center py-1 px-0   border ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">4</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0 border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">5</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0 border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">6</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0 border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">7</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0 border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">8</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0 border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">9</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0 border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">10</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0 border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">11</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0 border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">12</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0 border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">13</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0 border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">14</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0 border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">15</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">16</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0  border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">17</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0  border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">18</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0  border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border ">19</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0  border  ">45</td>
-          </tr>
-          <tr class="">
-            <td class="text-center py-1 px-2 border border-slate-900">20</td>
-            <td class="w-1/2 text-left py-1 px-4 border ">Brown</td>
-            <td class="text-center py-1 px-2 border ">22</td>
-            <td class="text-center py-1 px-0  border  ">45</td>
-          </tr>
-        </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="grid grid-cols-2 gap-80 revert-layer ">
-    
-      <div className='font-bold ml-1 '>Sign:</div>
-      
-      <div className='font-bold text-lg'>Taken by:</div>
-    </div>
+                <tr>
+                  <th className="report-header-cell">
+                    <div className="header-info">
+                      <div className="grid grid-cols-2  report-header ">
+                        <div className='font-bold text-lg relative my-3 report-header-cell'>Date:{item && date}</div>
+
+                        <div className='font-bold text-2xl relative right-28 underline  report-header-cell'>Drug Issued Form</div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-24   report-header-cell">
+                        <div className='font-bold ml-1   report-header-cell'>Location:{ item && item[0].locationName}</div>
+
+                        <div className='font-bold text-lg  report-header-cell'>Trainer:{ item && item[0].trainerName}</div>
+                      </div>
+
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+            </table>
+
+            <table className="  report-container">
+              <thead className="report-header text-black">
+                <tr className=''>
+                  <th className=" text-center py-1 px-2 w-16 uppercase font-bold text-sm border mt-3  ">No</th>
+                  <th className="  py-3 px-11 uppercase font-bold text-center text-sm border report-header-cell ">Item</th>
+                  <th className="text-center py-3 w-32 uppercase font-bold text-sm border report-header-cell ">Unit</th>
+                  <th className="text-center py-3 px-0 w-32 uppercase font-bold text-sm border  report-header-cell">Quantity</th>
+                </tr>
+
+ 
+              </thead>
+              <tfoot className="report-footer grid grid-cols-2 gap-80 revert-layer">
+                <tr>
+                  <td className="report-footer-cell">
+                    <div className="footer-info">
+                      <div className={"page-footer"}>
+                        <div class="grid grid-cols-2 gap-96">
+                          <div>
+                            <div className='font-bold text-xl ml-1'>Sign:</div>
+                          </div>
+                          <div>
+                            <div className='font-bold  text-xl'>Taken by:</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+
+              <tbody className="report-content text-gray-700">
+                {
+                  item?.map((datas, i) => {
+                    return (
+
+                      <tr key={i} >
+                        <td className="report-content-cell text-center py-1 px-2 border "><div className="main"> {i + 1}</div> </td>
+                        <td className="report-content-cell  text-left py-1 px-4 border"><div className="main"> {datas.productName}</div> </td>
+                        <td className="report-content-cell text-center py-1 px-2 border "><div className="main"> {datas.unit}</div> </td>
+                        <td className="report-content-cell text-center py-1 px-0  border"><div className="main"> {datas.quantity}</div> </td>
+
+                      </tr>
+                    )
+                  })
+                }
+              </tbody>
+            </table>
+          </table>
         </div>
-        
-      )
+      </div>
+
+    </div>
+  )
 }
 
 export default Stockoutpdf
+
+
+
+
+
+

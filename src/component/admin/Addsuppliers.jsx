@@ -27,6 +27,7 @@ const Addsuppliers = () => {
         {headers:{token:`${accessToken}`}})
         .then(response=>{
         console.log(response, 'res')
+        setFlag(!flag)
       })
       setIsValid(true);
       setTimeout(() => {
@@ -104,7 +105,7 @@ const Addsuppliers = () => {
       </div>
   </div>
 </section>
-<h1>All products</h1>
+<h1>All supplier</h1>
     <h3>Total Selected Item: {arrayId.length}</h3>
     <p>Note: click on the row to select item not on checkbox</p>
     <Button
@@ -121,7 +122,8 @@ const Addsuppliers = () => {
                 <DataGrid
                     rows={data.map((item,index)=>({...item,id:index+1}))}
                     columns={columns2}
-                    autoPageSize
+                    pageSize={100}
+                    rowsPerPageOptions={[100]}
                     checkboxSelection
                     onRowClick={(item,ev)=>{
                         if(arrayId.includes(item.row._id)){

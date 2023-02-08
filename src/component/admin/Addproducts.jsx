@@ -9,7 +9,7 @@ import  { useEffect } from 'react'
 import {Button} from '@mui/material'
 
 const Addproducts = () => {
-  
+   
     const [isValid, setIsValid] = useState(false);
     const [data,setData] = React.useState([])
     const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw"
@@ -113,7 +113,7 @@ const Addproducts = () => {
   </div>
 </section>
     </div>
-    <h1>All products</h1>
+    <h1>All product</h1>
     <h3>Total Selected Item: {arrayId.length}</h3>
     <p>Note: click on the row to select item not on checkbox</p>
     <Button
@@ -130,7 +130,8 @@ const Addproducts = () => {
                 <DataGrid
                     rows={data.map((item,index)=>({...item,id:index+1}))}
                     columns={columns2}
-                    autoPageSize
+                    pageSize={100}
+                    rowsPerPageOptions={[100]}
                     checkboxSelection
                     onRowClick={(item,ev)=>{
                         if(arrayId.includes(item.row._id)){

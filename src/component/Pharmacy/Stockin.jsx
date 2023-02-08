@@ -187,7 +187,7 @@ console.log(selectedDate)
                   sx={{ width: 200 }}
                   //  {...register("suplier", { required: true, maxLength: 20 })}
                   renderInput={(params) => (
-                    <TextField {...params} label="Select Supplier" />
+                    <TextField {...params} label="Supplier" />
                   )}
                 />
 
@@ -200,7 +200,7 @@ console.log(selectedDate)
                   options={allProducts}
                   sx={{ width: 200 }}
                   renderInput={(params) => (
-                    <TextField {...params} label="Add Products " />
+                    <TextField {...params} label="Product " />
                   )} />
 
                 <Autocomplete
@@ -321,9 +321,9 @@ console.log(selectedDate)
                      
 
                       <TableCell align="right">Id</TableCell>
-                      <TableCell align="right">SuplierNo</TableCell>
+                      <TableCell align="right">Suplier No</TableCell>
                       <TableCell align="right">Suplier</TableCell>
-                      <TableCell align="right">Addproduct</TableCell>
+                      <TableCell align="right">Add product</TableCell>
                       <TableCell align="right">Product Type</TableCell>
                       <TableCell align="right">Product Unit</TableCell>
                       <TableCell align="right">Price</TableCell>

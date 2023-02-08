@@ -144,6 +144,7 @@ const Stockout = (props) => {
     <div className="">
       <InventoryNavbar />
       <h1 className="text-center my-8 font-bold text-2xl">Stock Out</h1>
+     <center> <p><b>  Note: if stock is currently present in the inventory please select stock from the dropdown</b></p></center>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container>
           <Stack direction="row" justifyContent="center" spacing={2}>
@@ -154,7 +155,7 @@ const Stockout = (props) => {
               id="outlined-basic"
               label="Doc Number"
               variant="outlined"
-              disabled
+              // disabled
             />
 
             <Autocomplete
@@ -184,7 +185,7 @@ const Stockout = (props) => {
               onChange={(ev, val) => setSelectedLocation(val)}
               sx={{ width: 200 }}
               renderInput={(params) => (
-                <TextField {...params} label="Location Name" />)} />
+                <TextField {...params} label="Location" />)} />
 
             <Autocomplete
               disablePortal
@@ -193,7 +194,7 @@ const Stockout = (props) => {
               onChange={(e, val) => setSelectedTrainerName(val)}
               sx={{ width: 200 }}
               renderInput={(params) => (
-                <TextField {...params} label="Trainer Name" />
+                <TextField {...params} label="Trainer" />
               )}/>
             <Autocomplete
               disablePortal
@@ -213,7 +214,7 @@ const Stockout = (props) => {
             <section>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
-                  label="Start Date"
+                  label="Date"
                   inputFormat="dd/MM/yyyy"
                   value={selectedDate}
                   onChange={(newValue) => {

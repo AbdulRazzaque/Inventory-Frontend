@@ -35,7 +35,7 @@ const Stockoutdetails = () => {
       { title: 'Products Unit', field: 'unit' },
       { title: 'Qauntity', field: 'quantity'},
      
-      {title: 'total',field: 'birthCity',lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },},
+      // {title: 'total',field: 'birthCity',lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },},
     ]);
   
     const [data, setData] = useState([]);

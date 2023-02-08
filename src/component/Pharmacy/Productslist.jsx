@@ -29,21 +29,22 @@ const Productslist = (props) => {
   return (
     <div>
         <InventoryNavbar/>
-          <h1 className='text-center my-8 font-bold text-2xl'>Products List</h1>
-          <div style={{ height: '40vh', width: '100%' }}>
+          {/* <h1 className='text-center my-8 font-bold text-2xl'>Products List</h1> */}
+          {/* <div style={{ height: '40vh', width: '100%' }}>
                 <DataGrid
                     rows={data}
                     columns={columns2}
                     autoPageSize
                     onRowClick={(item,ev)=>navigate(`/transactionlist/${item.row.name}`)}
                 />
-            </div>
+            </div> */}
             <h1 className='text-center my-8 font-bold text-2xl'>Stock List</h1>
-          <div style={{ height: '40vh', width: '100%' }}>
+          <div style={{ height: '100vh', width: '100%' }}>
                 <DataGrid
                     rows={data2}
                     columns={columns1}
-                    autoPageSize
+                    pageSize={100}
+                    rowsPerPageOptions={[100]}
                     onRowClick={(item,ev)=>navigate(`/transactionlist/${item.row.name}`)}
                 />
             </div>
@@ -130,7 +131,7 @@ const columns1 = [
   { field: 'id', headerName: 'ID',width:20},
   //{ field: 'brand', headerName: 'Brand Name',valueGetter:(param)=>param.value.name,width:150},
   { field: 'name', headerName: 'Name',valueGetter:(param)=>param.row.name,width:150},
-  { field: 'companyName', headerName: 'companyName',valueGetter:(param)=>param.row.product.companyName,width:200},
+  { field: 'companyName', headerName: 'company Name',valueGetter:(param)=>param.row.product.companyName,width:200},
   { field: 'type', headerName: 'Type',valueGetter:(param)=>param.row.product.type.map((item)=>item),width:150},
   { field: 'unit', headerName: 'Unit',valueGetter:(param)=>param.row.product.unit.map((item)=>item),width:150},
   { field: 'quantity', headerName: 'Quantity',valueGetter:(param)=>param.row.quantity,width:150},

@@ -27,7 +27,7 @@ const InventoryNavbar = () => {
                 <Link to="/stockin">   <NavDropdown.Item href="#action/3.1">Stock-in</NavDropdown.Item></Link>
                 <Link to="/stockout">    <NavDropdown.Item href="#action/3.2">Stock-out</NavDropdown.Item></Link>
                   <Link to="/stockoutsearch">       <NavDropdown.Item href="#action/3.4">Stock-out Search</NavDropdown.Item></Link>
-                <Link to="/productslist"><NavDropdown.Item href="#action/3.0">Products List</NavDropdown.Item></Link>  
+                <Link to="/productslist"><NavDropdown.Item href="#action/3.0">Stock-list</NavDropdown.Item></Link>  
 
                   {/* <NavDropdown.Divider />
                   <NavDropdown.Item href="#action/3.4">

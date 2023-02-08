@@ -24,9 +24,9 @@ const AdminNavbar = () => {
                 <Nav.Link href="#link">Add Produuts</Nav.Link> */}
                 <NavDropdown title="Selection" id="basic-nav-dropdown">
                 <Link to="/adminpanel"><NavDropdown.Item href="#action/3.1">Add User</NavDropdown.Item></Link>  
-                <Link to="/addproducts">   <NavDropdown.Item href="#action/3.1">Add Products</NavDropdown.Item></Link>
+                <Link to="/addproducts">   <NavDropdown.Item href="#action/3.1">Add Product</NavDropdown.Item></Link>
                 <Link to="/Addsuppliers">    <NavDropdown.Item href="#action/3.2">
-                    Add Supllier
+                    Add Supplier
                   </NavDropdown.Item></Link>
                   <Link to="/Addloactaion">       <NavDropdown.Item href="#action/3.3">Add Location</NavDropdown.Item></Link>
                   {/* <NavDropdown.Divider />

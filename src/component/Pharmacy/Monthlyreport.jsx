@@ -24,7 +24,7 @@ const Monthlyreport = () => {
     { title: 'Products Name/unit', field: 'name' },
 
     { title: 'Qauntity', field: 'quantity' },
-    { title: 'price', field: 'price' },
+    // { title: 'price', field: 'price' },
 
     
   ]);
