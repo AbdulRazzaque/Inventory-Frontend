@@ -97,12 +97,14 @@ const Stockout = (props) => {
     let obj = {
       productName: selectedProduct.name,
       productId: selectedProduct._id,
+      product:selectedProduct,
       locationName:selectedLocation.name,
       locationId: selectedLocation._id,
       trainerName: selectedTrainerName,
       doctorName: selectedDoctorName,
       unit: selectedUnit,
       stockId: selectedStock?selectedStock._id:null,
+      stock: selectedStock?selectedStock:null,
       quantity: data.quantity,
       date: selectedDate,
       docNo: parseInt(data.docNo),
@@ -110,36 +112,40 @@ const Stockout = (props) => {
     console.log(obj);
 
          {console.log(data.quantity)}
-        
+         setStockOutData([...stockOutData, {...obj,_id:stockOutData.length}]);
 
-    axios
-      .post(
-        `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOut`,
-        { ...obj },
-        { headers: { token: accessToken } }
-      )
-      .then((res) => {
-        console.log(res);
-        setError("")
-        setStockOutData([...stockOutData, {...obj,_id:res.data.result._id}]);
-      })
-      .catch(err=>{
-        if(err.response){
-          setError(err.response.data)
-        }
-      })
+    // axios
+    //   .post(
+    //     `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOut`,
+    //     { ...obj },
+    //     { headers: { token: accessToken } }
+    //   )
+    //   .then((res) => {
+    //     console.log(res);
+    //     setError("")
+    //     setStockOutData([...stockOutData, {...obj,_id:res.data.result._id}]);
+    //   })
+    //   .catch(err=>{
+    //     if(err.response){
+    //       setError(err.response.data)
+    //     }
+    //   })
 
       
       
   };
   const toComponentB=()=>{
-    navigate('/Stockoutpdf',{state:{data:stockOutData}});
+    
+const updatedArrayOfObjects = stockOutData.map(({ _id, ...rest }) => rest);
+
+console.log(updatedArrayOfObjects);
+    //navigate('/Stockoutpdf',{state:{data:stockOutData}});
 
     
       }
     
 
-  // console.log("selectedproduct", selectedProduct);
+   console.log("stockout", stockOutData);
   return (
     <div className="">
       <InventoryNavbar />
@@ -158,24 +164,7 @@ const Stockout = (props) => {
               // disabled
             />
 
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options={allStocks}
-              getOptionLabel={(e) => e.name}
-              onChange={(ev, val) => {
-                let sp = allProducts.filter((item) => item.name === val.name);
-                if (sp.length > 0) {
-                  setSelectedProduct(sp[0]);
-                }
 
-                setSelectedStock(val);
-              }}
-              sx={{ width: 200 }}
-              renderInput={(params) => (
-                <TextField {...params} label="Stock Name" />
-              )}
-            />
 
             <Autocomplete
               disablePortal
@@ -205,6 +194,101 @@ const Stockout = (props) => {
               renderInput={(params) => <TextField {...params} label="Doctor" />}
             />
           </Stack>
+          {
+            stockOutData.map((item,index)=>(
+              <Stack
+              direction="row"
+              justifyContent="center"
+              spacing={2}
+              marginTop="5px"
+            >
+              <section>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DesktopDatePicker
+                    label="Date"
+                    inputFormat="dd/MM/yyyy"
+                    value={item.date}
+                    onChange={(newValue) => {
+                      console.log(newValue);
+                      let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
+                      singleItem.date = newValue
+                      setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
+                    }}
+                    renderInput={(params) => <TextField fullWidth {...params} />} />
+                </LocalizationProvider>
+              </section>
+
+              <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              value={item.stock ? item.stock : { name: "" }}
+              options={allStocks}
+              getOptionLabel={(e) => e.name}
+              onChange={(ev, val) => {
+                let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
+                singleItem.stockId = val._id
+                singleItem.stock = val
+                setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
+              }}
+              sx={{ width: 200 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Stock Name" />
+              )}
+            />
+  
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                value={item.product ? item.product : { name: "" }}
+                options={allProducts}
+                onChange={(e, val) => {
+                  let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
+                  singleItem.productId = val._id
+                  singleItem.productName = val.productName
+                  singleItem.product = val
+                  setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
+                }}
+                getOptionLabel={(e) => e.name}
+                sx={{ width: 200 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select Products" />
+                )}
+              />
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                getOptionLabel={(e) => e.toString()}
+                value={item.unit}
+                options={item.product ? item.product.unit : []}
+                onChange={(e, val) => {
+                  let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
+                  singleItem.unit = val
+                  setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
+                }}
+                sx={{ width: 200 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select Unit" />
+                )}
+              />
+  
+              <TextField
+                type="number"
+                sx={{ width: 200 }}
+                value={item.quantity}
+                onChange={(val) => {
+                  let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
+                  singleItem.quantity = val.target.value
+                  setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
+                }}
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+               
+                id="outlined-basic"
+                label="Quantity"
+                variant="outlined"
+              />
+            </Stack>
+            ))
+          }
           <Stack
             direction="row"
             justifyContent="center"
@@ -224,6 +308,26 @@ const Stockout = (props) => {
                   renderInput={(params) => <TextField fullWidth {...params} />} />
               </LocalizationProvider>
             </section>
+
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={allStocks}
+              getOptionLabel={(e) => e.name}
+              onChange={(ev, val) => {
+                let sp = allProducts.filter((item) => item.name === val.name);
+                if (sp.length > 0) {
+                  setSelectedProduct(sp[0]);
+                }
+
+                setSelectedStock(val);
+              }}
+              sx={{ width: 200 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Stock Name" />
+              )}
+            />
+
 
             <Autocomplete
               disablePortal
@@ -272,7 +376,12 @@ const Stockout = (props) => {
               <Button type="submit" variant="contained" alignitems="center">
                 Add
               </Button>
-              <Button onClick={()=>setFlag(!flag)}>
+              <Button onClick={()=>{
+                window.location.reload(false);
+                // setStockOutData([])
+                // setFlag(!flag)
+              }}
+                >
                 Clear
               </Button>
             </center>
@@ -317,11 +426,12 @@ const Stockout = (props) => {
       <td>
         <Button
         onClick={()=>{
-          axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/deleteStockOut`,{stockOutId:item._id,quantity:parseInt(item.quantity)},{headers:{token:accessToken}})
-          .then(res=>{
-            console.log(res)
-            setStockOutData(stockOutData.filter((i)=> item._id !== i._id))
-          })
+          setStockOutData(stockOutData.filter((i)=> item._id !== i._id))
+          // axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/deleteStockOut`,{stockOutId:item._id,quantity:parseInt(item.quantity)},{headers:{token:accessToken}})
+          // .then(res=>{
+          //   console.log(res)
+          //   setStockOutData(stockOutData.filter((i)=> item._id !== i._id))
+          // })
         }}
         >Delete</Button>
       </td>
@@ -344,7 +454,25 @@ const Stockout = (props) => {
         <center>
        
           <button
-        onClick={()=>{toComponentB()}}
+        onClick={()=>{
+              axios
+      .post(
+        `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOuts`,
+        { stockOuts:stockOutData },
+        { headers: { token: accessToken } }
+      )
+      .then((res) => {
+        console.log(res);
+        toComponentB()
+        setError("")
+        setStockOutData([]);
+      })
+      .catch(err=>{
+        if(err.response){
+          setError(err.response.data)
+        }
+      })
+        }}
             className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-2 " >
               
             Print
