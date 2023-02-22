@@ -110,9 +110,11 @@ const Stockout = (props) => {
       docNo: parseInt(data.docNo),
     };
     console.log(obj);
-
-         {console.log(data.quantity)}
-         setStockOutData([...stockOutData, {...obj,_id:stockOutData.length}]);
+    setSelectedProduct(null)
+    setSelectedStock(null)
+    setSelectedUnit(null)
+    setValue("quantity","")
+    setStockOutData([...stockOutData, {...obj,_id:stockOutData.length}]);
 
     // axios
     //   .post(
@@ -193,6 +195,19 @@ console.log(updatedArrayOfObjects);
               sx={{ width: 200 }}
               renderInput={(params) => <TextField {...params} label="Doctor" />}
             />
+            <section>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DesktopDatePicker
+                  label="Date"
+                  inputFormat="dd/MM/yyyy"
+                  value={selectedDate}
+                  onChange={(newValue) => {
+                    console.log(newValue);
+                    setSelectedDate(newValue);
+                  }}
+                  renderInput={(params) => <TextField fullWidth {...params} />} />
+              </LocalizationProvider>
+            </section>
           </Stack>
           {
             stockOutData.map((item,index)=>(
@@ -202,7 +217,7 @@ console.log(updatedArrayOfObjects);
               spacing={2}
               marginTop="5px"
             >
-              <section>
+              {/* <section>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DesktopDatePicker
                     label="Date"
@@ -216,7 +231,7 @@ console.log(updatedArrayOfObjects);
                     }}
                     renderInput={(params) => <TextField fullWidth {...params} />} />
                 </LocalizationProvider>
-              </section>
+              </section> */}
 
               <Autocomplete
               disablePortal
@@ -295,7 +310,7 @@ console.log(updatedArrayOfObjects);
             spacing={2}
             marginTop="5px"
           >
-            <section>
+            {/* <section>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
                   label="Date"
@@ -307,13 +322,14 @@ console.log(updatedArrayOfObjects);
                   }}
                   renderInput={(params) => <TextField fullWidth {...params} />} />
               </LocalizationProvider>
-            </section>
+            </section> */}
 
             <Autocomplete
               disablePortal
               id="combo-box-demo"
               options={allStocks}
               getOptionLabel={(e) => e.name}
+              value={selectedStock?selectedStock:{name:""}}
               onChange={(ev, val) => {
                 let sp = allProducts.filter((item) => item.name === val.name);
                 if (sp.length > 0) {
@@ -345,6 +361,7 @@ console.log(updatedArrayOfObjects);
               disablePortal
               id="combo-box-demo"
               getOptionLabel={(e) => e.toString()}
+              value={selectedUnit ? selectedUnit : ""}
               options={selectedProduct ? selectedProduct.unit : []}
               onChange={(e, val) => setSelectedUnit(val)}
               sx={{ width: 200 }}
