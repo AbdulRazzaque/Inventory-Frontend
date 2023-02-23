@@ -30,6 +30,7 @@ const Stockout = (props) => {
   const [selectedDoctorName, setSelectedDoctorName] = React.useState(null);
   const [selectedProduct, setSelectedProduct] = React.useState(null);
   const [selectedUnit, setSelectedUnit] = React.useState(null);
+  const [selectedCompany,setSelectedCompany] = React.useState(null)
   const [ quantity,setQuantity]=React.useState(null)
 
   const [selectedDate, setSelectedDate] = React.useState("");
@@ -103,6 +104,7 @@ const Stockout = (props) => {
       trainerName: selectedTrainerName,
       doctorName: selectedDoctorName,
       unit: selectedUnit,
+      companyName:selectedCompany,
       stockId: selectedStock?selectedStock._id:null,
       stock: selectedStock?selectedStock:null,
       quantity: data.quantity,
@@ -113,6 +115,7 @@ const Stockout = (props) => {
     setSelectedProduct(null)
     setSelectedStock(null)
     setSelectedUnit(null)
+    setSelectedCompany(null)
     setValue("quantity","")
     setStockOutData([...stockOutData, {...obj,_id:stockOutData.length}]);
 
@@ -285,6 +288,23 @@ console.log(updatedArrayOfObjects);
                   <TextField {...params} label="Select Unit" />
                 )}
               />
+
+<Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                getOptionLabel={(e) => e.toString()}
+                value={item.companyName}
+                options={item.product ? item.product.companyName : []}
+                onChange={(e, val) => {
+                  let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
+                  singleItem.unit = val
+                  setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
+                }}
+                sx={{ width: 200 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select Unit" />
+                )}
+              />
   
               <TextField
                 type="number"
@@ -370,6 +390,19 @@ console.log(updatedArrayOfObjects);
               )}
             />
 
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              getOptionLabel={(e) => e.toString()}
+              value={selectedCompany ? selectedCompany : ""}
+              options={selectedProduct ? selectedProduct.companyName : []}
+              onChange={(e, val) => setSelectedCompany(val)}
+              sx={{ width: 200 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Company Name" />
+              )}
+            />
+
             <TextField
               {...register("quantity", { required: true })}
               type="number"
@@ -393,6 +426,25 @@ console.log(updatedArrayOfObjects);
               <Button type="submit" variant="contained" alignitems="center">
                 Add
               </Button>
+              <Button onClick={()=>{
+                axios
+                .post(
+                  `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOuts`,
+                  { stockOuts:stockOutData },
+                  { headers: { token: accessToken } }
+                )
+                .then((res) => {
+                  console.log(res);
+                  console.log("Stock out Success")
+                  setError("")
+                  setStockOutData([]);
+                })
+                .catch(err=>{
+                  if(err.response){
+                    setError(err.response.data)
+                  }
+                })
+              }} variant="outlined">Save</Button>
               <Button onClick={()=>{
                 window.location.reload(false);
                 // setStockOutData([])
