@@ -43,7 +43,7 @@ const Stockout = (props) => {
   const [error,setError] = React.useState("")
 
   console.log(stockOutData)
-  const {
+  const { 
     register,
     handleSubmit,
     formState: { errors },
@@ -144,7 +144,7 @@ const Stockout = (props) => {
 const updatedArrayOfObjects = stockOutData.map(({ _id, ...rest }) => rest);
 
 console.log(updatedArrayOfObjects);
-    //navigate('/Stockoutpdf',{state:{data:stockOutData}});
+    navigate('/Stockoutpdf',{state:{data:stockOutData}});
 
     
       }
