@@ -39,7 +39,7 @@ const Stockinventoty = () => {
 
   const handleSubmit = ()=>{
     console.log({to:selectedDate,from:selectedDate2,productType:selectedProductType.type})
-    axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getPrevStockInInfo`,{to:date.format(selectedDate,'YYYY/MM/DD'),from:date.format(selectedDate2,'YYYY/MM/DD'),productType:selectedProductType.type},{headers:{token:accessToken}})
+    axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getPrevStockInInfo`,{to:date.format(selectedDate,'YYYY/MM/DD'),from:date.format(selectedDate2,'YYYY/MM/DD'),productType:selectedProductType.name},{headers:{token:accessToken}})
     .then(res=>{
       console.log(res)
       setTotal(res.data.result)
@@ -96,10 +96,10 @@ const Stockinventoty = () => {
           disablePortal
           id="combo-box-demo"
           options={allProductType}
-          getOptionLabel={(e)=>e.type}
+          getOptionLabel={(e)=>e.name}
           onChange={(e,newValue)=>setSelectedProductType(newValue)}
           sx={{ width: 200 }}
-          renderInput={(params) => <TextField {...params} label="Product Type" />}
+          renderInput={(params) => <TextField {...params} label="Product Name" />}
           
         />
     </Stack>

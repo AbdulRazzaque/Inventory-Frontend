@@ -131,9 +131,9 @@ const columns1 = [
   { field: 'id', headerName: 'ID',width:20},
   //{ field: 'brand', headerName: 'Brand Name',valueGetter:(param)=>param.value.name,width:150},
   { field: 'name', headerName: 'Name',valueGetter:(param)=>param.row.name,width:150},
-  { field: 'companyName', headerName: 'company Name',valueGetter:(param)=>param.row.product.companyName,width:200},
-  { field: 'type', headerName: 'Type',valueGetter:(param)=>param.row.product.type.map((item)=>item),width:150},
-  { field: 'unit', headerName: 'Unit',valueGetter:(param)=>param.row.product.unit.map((item)=>item),width:150},
+  { field: 'companyName', headerName: 'company Name',valueGetter:(param)=>!param.row.product?"":param.row.product.companyName,width:200},
+  { field: 'type', headerName: 'Type',valueGetter:(param)=>!param.row.product?"":param.row.product.type.map((item)=>item),width:150},
+  { field: 'unit', headerName: 'Unit',valueGetter:(param)=>!param.row.product?"":param.row.product.unit.map((item)=>item),width:150},
   { field: 'quantity', headerName: 'Quantity',valueGetter:(param)=>param.row.quantity,width:150},
   {field:"updatedAt",headerName:"Updated At",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120},
   {field:"createdAt",headerName:"Created At",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
