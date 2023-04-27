@@ -39,7 +39,7 @@ const Stockinventoty = () => {
 
   const handleSubmit = ()=>{
     console.log({to:selectedDate,from:selectedDate2,productType:selectedProductType.type})
-    axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getPrevStockInInfo`,{to:date.format(selectedDate,'YYYY/MM/DD'),from:date.format(selectedDate2,'YYYY/MM/DD'),productType:selectedProductType.type},{headers:{token:accessToken}})
+    axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getPrevStockInInfo`,{to:date.format(selectedDate,'YYYY/MM/DD'),from:date.format(selectedDate2,'YYYY/MM/DD'),productType:selectedProductType.name},{headers:{token:accessToken}})
     .then(res=>{
       console.log(res)
       setTotal(res.data.result)
@@ -96,10 +96,10 @@ const Stockinventoty = () => {
           disablePortal
           id="combo-box-demo"
           options={allProductType}
-          getOptionLabel={(e)=>e.type}
+          getOptionLabel={(e)=>e.name}
           onChange={(e,newValue)=>setSelectedProductType(newValue)}
           sx={{ width: 200 }}
-          renderInput={(params) => <TextField {...params} label="Product Type" />}
+          renderInput={(params) => <TextField {...params} label="Product Name" />}
           
         />
     </Stack>
@@ -137,7 +137,7 @@ const Stockinventoty = () => {
 
      <div className='flex justify-center'  > 
   
-        <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative ">Grand Total= </button></center> 
+        {/* <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative ">Grand Total= </button></center>  */}
         </div>
     </div>
   ) 

@@ -28,7 +28,7 @@ const AdminNavbar = () => {
                 <Link to="/Addsuppliers">    <NavDropdown.Item href="#action/3.2">
                     Add Supplier
                   </NavDropdown.Item></Link>
-                  <Link to="/Addloactaion">       <NavDropdown.Item href="#action/3.3">Add Location</NavDropdown.Item></Link>
+                  <Link to="/Addloactaion">       <NavDropdown.Item href="#action/3.3">Add Farm</NavDropdown.Item></Link>
                   {/* <NavDropdown.Divider />
                   <NavDropdown.Item href="#action/3.4">
                     Separated link

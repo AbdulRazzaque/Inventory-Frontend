@@ -24,10 +24,10 @@ const InventoryNavbar = () => {
                 <Nav.Link href="#link">Add Produuts</Nav.Link> */}
                 
                 <NavDropdown title="Transection" id="basic-nav-dropdown">
-                <Link to="/stockin">   <NavDropdown.Item href="#action/3.1">Stock-in</NavDropdown.Item></Link>
-                <Link to="/stockout">    <NavDropdown.Item href="#action/3.2">Stock-out</NavDropdown.Item></Link>
-                  <Link to="/stockoutsearch">       <NavDropdown.Item href="#action/3.4">Stock-out Search</NavDropdown.Item></Link>
-                <Link to="/productslist"><NavDropdown.Item href="#action/3.0">Stock-list</NavDropdown.Item></Link>  
+                <Link to="/stockin">   <NavDropdown.Item href="#action/3.1">Stockin</NavDropdown.Item></Link>
+                <Link to="/stockout">    <NavDropdown.Item href="#action/3.2">Stockout</NavDropdown.Item></Link>
+                  <Link to="/stockoutsearch">       <NavDropdown.Item href="#action/3.4">Stockout Search</NavDropdown.Item></Link>
+                <Link to="/productslist"><NavDropdown.Item href="#action/3.0">Stocklist</NavDropdown.Item></Link>  
 
                   {/* <NavDropdown.Divider />
                   <NavDropdown.Item href="#action/3.4">
@@ -38,7 +38,7 @@ const InventoryNavbar = () => {
 
                 <NavDropdown title="Inventory" id="basic-nav-dropdown"  >
 
-                  <Link to="/stockinventoty">       <NavDropdown.Item href="#action/3.3">Stock-inventoty</NavDropdown.Item></Link>
+                  <Link to="/stockinventoty">       <NavDropdown.Item href="#action/3.3">Stock-inventory</NavDropdown.Item></Link>
                   <Link to="/monthlyreport">       <NavDropdown.Item href="#action/3.4">Monthly Report</NavDropdown.Item></Link>
                   {/* <NavDropdown.Divider />
                   <NavDropdown.Item href="#action/3.4">
