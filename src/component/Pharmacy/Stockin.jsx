@@ -150,7 +150,7 @@ console.log(selectedDate)
             <Container>
               <Stack direction="row" spacing={2}>
                 <TextField
-                disabled
+                // disabled
                   type={"number"}
                   value={docNo}
                   onChange={(t) => {

@@ -20,12 +20,8 @@ const UserLogin = () => {
       .then(response=>{
       console.log(response, 'res')
       navigate('/productslist')
-      // console.log(response.data.result);
     })
-    //navigate('/productslist')
-    // if(){
-    //   alert("you are not admin")
-    // }
+
      } catch (error) {
      
         setIsValid(true);
