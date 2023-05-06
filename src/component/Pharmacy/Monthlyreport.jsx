@@ -37,10 +37,11 @@ const Monthlyreport = () => {
        
       },
     },
-    { title: "Products Name/unit", field: "name" },
+    { title: "Products Name", field: "name" },
+    { title: "unit", field: "unit" },
 
     { title: "Qauntity", field: "quantity" },
-    { title: "Price", field: "price" },
+    // { title: "Price", field: "price" },
   ]);
 
   
@@ -190,6 +191,7 @@ const Monthlyreport = () => {
           </center>
           <ThemeProvider theme={defaultMaterialTheme}>
             <MaterialTable
+            title="Monthly Report"
               data={data}
               columns={columns}
               editable={{

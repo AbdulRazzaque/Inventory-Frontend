@@ -26,10 +26,10 @@ const Addproducts = () => {
             .then(response=>{
             console.log(response, 'res')
             setFlag(!flag)
-            setIsValid(true);
-            setTimeout(() => {
-                setIsValid(false);
-            }, 1000);
+            // setIsValid(true);
+            // setTimeout(() => {
+            //     setIsValid(false);
+            // }, 1000);
 
               event.target.reset();
           }).catch(error => {
@@ -119,7 +119,8 @@ const Addproducts = () => {
 </section>
 
 {
-    isValid && <Alert severity="error">
+    isValid && 
+    <Alert severity="error">
     <AlertTitle>Error</AlertTitle>
     <strong> {isValid} </strong>
   </Alert>

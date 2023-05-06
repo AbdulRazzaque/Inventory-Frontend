@@ -161,10 +161,11 @@ console.log(updatedArrayOfObjects);
           <Stack direction="row" justifyContent="center" spacing={2}>
             <TextField
               {...register("docNo", { required: true })}
+              disabled
               type="number"
               sx={{ width: 200 }}
               id="outlined-basic"
-              label="Doc Number"
+              // label="Doc Number"
               variant="outlined"
               // disabled
             />
