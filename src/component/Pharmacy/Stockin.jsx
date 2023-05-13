@@ -62,6 +62,7 @@ const Stockin = () => {
   const [allStocks,setAllStocks] = React.useState([])
   const [sum ,setSum]=useState('')
   const [flag,setFlag] = React.useState(false)
+  
   const {
     register,
     handleSubmit,
@@ -75,9 +76,10 @@ console.log(selectedDate)
     var obj = {
       supplierId:selectedSupplier._id,
       productName:selectedProduct.name,
+      companyName:selectedProduct.companyName,
       productId:selectedProduct._id,
-      productType,
-      unit,
+      productType:selectedProduct.type[0],
+      unit:selectedProduct.unit[0],
       expiry:selectedDate,
       supplier:selectedSupplier.name,
       docNo,
@@ -150,7 +152,6 @@ console.log(selectedDate)
             <Container>
               <Stack direction="row" spacing={2}>
                 <TextField
-                disabled
                   type={"number"}
                   value={docNo}
                   onChange={(t) => {
@@ -196,35 +197,77 @@ console.log(selectedDate)
                   id="combo-box-demo"
                   onChange={(event, newValue) => {
                     setSelectedProduct(newValue);
+console.log(selectedProduct)
                   }}
-                  getOptionLabel={(product) => product.name}
+                  getOptionLabel={(product) =>  
+                  product.name
+                   }
+              
                   options={allProducts}
                   sx={{ width: 200 }}
                   renderInput={(params) => (
                     <TextField {...params} label="Product " />
                   )} />
 
+               <Autocomplete
+                  id="combo-box-demo"
+                  onChange={(event, newValue) => {
+                    setSelectedProduct(newValue);
+
+                  }}
+                  getOptionLabel={(e) => e.companyName}
+                  value={selectedProduct?selectedProduct :{companyName:""}}
+                  options={allProducts}
+                  sx={{ width: 250 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="company Name " />
+                  )} />
+                  
+
                 <Autocomplete
                   id="combo-box-demo"
                   onChange={(event, newValue) => {
                     setProductType(newValue);
+                  
                   }}
+                
                   getOptionLabel={(productType) => productType}
+                    //  value={productType}
+                 
                    options={selectedProduct?selectedProduct.type:[]}
-                  sx={{ width: 200 }}
+                    value={selectedProduct?selectedProduct.type:[]}
+                  sx={{ width: 250 }}
                   renderInput={(params) => (
                     <TextField {...params} label="Product Type" />
-                  )} /> </Stack>
+                  )} /> 
+
+           {/* <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={allProducts}
+              onChange={(e, val) => setSelectedProduct(val)}
+              getOptionLabel={(e) => e.type}
+              value={(e) => e.type}
+              sx={{ width: 200 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Select Products" />
+              )}
+            /> */}
+                  
+                  
+                  
+                  </Stack>
 
               <Stack direction="row" spacing={2} mt="10px">
                 <Autocomplete
                   id="combo-box-demo"
-                  onChange={(event, newValue) => {
+                  onChange={(evvent, newValue) => {
                     setUnit(newValue);
                   }}
                   options={selectedProduct?selectedProduct.unit:[]}
+                  value={selectedProduct?selectedProduct.unit:[]}
                   getOptionLabel={(unit) => unit}
-                  sx={{ width: 200 }}
+                  sx={{ width: 250 }}
                   renderInput={(params) => (
                     <TextField {...params} label="Product Unit" /> )}/>
 
@@ -325,6 +368,7 @@ console.log(selectedDate)
                       <TableCell align="right">Suplier No</TableCell>
                       <TableCell align="right">Suplier</TableCell>
                       <TableCell align="right">Add product</TableCell>
+                      <TableCell align="right">company Name</TableCell>
                       <TableCell align="right">Product Type</TableCell>
                       <TableCell align="right">Product Unit</TableCell>
                       <TableCell align="right">Price</TableCell>
@@ -343,6 +387,7 @@ console.log(selectedDate)
                         <TableCell align="right">{row.docNo}</TableCell>
                         <TableCell align="right">{row.supplier}</TableCell>
                         <TableCell align="right">{row.productName}</TableCell>
+                        <TableCell align="right">{row.companyName}</TableCell>
                         <TableCell align="right">{row.productType}</TableCell>
                         <TableCell align="right">{row.unit}</TableCell>
                         <TableCell align="right">{parseInt(row.price)}</TableCell>

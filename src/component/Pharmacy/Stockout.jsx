@@ -41,8 +41,9 @@ const Stockout = (props) => {
   let navigate= useNavigate()
 
   const [error,setError] = React.useState("")
-
+console.log("selectedUint",selectedUnit)
   console.log(stockOutData)
+  console.log(typeof selectedUnit,"First time type")
   const { 
     register,
     handleSubmit,
@@ -270,7 +271,7 @@ console.log(updatedArrayOfObjects);
                 getOptionLabel={(e) => e.name}
                 sx={{ width: 200 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Products" />
+                  <TextField {...params} label=" Products" />
                 )}
               />
               <Autocomplete
@@ -286,7 +287,7 @@ console.log(updatedArrayOfObjects);
                 }}
                 sx={{ width: 200 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Unit" />
+                  <TextField {...params} label=" Unit" />
                 )}
               />
 
@@ -303,7 +304,7 @@ console.log(updatedArrayOfObjects);
                 }}
                 sx={{ width: 200 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Unit" />
+                  <TextField {...params} label=" Company Name" />
                 )}
               />
   
@@ -375,7 +376,7 @@ console.log(updatedArrayOfObjects);
               getOptionLabel={(e) => e.name}
               sx={{ width: 200 }}
               renderInput={(params) => (
-                <TextField {...params} label="Select Products" />
+                <TextField {...params} label=" Products" />
               )}
             />
             <Autocomplete
@@ -387,7 +388,7 @@ console.log(updatedArrayOfObjects);
               onChange={(e, val) => setSelectedUnit(val)}
               sx={{ width: 200 }}
               renderInput={(params) => (
-                <TextField {...params} label="Select Unit" />
+                <TextField {...params} label=" Unit" />
               )}
             />
 

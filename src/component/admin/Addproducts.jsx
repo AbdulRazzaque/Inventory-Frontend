@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import AdminNavbar from '../Navbar/AdminNavbar'
 import logo from '../../images/inventory.jpg'
@@ -6,12 +6,16 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import  { useEffect } from 'react'
-import {Alert, Button} from '@mui/material'
+import {Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField} from '@mui/material'
 import AlertTitle from '@mui/material/AlertTitle';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 const Addproducts = () => {
-   
+    const [alert, setAlert] = useState(false);
     const [isValid, setIsValid] = useState(false);
     const [data,setData] = React.useState([])
+    const [showDialog,setShowDialog]=useState(false)
+    const [update,setUpdate]=useState([])
     const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw"
     // const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JlODIxMTc0NGJmMzIzMWQ0Njg4MWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM2Nzk3NDF9.AlhQthpnXqIEJG9JP_buafPXA-MNeBPUo5FIFNKae3o"
     // const [errorMsg, setErrorMsg] = useState("");
@@ -46,16 +50,121 @@ const Addproducts = () => {
         
       ;
   }
-
-  React.useEffect(()=>{
+const getAlldata = ()=>{
+  
     axios.get(`${process.env.REACT_APP_DEVELOPMENT}/api/product/getAllProducts`)
     .then(res=>{
         console.log(res)
         setData(res.data.result)
     })
-  },[flag])
-  console.log(arrayId)
 
+}
+const deleteRow = async (update) => {
+  try {
+    await axios
+      .delete(
+        `${process.env.REACT_APP_DEVELOPMENT}/api/product/deleteProduct/${update._id}`,update,
+        {headers:{token:`${accessToken}`}})
+        .then(response=>{
+        console.log('Response',response)
+        // apiRef.current.updateRows([update])
+        })
+
+        getAlldata();
+      
+    setAlert(false);
+  } catch (error) {
+    console.log(error);
+  }
+};
+useEffect(()=>{
+getAlldata()
+},[flag])
+
+
+  console.log(arrayId)
+  const columns2 = [
+    // {
+    //     field: 'checkbox',
+    //     headerName: '',
+    //     width: 50,
+    //     renderCell: (params) => (
+    //       <Checkbox
+    //         color="primary"
+    //         checked={params.value}
+    //         onChange={() => handleCheckboxChange(params.row.id)}
+    //       />
+    //     ),
+    //   },
+    { field: 'id', headerName: 'ID',width:20},
+    //{ field: 'brand', headerName: 'Brand Name',valueGetter:(param)=>param.value.name,width:150},
+    { field: 'name', headerName: 'Name',valueGetter:(param)=>param.row.name,width:150},
+    { field: 'companyName', headerName: 'Company Name',valueGetter:(param)=>param.row.companyName,width:200},
+    { field: 'type', headerName: 'Type',valueGetter:(param)=>param.row.type.map(item=>item),width:200},
+    { field: 'unit', headerName: 'Unit',valueGetter:(param)=>param.row.unit.map(item=>item),width:200},
+    // {field:"createdAt",headerName:"Created At",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
+    {title:"Action" ,
+    field:'Action',
+    width:150,
+    renderCell:()=>(
+      <Fragment>
+          <Button  onClick={()=>setShowDialog(true)} ><EditIcon/></Button>
+       
+      </Fragment>
+    )
+  },
+    {title:"Delete" ,
+    field:'Delete',
+    width:150,
+    renderCell:()=>(
+      <Fragment>
+        <Button color="error" onClick={() => setAlert(true)}>
+            <DeleteIcon />
+          </Button>
+       
+      </Fragment>
+    )
+  },
+
+
+  ];
+  const handleCheckboxChange =()=>{
+    axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/product/deleteProduct`,{array:arrayId},{headers:{token:accessToken}})
+    .then(res=>{
+        console.log(res)
+        setArrayId([])
+        setFlag(!flag)
+    })
+  }
+  
+  const updateData=(e)=>{
+    setUpdate({...update,[e.target.name]:e.target.value})
+    console.log(update)
+  
+}
+const updateRow = async() =>{
+   
+
+ 
+  
+try {
+   
+    console.log(update)
+await  axios.put(`${process.env.REACT_APP_DEVELOPMENT}/api/product/updateProduct/${update._id}`,update,
+{headers:{token:`${accessToken}`}})
+.then(response=>{
+console.log('Response',response)
+// apiRef.current.updateRows([update])
+})
+getAlldata()
+
+setShowDialog(false)
+} catch (error) {
+console.log(error)
+} 
+
+
+}
   return (
     <div>
           <AdminNavbar/>
@@ -118,6 +227,32 @@ const Addproducts = () => {
   </div>
 </section>
 
+        {alert && (
+          <Dialog open={alert} style={{ height: 600 }}>
+            <DialogTitle>Delete Row</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are You sure You want to delete this.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button variant="contained" onClick={() => deleteRow(update)}>
+                Yes
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => {
+                  setAlert(false);
+                }}
+              >
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+
+
 {
     isValid && 
     <Alert severity="error">
@@ -126,12 +261,51 @@ const Addproducts = () => {
   </Alert>
 }
 
+
+
+{ update &&
+    <Dialog open={showDialog} style={{height:600}}>
+    <DialogTitle>Update Data</DialogTitle>
+    <DialogContent>
+    <Grid container>
+  <Grid item xs={12}>
+
+  <TextField className="my-2" sx={{ width: 500 }}  variant="outlined" id="outlined-basic" label="Products Name" name='name' required value={update.name} onChange={updateData} />
+  <TextField className="my-2" sx={{ width: 500 }}  variant="outlined" id="outlined-basic" label=" Company Name"  required name='companyName' value={update.companyName} onChange={updateData} />
+  <TextField className="my-2" sx={{ width: 500 }}  variant="outlined" id="outlined-basic" label=" Company Name"  required name='type' value={update.type} onChange={updateData} />
+  <TextField className="my-2" sx={{ width: 500 }} variant="outlined" id="outlined-basic" label="Unit" name='unit'  required value={update.unit} onChange={updateData} />
+
+
+ 
+  
+ 
+    
+
+
+    
+               
+
+         
+  
+
+</Grid>
+</Grid>
+
+    </DialogContent>
+    <DialogActions>
+      <Button variant='contained' onClick={updateRow}>Update</Button>
+      <Button variant='outlined' color='error'
+       onClick={()=>{setShowDialog(false)}}>Cancel</Button>
+    </DialogActions>
+    </Dialog>
+          }
+
 {/* {errorMsg && <p>{errorMsg}</p>} */}
     </div>
     <h1>All product</h1>
-    <h3>Total Selected Item: {arrayId.length}</h3>
+    {/* <h3>Total Selected Item: {arrayId.length}</h3> */}
     <p>Note: click on the row to select item not on checkbox</p>
-    <Button
+    {/* <Button
     onClick={()=>{
         axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/product/deleteProduct`,{array:arrayId},{headers:{token:accessToken}})
         .then(res=>{
@@ -139,36 +313,29 @@ const Addproducts = () => {
             setArrayId([])
             setFlag(!flag)
         })
-    }}
-    color="error" className="my-3" variant="contained">Delete Selected Item</Button>
+    }
+}
+    
+    color="error" className="my-3" variant="contained">Delete Selected Item</Button> */}
     <div style={{ height: '80vh', width: '100%' }}>
                 <DataGrid
                     rows={data.map((item,index)=>({...item,id:index+1}))}
                     columns={columns2}
                     pageSize={100}
                     rowsPerPageOptions={[100]}
-                    checkboxSelection
-                    onRowClick={(item,ev)=>{
-                        if(arrayId.includes(item.row._id)){
-                            setArrayId(arrayId.filter(i=>i!==item.row._id))
-                        }else{
-                            setArrayId([...arrayId,item.row._id])
-                        }
-                    }}
+                    onRowClick={(item)=>setUpdate(item.row) }
+                    // checkboxSelection
+                    // onRowClick={(item,ev)=>{
+                    //     if(arrayId.includes(item.row._id)){
+                    //         setArrayId(arrayId.filter(i=>i!==item.row._id))
+                    //     }else{
+                    //         setArrayId([...arrayId,item.row._id])
+                    //     }
+                    // }}
                 />
             </div>
     </div>
   )
 }
-const columns2 = [
-    { field: 'id', headerName: 'ID',width:20},
-    //{ field: 'brand', headerName: 'Brand Name',valueGetter:(param)=>param.value.name,width:150},
-    { field: 'name', headerName: 'Name',valueGetter:(param)=>param.row.name,width:150},
-    { field: 'companyName', headerName: 'Company Name',valueGetter:(param)=>param.row.companyName,width:500},
-    { field: 'type', headerName: 'Type',valueGetter:(param)=>param.row.type.map(item=>item),width:500},
-    { field: 'unit', headerName: 'Unit',valueGetter:(param)=>param.row.unit.map(item=>item),width:500},
-    // {field:"createdAt",headerName:"Created At",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
 
-
-  ];
 export default Addproducts
