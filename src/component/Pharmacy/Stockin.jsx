@@ -2,6 +2,10 @@ import {
   Autocomplete,
   Button,
   Container,
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
   Stack,
   TextField,
 } from "@mui/material";
@@ -197,7 +201,7 @@ console.log(selectedDate)
                   id="combo-box-demo"
                   onChange={(event, newValue) => {
                     setSelectedProduct(newValue);
-console.log(selectedProduct)
+                   console.log(selectedProduct)
                   }}
                   getOptionLabel={(product) =>  
                   product.name
@@ -271,14 +275,27 @@ console.log(selectedProduct)
                   renderInput={(params) => (
                     <TextField {...params} label="Product Unit" /> )}/>
 
-                <TextField
+                {/* <TextField
                   type="number"
                   name="Price"
                   sx={{ width: 200 }}
                   id="outlined-basic"
                   label="Price"
                   variant="outlined"
-                  {...register("price", { required: true, maxLength: 20 })}/>
+                  inputProps={{
+                    step: 0.44,
+                  }}
+                  {...register("price", { required: true, })}/> */}
+                    <FormControl  sx={{ m: 1 }}>
+                <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                  label="Amount"
+                  name="Price"
+                  {...register("price", { required: true, })}
+                />
+              </FormControl>
 
                 <TextField
                   type="number"
@@ -390,10 +407,13 @@ console.log(selectedProduct)
                         <TableCell align="right">{row.companyName}</TableCell>
                         <TableCell align="right">{row.productType}</TableCell>
                         <TableCell align="right">{row.unit}</TableCell>
-                        <TableCell align="right">{parseInt(row.price)}</TableCell>
+                        {/* <TableCell align="right">{parseInt(row.price)}</TableCell> */}
+                        <TableCell align="right">{row.price}</TableCell>
                         <TableCell align="right">{parseInt(row.quantity)}</TableCell>
                         <TableCell align="right">{moment.parseZone(row.expiry).local().format("DD/MM/YY")}</TableCell>
-                        <TableCell align="right">{parseInt(row.quantity) * parseInt(row.price)}</TableCell>
+                        {/* <TableCell align="right">{parseInt(row.quantity) * parseInt(row.price)}</TableCell> */}
+                        <TableCell align="right">{parseInt(row.quantity) * (row.price)}</TableCell>
+
 
 
 

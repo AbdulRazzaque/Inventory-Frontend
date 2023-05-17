@@ -1,45 +1,259 @@
-import { Autocomplete, Button, Container, Stack, TextField } from '@mui/material'
-import React from 'react'
+import { Autocomplete, Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack, TextField } from '@mui/material'
+import React, { Fragment, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import InventoryNavbar from '../Navbar/InventoryNavbar';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-  import moment from 'moment'
-const columns = [
-    { field: 'id', headerName: 'SrNO', width: 70 },
-    { field: 'productsname', headerName: 'Products name', width: 130 },
-    { field: 'productstype', headerName: 'Products type', width: 130 },
-    {field: 'unit',headerName: 'unit',type: 'number',width: 90,},
-    {field: 'Quantity',headerName: 'Quantity',type: 'number',width: 90,},
-    {field: 'Price',headerName: 'Price',type: 'number',width: 90,},
-    {field: 'total',headerName: 'total',type: 'number',width: 90,},
-    {field: 'Expiry',headerName: 'Expiry',type: 'number',width: 90,},
-  ];
-  const rows = [
-    { id: 1, productstype: 'Durg', productsname: 'Medicine1', unit: 1.4 },
-    { id: 2, productstype: 'injection', productsname: 'Medicine2', unit: 1.5 },
+  import moment from 'moment' 
+  import DeleteIcon from "@mui/icons-material/Delete";
+  import EditIcon from "@mui/icons-material/Edit";
 
-  
-  ];
+
 const Stockininfo = () => {
-  const [data,setData] = React.useState(null)
+  const [data, setData] = useState([]);
+  const [update, setUpdate] = useState([]);
+  const [showDialog, setShowDialog] = useState(false);
+  const [alert, setAlert] = useState(false);
   const accessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw";
   const params = useParams()
   console.log(params)
-  React.useEffect(()=>{
+  const alldata =()=>{
     axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getStockInByDocNo`,{docNo:params.docNo},{headers:{token:accessToken}})
     .then(res=>{
+      let arr= res.data.result[0].doc.map((item,index)=>({...item,id:index+1}))
+      // [0].doc.map
       console.log(res)
-      setData(res.data.result)
+      setData(arr)
     })
+  }
+  React.useEffect(()=>{
+  alldata()
   },[])
+
+  
+  const updateData = (e) => {
+    setUpdate({ ...update, [e.target.name]: e.target.value });
+    console.log(update);
+  };
+  const updateRow = async () => {
+
+   
+    try {
+      console.log(update);
+      await axios
+        .put(
+          `${process.env.REACT_APP_DEVELOPMENT}/api/stock/updatestockIn1/${update._id}`,
+          update,
+          { headers: { token: `${accessToken}` } }
+        )
+        .then((response) => {
+          console.log("Response", response);
+          // apiRef.current.updateRows([update]);
+        });
+
+      setShowDialog(false);
+    } catch (error) {
+      console.log(error);
+    }
+    alldata();
+  };
+
+  const deleteRow = async (update) => {
+    try {
+      await axios
+        .delete(
+          `${process.env.REACT_APP_DEVELOPMENT}/api/deleteMain/${update._id}`,
+          update,
+          // await  axios.delete(`${process.env.REACT_APP_DEVELOPMENT}/api/deletelab/`,
+          { headers: { token: `${accessToken}` } }
+        )
+        .then((response) => {
+          console.log("Response", response);
+
+          alldata();
+        });
+      setAlert(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const columns = [
+    { field: 'id', headerName: 'SrNO', width: 70 },
+    { field: 'name', headerName: 'Products name', width: 130 },
+    // { field: 'supplier', headerName: 'supplier Name', width: 130 },
+    { field: 'productType', headerName: 'Products type', width: 130 },
+    { field: 'companyName', headerName: 'company Name', width: 130 },
+    {field: 'unit',headerName: 'unit',type: 'number',width: 90,},
+    {field: 'quantity',headerName: 'Quantity',type: 'number',width: 90,},
+    {field: 'price',headerName: 'Price',type: 'number',width: 90,},
+    // {field: 'total',headerName: 'total',type: 'number',
+    // valueGetter:(param)=>  (price)*parseInt(quantity),
+    // width: 90,},
+    {field: 'expiry',headerName: 'Expiry',valueGetter:(param)=>moment.parseZone(param.row.date).local().format("DD/MM/YY"),width: 150,},
+     {
+      title: "Action", 
+      field: "Action", 
+      width: 150,
+      renderCell: () => (
+        <Fragment>
+          <Button onClick={() => setShowDialog(true)}>
+            <EditIcon />
+          </Button>
+        </Fragment>
+      ),
+    },
+    {
+      title: "Delete",
+      field: "Delete",
+      width: 150,
+      renderCell: () => (
+        <Fragment>
+          <Button color="error" onClick={() => setAlert(true)}>
+            <DeleteIcon />
+          </Button>
+        </Fragment>
+      ),
+    },
+  ];
+
+  // console.log(update,"Hello ooooooooooooo")
+  // console.log(update.name,"Hello ooooooooooooo")
   return (
     <div className=''>
         <InventoryNavbar/>
           <h1 className='text-center my-8 font-bold text-2xl'>Stock Info </h1>
+          <Container>
+        {alert && (
+          <Dialog open={alert} style={{ height: 600 }}>
+            <DialogTitle>Delete Row</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are You sure You want to delete this.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button variant="contained" onClick={() => deleteRow(update)}>
+                Yes
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => {
+                  setAlert(false);
+                }}
+              >
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+           {/* This Dialog box is update  */}
+           {update && (
+          <Dialog open={showDialog} style={{ height: 600 }}>
+            <DialogTitle>Update Data</DialogTitle>
+            <DialogContent>
+              <Grid container>
+                <Grid item xs={12}>
+                  <TextField
+                    className="my-2"
+                    sx={{ width: 500 }}
+                    variant="outlined"
+                    id="outlined-basic"
+                    label="Product Name"
+                    name="name"
+                    required
+                    value={update.name}
+                    onChange={updateData}
+                  />
+                  <TextField
+                    className="my-2"
+                    sx={{ width: 500 }}
+                    variant="outlined"
+                    id="outlined-basic"
+                    label=" product Type"
+                    required
+                    name="productType"
+                    value={update.productType}
+                    onChange={updateData}
+                  />
+                  <TextField
+                    className="my-2"
+                    sx={{ width: 500 }}
+                    variant="outlined"
+                    id="outlined-basic"
+                    label="company Name"
+                    name="companyName"
+                    required
+                    value={update.companyName}
+                    onChange={updateData}
+                  />
+                  <TextField
+                    className="my-2"
+                    sx={{ width: 500 }}
+                    variant="outlined"
+                    id="outlined-basic"
+                    label="unit"
+                    name="unit"
+                    required
+                    value={update.unit}
+                    onChange={updateData}
+                  />
+                  <TextField
+                    className="my-2"
+                    sx={{ width: 500 }}
+                    variant="outlined"
+                    id="outlined-basic"
+                    label="quantity"
+                    name="quantity"
+                    required
+                    value={update.quantity}
+                    onChange={updateData}
+                  />
+                  <TextField
+                    className="my-2"
+                    sx={{ width: 500 }}
+                    variant="outlined"
+                    id="outlined-basic"
+                    label="price"
+                    name="price"
+                    required
+                    value={update.price}
+                    onChange={updateData}
+                  />
+                  <TextField
+                    className="my-2"
+                    sx={{ width: 500 }}
+                    variant="outlined"
+                    id="outlined-basic"
+                    label="expiry"
+                    name="expiry"
+                    required
+                    value={update.expiry}
+                    onChange={updateData}
+                  />
+             </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions>
+              <Button type="submit" variant="contained" onClick={updateRow}>
+                Update
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => {
+                  setShowDialog(false);
+                }}
+              >
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+        </Container>
         <Container>
-        <Stack direction="row" spacing={2} flex justifyContent="center">
+        {/* <Stack direction="row" spacing={2} flex justifyContent="center"> */}
       {/* <TextField type="number" sx={{width:200}} id="outlined-basic" label="Supplier Doc No" variant="outlined"  />
       <TextField type="Date" sx={{width:200}} id="outlined-basic" label="" variant="outlined"  />
       <TextField type="text" sx={{width:200}} id="outlined-basic" label="Supplier Name" variant="outlined"  /> */}
@@ -66,22 +280,22 @@ const Stockininfo = () => {
   </div> */}
 
 
-    </Stack>
-    <Stack direction="row" spacing={2} mt="10px">
+    {/* </Stack> */}
+    {/* <Stack direction="row" spacing={2} mt="10px">
 
 
 
 
 
 
-    </Stack>
+    </Stack> */}
     <div className='mt-3 ali'>
 
 
     </div>
 
         </Container>
-<div className='mx-3'>
+{/* <div className='mx-3'>
        
 <table className="ui celled table">
   <thead>
@@ -110,7 +324,19 @@ const Stockininfo = () => {
   </tbody>
 </table>
 
-    </div>
+    </div> */}
+          <Box sx={{ height: 900, width: "100%" }}>
+        <DataGrid
+          onRowClick={(item) => setUpdate(item.row)}
+          rows={data}
+          columns={columns}
+          pageSize={50}
+          rowsPerPageOptions={[50]}
+          // checkboxSelection
+          
+          // experimentalFeatures={{ newEditingApi: true }}
+        />
+      </Box>
   {/* <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative ">Print </button></center>  */}
     </div>
   )
