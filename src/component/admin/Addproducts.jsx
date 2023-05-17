@@ -302,9 +302,9 @@ console.log(error)
 
 {/* {errorMsg && <p>{errorMsg}</p>} */}
     </div>
-    <h1>All product</h1>
+    <h1 className='my-2'>All product</h1>
     {/* <h3>Total Selected Item: {arrayId.length}</h3> */}
-    <p>Note: click on the row to select item not on checkbox</p>
+    {/* <p>Note: click on the row to select item not on checkbox</p> */}
     {/* <Button
     onClick={()=>{
         axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/product/deleteProduct`,{array:arrayId},{headers:{token:accessToken}})

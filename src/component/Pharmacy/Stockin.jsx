@@ -146,6 +146,7 @@ console.log(selectedDate)
      getAllSuppliers()
      getAllProducts()
   }, [flag]);
+  console.log(allProducts,"Hellooooooooo")
   return (
     <div className="">
        <InventoryNavbar/>
@@ -161,9 +162,10 @@ console.log(selectedDate)
                   onChange={(t) => {
                     setDocNo(t.target.value);
                   }}
-                  sx={{ width: 200 }}
+                  sx={{ width:250 }}
                   id="outlined-basic"
                   label="Item code "
+                  disabled
                   variant="outlined"
                 />
                 {/* docno cannot be zero */}
@@ -171,9 +173,10 @@ console.log(selectedDate)
                   type="number"
                   //  value={value}
                   // disablePortal
-                  sx={{ width: 200 }}
+                  sx={{ width: 250 }}
                   id="outlined-basic"
-                  label="Supplier Doc No"
+                  // label="Supplier Doc No"
+                  
                   variant="outlined"
                   {...register("supplierDocNo", {
                     required: true,
@@ -197,21 +200,7 @@ console.log(selectedDate)
                   )}
                 />
 
-                <Autocomplete
-                  id="combo-box-demo"
-                  onChange={(event, newValue) => {
-                    setSelectedProduct(newValue);
-                   console.log(selectedProduct)
-                  }}
-                  getOptionLabel={(product) =>  
-                  product.name
-                   }
-              
-                  options={allProducts}
-                  sx={{ width: 200 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Product " />
-                  )} />
+                
 
                <Autocomplete
                   id="combo-box-demo"
@@ -228,22 +217,7 @@ console.log(selectedDate)
                   )} />
                   
 
-                <Autocomplete
-                  id="combo-box-demo"
-                  onChange={(event, newValue) => {
-                    setProductType(newValue);
-                  
-                  }}
-                
-                  getOptionLabel={(productType) => productType}
-                    //  value={productType}
-                 
-                   options={selectedProduct?selectedProduct.type:[]}
-                    value={selectedProduct?selectedProduct.type:[]}
-                  sx={{ width: 250 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Product Type" />
-                  )} /> 
+
 
            {/* <Autocomplete
               disablePortal
@@ -261,8 +235,40 @@ console.log(selectedDate)
                   
                   
                   </Stack>
-
+                  <Stack direction="row" spacing={2} mt="10px">
+                  <Autocomplete
+                  id="combo-box-demo"
+                  onChange={(event, newValue) => {
+                    setSelectedProduct(newValue);
+                   console.log(selectedProduct)
+                  }}
+                  getOptionLabel={(product) =>`${product.name} - ${product.companyName} - ${product.unit}` }
+              
+                  options={allProducts}
+                  // sx={{ width: 550 }}
+                  fullWidth
+                  renderInput={(params) => (
+                    <TextField {...params} label="Product " />
+                  )} />
+                  </Stack>
               <Stack direction="row" spacing={2} mt="10px">
+
+              <Autocomplete
+                  id="combo-box-demo"
+                  onChange={(event, newValue) => {
+                    setProductType(newValue);
+                  
+                  }}
+                
+                  getOptionLabel={(productType) => productType}
+                    //  value={productType}
+                 
+                   options={selectedProduct?selectedProduct.type:[]}
+                    value={selectedProduct?selectedProduct.type:[]}
+                  sx={{ width: 250 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Product Type" />
+                  )} /> 
                 <Autocomplete
                   id="combo-box-demo"
                   onChange={(evvent, newValue) => {
@@ -290,7 +296,7 @@ console.log(selectedDate)
                 <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-amount"
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                  startAdornment={<InputAdornment position="start">QR</InputAdornment>}
                   label="Amount"
                   name="Price"
                   {...register("price", { required: true, })}
@@ -384,7 +390,7 @@ console.log(selectedDate)
                       <TableCell align="right">Id</TableCell>
                       <TableCell align="right">Suplier No</TableCell>
                       <TableCell align="right">Suplier</TableCell>
-                      <TableCell align="right">Add product</TableCell>
+                      <TableCell align="right"> product</TableCell>
                       <TableCell align="right">company Name</TableCell>
                       <TableCell align="right">Product Type</TableCell>
                       <TableCell align="right">Product Unit</TableCell>
@@ -407,12 +413,12 @@ console.log(selectedDate)
                         <TableCell align="right">{row.companyName}</TableCell>
                         <TableCell align="right">{row.productType}</TableCell>
                         <TableCell align="right">{row.unit}</TableCell>
-                        {/* <TableCell align="right">{parseInt(row.price)}</TableCell> */}
-                        <TableCell align="right">{row.price}</TableCell>
+                        <TableCell align="right">{parseFloat(row.price)}</TableCell>
+                        {/* <TableCell align="right">{row.price}</TableCell> */}
                         <TableCell align="right">{parseInt(row.quantity)}</TableCell>
                         <TableCell align="right">{moment.parseZone(row.expiry).local().format("DD/MM/YY")}</TableCell>
                         {/* <TableCell align="right">{parseInt(row.quantity) * parseInt(row.price)}</TableCell> */}
-                        <TableCell align="right">{parseInt(row.quantity) * (row.price)}</TableCell>
+                        <TableCell align="right">{parseInt(row.quantity) * parseFloat(row.price)}</TableCell>
 
 
 
@@ -454,7 +460,7 @@ console.log(selectedDate)
         <div className='flex justify-center'>
           {/* <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-2 ">Print </button></center> */}
 
-          <center> <button type="submit" className=" text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-3">Grand Total ={sum} </button></center>
+          {/* <center> <button type="submit" className=" text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-3">Grand Total ={sum} </button></center> */}
         </div>
 
       </form>
