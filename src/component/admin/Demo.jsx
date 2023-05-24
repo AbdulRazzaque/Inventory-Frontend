@@ -330,7 +330,7 @@
 //           padding: "5px",
 //         }}
 //       >
-//         <table class="ui celled table">
+//         <table className="ui celled table">
 //   <thead>
 //     <tr>
 //     <th>Sr No</th>

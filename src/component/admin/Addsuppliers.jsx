@@ -59,8 +59,8 @@ const Addsuppliers = () => {
         <section className="bg-gray-50 ">
   <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
   {isValid  &&
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3rounded relative" role="alert">
-      <strong class="font-bold">Add supplierrs successfully!</strong>
+      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3rounded relative" role="alert">
+      <strong className="font-bold">Add supplierrs successfully!</strong>
   
  
     </div>

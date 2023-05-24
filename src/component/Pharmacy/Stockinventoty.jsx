@@ -96,9 +96,9 @@ const Stockinventoty = () => {
           disablePortal
           id="combo-box-demo"
           options={allProductType}
-          getOptionLabel={(e)=>e.name}
+          getOptionLabel={(e)=>`${e.name} - ${e.companyName} - ${e.unit}`}
           onChange={(e,newValue)=>setSelectedProductType(newValue)}
-          sx={{ width: 200 }}
+          sx={{ width: 500 }}
           renderInput={(params) => <TextField {...params} label="Product Name" />}
           
         />
@@ -118,7 +118,7 @@ const Stockinventoty = () => {
         columns={columns}
         pageSize={100}
         rowsPerPageOptions={[10]}
-        checkboxSelection
+        // checkboxSelection
       />
     </div>
 

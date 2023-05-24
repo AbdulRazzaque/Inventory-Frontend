@@ -77,7 +77,7 @@ const Stockoutpdf = () => {
                   <td className="report-footer-cell">
                     <div className="footer-info">
                       <div className={"page-footer"}>
-                        <div class="grid grid-cols-2 gap-96">
+                        <div className="grid grid-cols-2 gap-96">
                           <div>
                             <div className='font-bold text-xl ml-1'>Sign:</div>
                           </div>

@@ -70,6 +70,7 @@ const Stockin = () => {
   const {
     register,
     handleSubmit,
+    reset ,
     formState: { errors },
     setValue
   } = useForm();
@@ -90,7 +91,7 @@ console.log(selectedDate)
       ...stock
 
     }
-
+ 
     grandtotal.push(obj.price * obj.quantity)
     const sum = grandtotal.reduce((a,v) =>  a = a + v , 0 )
     setSum(sum)
@@ -105,7 +106,8 @@ console.log(selectedDate)
     .catch(err=>{
       console.log(err.response)
     })
-    
+
+    setSelectedProduct(selectedProduct.name="",selectedProduct.companyName="",selectedProduct.unit="",)
 
   };
   console.log(allStocks, 'allstokc')
@@ -146,7 +148,7 @@ console.log(selectedDate)
      getAllSuppliers()
      getAllProducts()
   }, [flag]);
-  console.log(allProducts,"Hellooooooooo")
+
   return (
     <div className="">
        <InventoryNavbar/>
@@ -175,7 +177,7 @@ console.log(selectedDate)
                   // disablePortal
                   sx={{ width: 250 }}
                   id="outlined-basic"
-                  // label="Supplier Doc No"
+                  label="Supplier Doc No"
                   
                   variant="outlined"
                   {...register("supplierDocNo", {
@@ -193,7 +195,7 @@ console.log(selectedDate)
                   }}
                   getOptionLabel={(supplier) =>supplier.name}
                   options={allSuppliers}
-                  sx={{ width: 200 }}
+                  sx={{ width: 700 }}
                   //  {...register("suplier", { required: true, maxLength: 20 })}
                   renderInput={(params) => (
                     <TextField {...params} label="Supplier" />
@@ -202,23 +204,10 @@ console.log(selectedDate)
 
                 
 
-               <Autocomplete
-                  id="combo-box-demo"
-                  onChange={(event, newValue) => {
-                    setSelectedProduct(newValue);
-
-                  }}
-                  getOptionLabel={(e) => e.companyName}
-                  value={selectedProduct?selectedProduct :{companyName:""}}
-                  options={allProducts}
-                  sx={{ width: 250 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="company Name " />
-                  )} />
                   
 
 
-
+ 
            {/* <Autocomplete
               disablePortal
               id="combo-box-demo"
@@ -242,7 +231,7 @@ console.log(selectedDate)
                     setSelectedProduct(newValue);
                    console.log(selectedProduct)
                   }}
-                  getOptionLabel={(product) =>`${product.name} - ${product.companyName} - ${product.unit}` }
+                  getOptionLabel={(product) =>`${product.name}  ${product.companyName}  ${product.unit}` }
               
                   options={allProducts}
                   // sx={{ width: 550 }}
@@ -253,13 +242,30 @@ console.log(selectedDate)
                   </Stack>
               <Stack direction="row" spacing={2} mt="10px">
 
+
+                      
+               <Autocomplete
+                  id="combo-box-demo"
+                  onChange={(event, newValue) => {
+                    setSelectedProduct(newValue);
+
+                  }}
+                  disabled
+                  getOptionLabel={(e) => e.companyName}
+                  value={selectedProduct?selectedProduct :{companyName:""}}
+                  options={allProducts}
+                  sx={{ width: 250 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="company Name " />
+                  )} />
+
               <Autocomplete
                   id="combo-box-demo"
                   onChange={(event, newValue) => {
                     setProductType(newValue);
                   
                   }}
-                
+                  disabled
                   getOptionLabel={(productType) => productType}
                     //  value={productType}
                  
@@ -274,6 +280,7 @@ console.log(selectedDate)
                   onChange={(evvent, newValue) => {
                     setUnit(newValue);
                   }}
+                  disabled
                   options={selectedProduct?selectedProduct.unit:[]}
                   value={selectedProduct?selectedProduct.unit:[]}
                   getOptionLabel={(unit) => unit}

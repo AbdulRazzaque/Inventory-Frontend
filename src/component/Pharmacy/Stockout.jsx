@@ -92,7 +92,7 @@ console.log("selectedUint",selectedUnit)
         setAllLocations(res.data.result);
       });
   }, [flag]);
-
+// console.log(allStocks,"Heloooo")
   // console.log(selectedQuantity,'selectedQuantity');
 
   const onSubmit = (data) => {
@@ -104,8 +104,8 @@ console.log("selectedUint",selectedUnit)
       locationId: selectedLocation._id,
       trainerName: selectedTrainerName,
       doctorName: selectedDoctorName,
-      unit: selectedUnit,
-      companyName:selectedCompany,
+      unit: selectedProduct?selectedProduct.unit[0]:null,
+      companyName:selectedProduct?selectedProduct.companyName[0]:null,
       stockId: selectedStock?selectedStock._id:null,
       stock: selectedStock?selectedStock:null,
       quantity: data.quantity,
@@ -150,7 +150,7 @@ console.log(updatedArrayOfObjects);
     
       }
     
-
+    console.log(allStocks,"Hellooooooooo")  
    console.log("stockout", stockOutData);
   return (
     <div className="">
@@ -158,7 +158,7 @@ console.log(updatedArrayOfObjects);
       <h1 className="text-center my-8 font-bold text-2xl">Stock Out</h1>
      <center> <p><b>  Note: if stock is currently present in the inventory please select stock from the dropdown</b></p></center>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Container>
+      <div className="mx-4">
           <Stack direction="row" justifyContent="center" spacing={2}>
             <TextField
               {...register("docNo", { required: true })}
@@ -179,7 +179,7 @@ console.log(updatedArrayOfObjects);
               options={allLocations}
               getOptionLabel={(e) => e.name}
               onChange={(ev, val) => setSelectedLocation(val)}
-              sx={{ width: 200 }}
+              sx={{ width: 300 }}
               renderInput={(params) => (
                 <TextField {...params} label="Location" />)} />
 
@@ -188,7 +188,7 @@ console.log(updatedArrayOfObjects);
               id="combo-box-demo"
               options={selectedLocation ? selectedLocation.trainerName :[]}
               onChange={(e, val) => setSelectedTrainerName(val)}
-              sx={{ width: 200 }}
+              sx={{ width: 300 }}
               renderInput={(params) => (
                 <TextField {...params} label="Trainer" />
               )}/>
@@ -220,7 +220,7 @@ console.log(updatedArrayOfObjects);
               direction="row"
               justifyContent="center"
               spacing={2}
-              marginTop="5px"
+              marginTop="8px"
             >
               {/* <section>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -243,14 +243,14 @@ console.log(updatedArrayOfObjects);
               id="combo-box-demo"
               value={item.stock ? item.stock : { name: "" }}
               options={allStocks}
-              getOptionLabel={(e) => e.name}
+              getOptionLabel={(e) => `${e.name} ${e.product.companyName}`}
               onChange={(ev, val) => {
                 let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
                 singleItem.stockId = val._id
                 singleItem.stock = val
                 setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
               }}
-              sx={{ width: 200 }}
+              sx={{ width: 600 }}
               renderInput={(params) => (
                 <TextField {...params} label="Stock Name" />
               )}
@@ -268,17 +268,18 @@ console.log(updatedArrayOfObjects);
                   singleItem.product = val
                   setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
                 }}
-                getOptionLabel={(e) => e.name}
+                getOptionLabel={(e) => `${e.name} `}
                 sx={{ width: 200 }}
                 renderInput={(params) => (
                   <TextField {...params} label=" Products" />
                 )}
               />
               <Autocomplete
+              disabled
                 disablePortal
                 id="combo-box-demo"
                 getOptionLabel={(e) => e.toString()}
-                value={item.unit}
+                value={item.product ? item.product.unit : []}
                 options={item.product ? item.product.unit : []}
                 onChange={(e, val) => {
                   let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
@@ -291,11 +292,12 @@ console.log(updatedArrayOfObjects);
                 )}
               />
 
-<Autocomplete
+               <Autocomplete
+                disabled
                 disablePortal
                 id="combo-box-demo"
                 getOptionLabel={(e) => e.toString()}
-                value={item.companyName}
+                value={item.product ? item.product.companyName : []}
                 options={item.product ? item.product.companyName : []}
                 onChange={(e, val) => {
                   let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
@@ -330,8 +332,8 @@ console.log(updatedArrayOfObjects);
             direction="row"
             justifyContent="center"
             spacing={2}
-            marginTop="5px"
-          >
+            marginTop="10px"
+          > 
             {/* <section>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
@@ -350,7 +352,9 @@ console.log(updatedArrayOfObjects);
               disablePortal
               id="combo-box-demo"
               options={allStocks}
-              getOptionLabel={(e) => e.name}
+             
+              getOptionLabel={(e) => `${e.name} ${e.product?.companyName?.[0] || ''} ${e.product?.unit?.[0] || ''} ` }
+              isSearchable
               value={selectedStock?selectedStock:{name:""}}
               onChange={(ev, val) => {
                 let sp = allProducts.filter((item) => item.name === val.name);
@@ -360,7 +364,7 @@ console.log(updatedArrayOfObjects);
 
                 setSelectedStock(val);
               }}
-              sx={{ width: 200 }}
+              sx={{ width: 600 }}
               renderInput={(params) => (
                 <TextField {...params} label="Stock Name" />
               )}
@@ -373,7 +377,7 @@ console.log(updatedArrayOfObjects);
               value={selectedProduct ? selectedProduct : { name: "" }}
               options={allProducts}
               onChange={(e, val) => setSelectedProduct(val)}
-              getOptionLabel={(e) => e.name}
+              getOptionLabel={(e) => `${e.name} `}
               sx={{ width: 200 }}
               renderInput={(params) => (
                 <TextField {...params} label=" Products" />
@@ -381,9 +385,10 @@ console.log(updatedArrayOfObjects);
             />
             <Autocomplete
               disablePortal
+              disabled
               id="combo-box-demo"
               getOptionLabel={(e) => e.toString()}
-              value={selectedUnit ? selectedUnit : ""}
+              value={selectedProduct ? selectedProduct.unit : []}
               options={selectedProduct ? selectedProduct.unit : []}
               onChange={(e, val) => setSelectedUnit(val)}
               sx={{ width: 200 }}
@@ -394,9 +399,10 @@ console.log(updatedArrayOfObjects);
 
             <Autocomplete
               disablePortal
+              disabled
               id="combo-box-demo"
               getOptionLabel={(e) => e.toString()}
-              value={selectedCompany ? selectedCompany : ""}
+              value={selectedProduct ? selectedProduct.companyName : []}
               options={selectedProduct ? selectedProduct.companyName : []}
               onChange={(e, val) => setSelectedCompany(val)}
               sx={{ width: 200 }}
@@ -457,7 +463,7 @@ console.log(updatedArrayOfObjects);
               </Button>
             </center>
           </div>
-        </Container>
+          </div>
       </form>
 
       <div
@@ -468,7 +474,7 @@ console.log(updatedArrayOfObjects);
           padding: "5px",
         }}
       >
-        <table class="ui celled table">
+        <table className="ui celled table">
   <thead>
     <tr>
     <th>Sr No</th>
@@ -604,7 +610,7 @@ const columns = [
   },
   {field:"date",headerName:"Date",
   valueGetter:(param)=>moment.parseZone(param.row.date).local().format("DD/MM/YY")
-  ,width:120},
+  ,width:120}, 
   {
     field: "unit",
     headerName: "unit",
