@@ -243,14 +243,14 @@ console.log(updatedArrayOfObjects);
               id="combo-box-demo"
               value={item.stock ? item.stock : { name: "" }}
               options={allStocks}
-              getOptionLabel={(e) => `${e.name} `}
+              getOptionLabel={(e) => `${e.name} ${e.product?.companyName?.[0] || ''} ${e.product?.unit?.[0] || ''}  `}
               onChange={(ev, val) => {
                 let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
                 singleItem.stockId = val._id
                 singleItem.stock = val
                 setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
               }}
-              sx={{ width: 600 }}
+              sx={{ width: 400 }}
               renderInput={(params) => (
                 <TextField {...params} label="Stock Name" />
               )}
@@ -268,8 +268,8 @@ console.log(updatedArrayOfObjects);
                   singleItem.product = val
                   setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
                 }}
-                getOptionLabel={(e) => `${e.name} `}
-                sx={{ width: 200 }}
+                getOptionLabel={(e) => `${e.name}  `}
+                sx={{ width: 350 }}
                 renderInput={(params) => (
                   <TextField {...params} label=" Products" />
                 )}
@@ -364,7 +364,7 @@ console.log(updatedArrayOfObjects);
 
                 setSelectedStock(val);
               }}
-              sx={{ width: 600 }}
+              sx={{ width: 400 }}
               renderInput={(params) => (
                 <TextField {...params} label="Stock Name" />
               )}
@@ -379,7 +379,7 @@ console.log(updatedArrayOfObjects);
               onChange={(e, val) => setSelectedProduct(val)}
               getOptionLabel={(e) => `${e.name} ${e.companyName || ''} ${e.unit || ''} `}
               // getOptionLabel={(e) => `${e.name} `}
-              sx={{ width: 200 }}
+              sx={{ width: 350 }}
               renderInput={(params) => (
                 <TextField {...params} label=" Products" />
               )}
