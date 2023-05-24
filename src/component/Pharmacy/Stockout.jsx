@@ -243,7 +243,7 @@ console.log(updatedArrayOfObjects);
               id="combo-box-demo"
               value={item.stock ? item.stock : { name: "" }}
               options={allStocks}
-              getOptionLabel={(e) => `${e.name} ${e.product.companyName}`}
+              getOptionLabel={(e) => `${e.name} `}
               onChange={(ev, val) => {
                 let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
                 singleItem.stockId = val._id
@@ -377,7 +377,8 @@ console.log(updatedArrayOfObjects);
               value={selectedProduct ? selectedProduct : { name: "" }}
               options={allProducts}
               onChange={(e, val) => setSelectedProduct(val)}
-              getOptionLabel={(e) => `${e.name} `}
+              getOptionLabel={(e) => `${e.name} ${e.companyName || ''} ${e.unit || ''} `}
+              // getOptionLabel={(e) => `${e.name} `}
               sx={{ width: 200 }}
               renderInput={(params) => (
                 <TextField {...params} label=" Products" />
