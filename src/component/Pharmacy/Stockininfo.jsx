@@ -12,12 +12,29 @@ import axios from 'axios';
 const Stockininfo = () => {
   const [data, setData] = useState([]);
   const [update, setUpdate] = useState([]);
+  const [allProducts,setAllProducts] = React.useState([])
   const [showDialog, setShowDialog] = useState(false);
   const [alert, setAlert] = useState(false);
+  // const [selectedSupplier,setSelectedSupplier] = React.useState()
+  const [allSuppliers,setAllSuppliers] = React.useState([])
+
   const accessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw";
   const params = useParams()
   console.log(params)
+  var obj = {
+    id:update.id,
+    quantity:update.quantity,
+    productName:update.name,
+    originalQuantity:update.prevQuantity,
+    // docNo:params.docNo,
+    // supplierId:allSuppliers._id,
+    // productId:allProducts._id,
+    // supplierId:selectedSupplier._id,
+
+    ...update
+  }
+
   const alldata =()=>{
     axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getStockInByDocNo`,{docNo:params.docNo},{headers:{token:accessToken}})
     .then(res=>{
@@ -29,26 +46,53 @@ const Stockininfo = () => {
   }
   React.useEffect(()=>{
   alldata()
+  getAllSuppliers()
+  getAllProducts()
   },[])
 
-  
+  const getAllSuppliers = ()=>{
+    try {
+      axios.get(`${process.env.REACT_APP_DEVELOPMENT}/api/supplier/getAllSuppliers`,{headers:{token:`${accessToken}`}})
+      .then(res=>{
+        const result= res.data.result
+        // setAllSuppliers(result.map(supplier => supplier._id));
+        result.map(supplier => setAllSuppliers(supplier))
+      })
+      
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+  // console.log(allSuppliers._id,"All Suppliername")
   const updateData = (e) => {
     setUpdate({ ...update, [e.target.name]: e.target.value });
     console.log(update);
   };
+  const getAllProducts = ()=>{
+    axios.get(`${process.env.REACT_APP_DEVELOPMENT}/api/product/getAllProducts`,{headers:{token:`${accessToken}`}})
+    .then(res=>{
+     const result=res.data.result
+      // setAllProducts(result.map(product => product._id));
+      result.map(product=>setAllProducts(product))
+    })
+  }
+  // console.log(allProducts.,"All Product")
   const updateRow = async () => {
+
 
    
     try {
       console.log(update);
       await axios
         .put(
-          `${process.env.REACT_APP_DEVELOPMENT}/api/stock/updatestockIn/${update.name}`,
-          update,
+          `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInUpdateQuantity/${obj.id}`,
+         obj,
           { headers: { token: `${accessToken}` } }
         )
         .then((response) => {
           console.log("Response", response);
+          // console.log(obj)
           // apiRef.current.updateRows([update]);
         });
 
@@ -56,26 +100,43 @@ const Stockininfo = () => {
     } catch (error) {
       console.log(error);
     }
+    // console.log(obj)
+   
     alldata();
   };
 
-  const deleteRow = async (update) => {
+  const deleteRow = async (obj) => {
+    // var obj = {
+    //   id:update.id,
+    //   productName:update.name,
+    //   originalQuantity:update.prevQuantity,
+    //   // docNo:params.docNo,
+    //   // supplierId:allSuppliers._id,
+    //   // productId:allProducts._id,
+    //   // supplierId:selectedSupplier._id,
+
+    //   ...update
+    // }
     try {
+      console.log("Delete function is runnig")
       await axios
         .delete(
-          `${process.env.REACT_APP_DEVELOPMENT}/api/stock/deleteStockIn/${update._id}`,
-          update,
+        //  console.log(obj)
+          `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInDelete/${obj.id}`,
+          obj,
+        
           // await  axios.delete(`${process.env.REACT_APP_DEVELOPMENT}/api/deletelab/`,
           { headers: { token: `${accessToken}` } }
         )
         .then((response) => {
           console.log("Response", response);
-
+         
           alldata();
         });
       setAlert(false);
+
     } catch (error) {
-      console.log(error);
+      console.log(error,"This error Delete function");
     }
   };
   const columns = [
@@ -116,9 +177,6 @@ const Stockininfo = () => {
       ),
     },
   ];
-
-  // console.log(update,"Hello ooooooooooooo")
-  // console.log(update.name,"Hello ooooooooooooo")
   return (
     <div className=''>
         <InventoryNavbar/>
@@ -133,7 +191,7 @@ const Stockininfo = () => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button variant="contained" onClick={() => deleteRow(update)}>
+              <Button variant="contained" onClick={() => deleteRow(obj)}>
                 Yes
               </Button>
               <Button
@@ -161,7 +219,7 @@ const Stockininfo = () => {
                     variant="outlined"
                     id="outlined-basic"
                     label="Product Name"
-                    name="name"
+                    name="productName"
                     required
                     disabled
                     value={update.name}
@@ -331,6 +389,7 @@ const Stockininfo = () => {
     </div> */}
           <Box sx={{ height: 900, width: "100%" }}>
         <DataGrid
+          // onRowClick={(item) => setUpdate(item.row)}
           onRowClick={(item) => setUpdate(item.row)}
           rows={data}
           columns={columns}

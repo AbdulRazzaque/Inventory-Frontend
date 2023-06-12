@@ -36,7 +36,10 @@ const Stockoutdetails = () => {
         {field:"createdAt",headerName:"Date",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:250},
       // { title: 'Date', field: 'createdAt', width:200 },
       { title: 'Products Name', field: 'name',width:200  },
-      { title: 'Products Unit', field: 'unit',width:200  },
+      { title: 'Products Unit', field: 'unit',width:300  },
+      { title: 'Location Name', field: 'locationName',width:200  },
+      { title: 'trainer Name', field: 'trainerName',width:200  },
+      { title: 'doctorName', field: 'doctorName',width:200  },
       { title: 'Qauntity', field: 'quantity',width:200 },
      
       // {title: 'total',field: 'birthCity',lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },},

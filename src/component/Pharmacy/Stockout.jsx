@@ -17,7 +17,7 @@ import InventoryNavbar from "../Navbar/InventoryNavbar";
 import axios from "axios";
 import { useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom"
-
+import './pharmacy.css'
 const Stockout = (props) => {
   const accessToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw";
@@ -158,13 +158,13 @@ console.log(updatedArrayOfObjects);
       <h1 className="text-center my-8 font-bold text-2xl">Stock Out</h1>
      <center> <p><b>  Note: if stock is currently present in the inventory please select stock from the dropdown</b></p></center>
       <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mx-4">
+      {/* <div className="mx-4"> */}
           <Stack direction="row" justifyContent="center" spacing={2}>
             <TextField
               {...register("docNo", { required: true })}
               disabled
               type="number"
-              sx={{ width: 200 }}
+              sx={{ width: 100 }}
               id="outlined-basic"
               // label="Doc Number"
               variant="outlined"
@@ -177,25 +177,29 @@ console.log(updatedArrayOfObjects);
               disablePortal
               id="combo-box-demo"
               options={allLocations}
-              getOptionLabel={(e) => e.name}
+              getOptionLabel={(e) => `${ e.name}-${e.trainerName}-${e.doctorName}`}
               onChange={(ev, val) => setSelectedLocation(val)}
-              sx={{ width: 300 }}
+              sx={{ width: 500 }}
               renderInput={(params) => (
                 <TextField {...params} label="Location" />)} />
 
             <Autocomplete
               disablePortal
               id="combo-box-demo"
+              // value={selectedLocation ? selectedLocation.trainerName :[]}
               options={selectedLocation ? selectedLocation.trainerName :[]}
               onChange={(e, val) => setSelectedTrainerName(val)}
               sx={{ width: 300 }}
+              // disabled
               renderInput={(params) => (
                 <TextField {...params} label="Trainer" />
               )}/>
             <Autocomplete
               disablePortal
               id="combo-box-demo"
+              // value={selectedLocation ? selectedLocation.doctorName : []}
               options={selectedLocation ? selectedLocation.doctorName : []}
+              // disabled
               onChange={(e, val) => setSelectedDoctorName(val)}
               sx={{ width: 200 }}
               renderInput={(params) => <TextField {...params} label="Doctor" />}
@@ -250,13 +254,14 @@ console.log(updatedArrayOfObjects);
                 singleItem.stock = val
                 setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
               }}
-              sx={{ width: 400 }}
+              sx={{ width: 800 }}
               renderInput={(params) => (
                 <TextField {...params} label="Stock Name" />
               )}
             />
   
               <Autocomplete
+              className="hide"
                 disablePortal
                 id="combo-box-demo"
                 value={item.product ? item.product : { name: "" }}
@@ -352,7 +357,6 @@ console.log(updatedArrayOfObjects);
               disablePortal
               id="combo-box-demo"
               options={allStocks}
-             
               getOptionLabel={(e) => `${e.name} ${e.product?.companyName?.[0] || ''} ${e.product?.unit?.[0] || ''} ` }
               isSearchable
               value={selectedStock?selectedStock:{name:""}}
@@ -364,7 +368,7 @@ console.log(updatedArrayOfObjects);
 
                 setSelectedStock(val);
               }}
-              sx={{ width: 400 }}
+              sx={{ width: 800 }}
               renderInput={(params) => (
                 <TextField {...params} label="Stock Name" />
               )}
@@ -372,6 +376,7 @@ console.log(updatedArrayOfObjects);
 
 
             <Autocomplete
+            className="hide"
               disablePortal
               id="combo-box-demo"
               value={selectedProduct ? selectedProduct : { name: "" }}
@@ -464,7 +469,7 @@ console.log(updatedArrayOfObjects);
               </Button>
             </center>
           </div>
-          </div>
+          {/* </div> */}
       </form>
 
       <div

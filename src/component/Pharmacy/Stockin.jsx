@@ -200,29 +200,7 @@ console.log(selectedDate)
                   renderInput={(params) => (
                     <TextField {...params} label="Supplier" />
                   )}
-                />
-
-                
-
-                  
-
-
- 
-           {/* <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options={allProducts}
-              onChange={(e, val) => setSelectedProduct(val)}
-              getOptionLabel={(e) => e.type}
-              value={(e) => e.type}
-              sx={{ width: 200 }}
-              renderInput={(params) => (
-                <TextField {...params} label="Select Products" />
-              )}
-            /> */}
-                  
-                  
-                  
+                />                  
                   </Stack>
                   <Stack direction="row" spacing={2} mt="10px">
                   <Autocomplete

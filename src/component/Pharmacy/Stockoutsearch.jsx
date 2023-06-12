@@ -57,6 +57,7 @@ const Stockoutsearch = () => {
 				<th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Sno</th>
 				<th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Document Number</th>
 				<th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Date</th>
+				<th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Trainer Name</th>
 
 			</tr>
 		</thead>
@@ -68,6 +69,7 @@ const Stockoutsearch = () => {
 				<tr key={index} className="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
 				<td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">SNO</span>{index+1}</td>
 				<Link to={`/stockoutdetails/${item._id.docNo}`}>	<td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Document Number</span>{item._id.docNo}</td></Link>	
+				<td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">User Name</span>{item.trainerName[0]}</td>
 				<td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">User Name</span>{moment.parseZone(item.createdAt[0]).local().format("DD/MM/YY")}</td>
 			</tr>
 			// )

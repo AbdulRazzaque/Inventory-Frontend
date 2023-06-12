@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import AdminNavbar from '../Navbar/AdminNavbar'
 import logo from '../../images/inventory.jpg'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form' 
 import axios from 'axios'
 import  { useEffect } from 'react'
 import {Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField} from '@mui/material'
@@ -30,11 +30,6 @@ const Addproducts = () => {
             .then(response=>{
             console.log(response, 'res')
             setFlag(!flag)
-            // setIsValid(true);
-            // setTimeout(() => {
-            //     setIsValid(false);
-            // }, 1000);
-
               event.target.reset();
           }).catch(error => {
                 setIsValid(error.response.data.message);
@@ -143,10 +138,7 @@ getAlldata()
   
 }
 const updateRow = async() =>{
-   
 
- 
-  
 try {
    
     console.log(update)
@@ -274,20 +266,6 @@ console.log(error)
   <TextField className="my-2" sx={{ width: 500 }}  variant="outlined" id="outlined-basic" label=" Company Name"  required name='companyName' value={update.companyName} onChange={updateData} />
   <TextField className="my-2" sx={{ width: 500 }}  variant="outlined" id="outlined-basic" label=" Company Name"  required name='type' value={update.type} onChange={updateData} />
   <TextField className="my-2" sx={{ width: 500 }} variant="outlined" id="outlined-basic" label="Unit" name='unit'  required value={update.unit} onChange={updateData} />
-
-
- 
-  
- 
-    
-
-
-    
-               
-
-         
-  
-
 </Grid>
 </Grid>
 
