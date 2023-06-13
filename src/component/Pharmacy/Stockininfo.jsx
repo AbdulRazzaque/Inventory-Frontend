@@ -22,18 +22,7 @@ const Stockininfo = () => {
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw";
   const params = useParams()
   console.log(params)
-  var obj = {
-    id:update.id,
-    quantity:update.quantity,
-    productName:update.name,
-    originalQuantity:update.prevQuantity,
-    // docNo:params.docNo,
-    // supplierId:allSuppliers._id,
-    // productId:allProducts._id,
-    // supplierId:selectedSupplier._id,
 
-    ...update
-  }
 
   const alldata =()=>{
     axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getStockInByDocNo`,{docNo:params.docNo},{headers:{token:accessToken}})
@@ -44,89 +33,140 @@ const Stockininfo = () => {
       setData(arr)
     })
   }
-  React.useEffect(()=>{
-  alldata()
-  getAllSuppliers()
-  getAllProducts()
-  },[])
 
-  const getAllSuppliers = ()=>{
-    try {
-      axios.get(`${process.env.REACT_APP_DEVELOPMENT}/api/supplier/getAllSuppliers`,{headers:{token:`${accessToken}`}})
-      .then(res=>{
-        const result= res.data.result
-        // setAllSuppliers(result.map(supplier => supplier._id));
-        result.map(supplier => setAllSuppliers(supplier))
-      })
-      
-    } catch (error) {
-      console.log(error)
-    }
 
-  }
   // console.log(allSuppliers._id,"All Suppliername")
+
+
+//---------------------------------------------------- update api call here------------------------------------------------------------
   const updateData = (e) => {
     setUpdate({ ...update, [e.target.name]: e.target.value });
     console.log(update);
   };
-  const getAllProducts = ()=>{
-    axios.get(`${process.env.REACT_APP_DEVELOPMENT}/api/product/getAllProducts`,{headers:{token:`${accessToken}`}})
-    .then(res=>{
-     const result=res.data.result
-      // setAllProducts(result.map(product => product._id));
-      result.map(product=>setAllProducts(product))
-    })
-  }
-  // console.log(allProducts.,"All Product")
-  const updateRow = async () => {
 
+  // const updateRow = async () => {
+  //   try {
+  //     console.log(update);
+  //     const updatedObj = {
+  //       id: update.id,
+  //       quantity: update.quantity,
+  //       productName: update.name,
+  //       originalQuantity: update.prevQuantity,
+  //       ...update
+  //     };
+  
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInUpdateQuantity/${updatedObj.id}`,
+  //       updatedObj,
+  //       { headers: { token: accessToken } }
+  //     );
+  
+  //     console.log("Response", response);
+      
+  
+  //     setShowDialog(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  
+
+  // };
+
+  // const updateRow = async () => {
+  //   try {
+  //     console.log(update);
+  //     await axios
+  //       .post(
+  //         `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInUpdateQuantity/${obj.id}`,
+  //         obj,
+  //         { headers: { token: accessToken } }
+  //       )
+  //       .then((response) => {
+  //         console.log("Response", response);
+  //         // apiRef.current.updateRows([update]);
+  //       });
+  
+  //     setShowDialog(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  
+  //   alldata();
+  // };
+  // const updateRow = async () => {
+  //   try {
+  //     console.log(update);
+  //     await axios
+  //       .post(
+  //         `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInUpdateQuantity/${obj.id}`,
+  //        obj,
+  //         { headers: { token: `${accessToken}` } }
+  //       )
+  //       .then((response) => {
+  //         console.log("Response", response);
+  //         // console.log(obj)
+  //         // apiRef.current.updateRows([update]);
+  //       });
+       
+  //     setShowDialog(false);
+  //     alldata()
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
 
    
-    try {
-      console.log(update);
-      await axios
-        .put(
-          `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInUpdateQuantity/${obj.id}`,
-         obj,
-          { headers: { token: `${accessToken}` } }
-        )
-        .then((response) => {
-          console.log("Response", response);
-          // console.log(obj)
-          // apiRef.current.updateRows([update]);
-        });
 
+  // };
+  const updateRow = async () => {
+    try {
+      const updatedData = {
+        id: update._id,
+        quantity: update.quantity,
+        productName: update.name,
+        originalQuantity: update.prevQuantity,
+        // Add any other properties you want to update
+      };
+  
+      console.log(updatedData);
+  
+      await axios.post(
+        `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInUpdateQuantity/${update._id}`,
+        updatedData,
+        { headers: { token: accessToken } }
+      );
+  
+      console.log("Update successful");
+  
       setShowDialog(false);
+      alldata();
     } catch (error) {
       console.log(error);
     }
-    // console.log(obj)
-   
-    alldata();
   };
+//---------------------------------------------------- Delete api call here------------------------------------------------------------
 
-  const deleteRow = async (obj) => {
-    // var obj = {
-    //   id:update.id,
-    //   productName:update.name,
-    //   originalQuantity:update.prevQuantity,
-    //   // docNo:params.docNo,
-    //   // supplierId:allSuppliers._id,
-    //   // productId:allProducts._id,
-    //   // supplierId:selectedSupplier._id,
-
-    //   ...update
-    // }
+  const deleteRow = async (updatedData) => {
+    console.log(updatedData,"Herer i am calling obj")
     try {
-      console.log("Delete function is runnig")
+      const updatedData = {
+        id: update._id,
+        quantity: update.quantity,
+        productName: update.name,
+        originalQuantity: update.prevQuantity,
+        // Add any other properties you want to update
+      };
       await axios
         .delete(
         //  console.log(obj)
-          `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInDelete/${obj.id}`,
-          obj,
+          `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInDelete/${update._id}`,
+          // obj,
         
-          // await  axios.delete(`${process.env.REACT_APP_DEVELOPMENT}/api/deletelab/`,
-          { headers: { token: `${accessToken}` } }
+          // // await  axios.delete(`${process.env.REACT_APP_DEVELOPMENT}/api/deletelab/`,
+          // { headers: { token: `${accessToken}` } }
+          {
+            data: updatedData, // Pass the request body using the 'data' property
+            headers: { token: accessToken }, // Include the token in the headers
+          }
         )
         .then((response) => {
           console.log("Response", response);
@@ -139,6 +179,10 @@ const Stockininfo = () => {
       console.log(error,"This error Delete function");
     }
   };
+  React.useEffect(()=>{
+    alldata()
+  
+    },[])
   const columns = [
     { field: 'id', headerName: 'SrNO', width: 70 },
     { field: 'name', headerName: 'Products name', width: 130 },
@@ -191,7 +235,7 @@ const Stockininfo = () => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button variant="contained" onClick={() => deleteRow(obj)}>
+              <Button variant="contained" onClick={() => deleteRow(update)}>
                 Yes
               </Button>
               <Button

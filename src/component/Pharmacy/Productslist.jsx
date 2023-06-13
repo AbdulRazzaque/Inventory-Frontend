@@ -34,7 +34,7 @@ const Productslist = (props) => {
     })
     
   },[])
-console.log(data,"i am data 2")
+console.log(data,"i am data ")
   useEffect(()=>{
     const calculatePageSizeOptions = () => {
       // Replace this logic with your own dynamic calculation
@@ -168,7 +168,7 @@ console.log(data,"i am data 2")
         pageSizeOptions: pageSizeOptions,
         actionsColumnIndex:-1
       }}
-      onChangeRowsPerPage={handleChangePageSize}
+      onRowsPerPageChange={handleChangePageSize}
     />
             </ThemeProvider>
   </div>
