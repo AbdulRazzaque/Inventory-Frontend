@@ -1,5 +1,5 @@
 import { Autocomplete, Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack, TextField } from '@mui/material'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import InventoryNavbar from '../Navbar/InventoryNavbar';
 import { useParams } from 'react-router-dom';
@@ -15,7 +15,6 @@ const Stockininfo = () => {
   const [allProducts,setAllProducts] = React.useState([])
   const [showDialog, setShowDialog] = useState(false);
   const [alert, setAlert] = useState(false);
-  // const [selectedSupplier,setSelectedSupplier] = React.useState()
   const [allSuppliers,setAllSuppliers] = React.useState([])
 
   const accessToken =
@@ -34,115 +33,41 @@ const Stockininfo = () => {
     })
   }
 
-
-  // console.log(allSuppliers._id,"All Suppliername")
-
-
 //---------------------------------------------------- update api call here------------------------------------------------------------
-  const updateData = (e) => {
-    setUpdate({ ...update, [e.target.name]: e.target.value });
-    console.log(update);
-  };
 
-  // const updateRow = async () => {
-  //   try {
-  //     console.log(update);
-  //     const updatedObj = {
-  //       id: update.id,
-  //       quantity: update.quantity,
-  //       productName: update.name,
-  //       originalQuantity: update.prevQuantity,
-  //       ...update
-  //     };
+const updateData = (e) => {
+  setUpdate({ ...update, [e.target.name]: e.target.value,  });
+  console.log(update);
+};
+var updatedData;
+const updateRow = async () => {
+  try {
   
-  //     const response = await axios.post(
-  //       `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInUpdateQuantity/${updatedObj.id}`,
-  //       updatedObj,
-  //       { headers: { token: accessToken } }
-  //     );
-  
-  //     console.log("Response", response);
+     updatedData = {
+      id: update._id,
+      quantity: update.quantity,
+      productName: update.name,
+      originalQuantity:  update.quantity,
       
-  
-  //     setShowDialog(false);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  
+      // Add any other properties you want to update
+    };
 
-  // };
+    await axios.post(
+      `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInUpdateQuantity/${update._id}`,
+      updatedData,
+      { headers: { token: accessToken } }
+    );
 
-  // const updateRow = async () => {
-  //   try {
-  //     console.log(update);
-  //     await axios
-  //       .post(
-  //         `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInUpdateQuantity/${obj.id}`,
-  //         obj,
-  //         { headers: { token: accessToken } }
-  //       )
-  //       .then((response) => {
-  //         console.log("Response", response);
-  //         // apiRef.current.updateRows([update]);
-  //       });
-  
-  //     setShowDialog(false);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  
-  //   alldata();
-  // };
-  // const updateRow = async () => {
-  //   try {
-  //     console.log(update);
-  //     await axios
-  //       .post(
-  //         `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInUpdateQuantity/${obj.id}`,
-  //        obj,
-  //         { headers: { token: `${accessToken}` } }
-  //       )
-  //       .then((response) => {
-  //         console.log("Response", response);
-  //         // console.log(obj)
-  //         // apiRef.current.updateRows([update]);
-  //       });
-       
-  //     setShowDialog(false);
-  //     alldata()
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
+    console.log("Update successful");
 
-   
-
-  // };
-  const updateRow = async () => {
-    try {
-      const updatedData = {
-        id: update._id,
-        quantity: update.quantity,
-        productName: update.name,
-        originalQuantity: update.prevQuantity,
-        // Add any other properties you want to update
-      };
-  
-      console.log(updatedData);
-  
-      await axios.post(
-        `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockInUpdateQuantity/${update._id}`,
-        updatedData,
-        { headers: { token: accessToken } }
-      );
-  
-      console.log("Update successful");
-  
-      setShowDialog(false);
-      alldata();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    setShowDialog(false);
+    alldata();
+  } catch (error) {
+    console.log(error);
+  }
+};
+      
+  // console.log(updatedData.originalQuantity,"This is orignal Quantity")
 //---------------------------------------------------- Delete api call here------------------------------------------------------------
 
   const deleteRow = async (updatedData) => {
@@ -152,7 +77,8 @@ const Stockininfo = () => {
         id: update._id,
         quantity: update.quantity,
         productName: update.name,
-        originalQuantity: update.prevQuantity,
+        originalQuantity: update.quantity,
+       
         // Add any other properties you want to update
       };
       await axios
@@ -170,26 +96,27 @@ const Stockininfo = () => {
         )
         .then((response) => {
           console.log("Response", response);
-         
           alldata();
+        
         });
       setAlert(false);
-
+      
     } catch (error) {
       console.log(error,"This error Delete function");
     }
   };
+
   React.useEffect(()=>{
     alldata()
   
     },[])
   const columns = [
     { field: 'id', headerName: 'SrNO', width: 70 },
-    { field: 'name', headerName: 'Products name', width: 130 },
+    { field: 'name', headerName: 'Products name', width: 300 },
     // { field: 'supplier', headerName: 'supplier Name', width: 130 },
-    { field: 'productType', headerName: 'Products type', width: 130 },
-    { field: 'companyName', headerName: 'company Name', width: 130 },
-    {field: 'unit',headerName: 'unit',type: 'number',width: 90,},
+    { field: 'productType', headerName: 'Products type', width: 150 },
+    { field: 'companyName', headerName: 'company Name', width: 200 },
+    {field: 'unit',headerName: 'unit',type: 'number',width: 130,},
     {field: 'quantity',headerName: 'Quantity',type: 'number',width: 90,},
     {field: 'price',headerName: 'Price',type: 'number',width: 90,},
     // {field: 'total',headerName: 'total',type: 'number',
@@ -249,7 +176,7 @@ const Stockininfo = () => {
               </Button>
             </DialogActions>
           </Dialog>
-        )}
+        )} 
            {/* This Dialog box is update  */}
            {update && (
           <Dialog open={showDialog} style={{ height: 600 }}>
@@ -276,6 +203,7 @@ const Stockininfo = () => {
                     id="outlined-basic"
                     label=" product Type"
                     required
+                    disabled
                     name="productType"
                     value={update.productType}
                     onChange={updateData}
@@ -287,8 +215,10 @@ const Stockininfo = () => {
                     id="outlined-basic"
                     label="company Name"
                     name="companyName"
+                    disabled
                     required
                     value={update.companyName}
+                 
                     onChange={updateData}
                   />
                   <TextField
@@ -299,6 +229,7 @@ const Stockininfo = () => {
                     label="unit"
                     name="unit"
                     required
+                    disabled
                     value={update.unit}
                     onChange={updateData}
                   />
@@ -312,7 +243,7 @@ const Stockininfo = () => {
                     type='number'
                     required
                     value={update.quantity}
-                    onChange={updateData}
+                    onChange={updateData }
                   />
                   <TextField
                     className="my-2"
@@ -322,6 +253,7 @@ const Stockininfo = () => {
                     label="price"
                     name="price"
                     required
+                    disabled
                     type='number'
                     value={update.price}
                     onChange={updateData}
@@ -359,78 +291,13 @@ const Stockininfo = () => {
         )}
         </Container>
         <Container>
-        {/* <Stack direction="row" spacing={2} flex justifyContent="center"> */}
-      {/* <TextField type="number" sx={{width:200}} id="outlined-basic" label="Supplier Doc No" variant="outlined"  />
-      <TextField type="Date" sx={{width:200}} id="outlined-basic" label="" variant="outlined"  />
-      <TextField type="text" sx={{width:200}} id="outlined-basic" label="Supplier Name" variant="outlined"  /> */}
-{/* <div className="flex flex-wrap -mx-3 mb-6">
-    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-      Supplier Doc No
-      </label>
-      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Supplier Doc No"/>
-      
-    </div>
-    <div className="w-full md:w-1/2 px-3">
-      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-      Date
-      </label>
-      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Date"/>
-    </div>
-    <div className="w-full  px-3 ">
-      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-      Supplier Name
-      </label>
-      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Supplier Name"/>
-    </div>
-  </div> */}
 
-
-    {/* </Stack> */}
-    {/* <Stack direction="row" spacing={2} mt="10px">
-
-
-
-
-
-
-    </Stack> */}
     <div className='mt-3 ali'>
 
 
     </div>
 
         </Container>
-{/* <div className='mx-3'>
-       
-<table className="ui celled table">
-  <thead>
-    <tr><th>Name</th>
-    <th>Products Type</th>
-    <th>Unit</th>
-    <th>Quantity</th>
-    <th>Price</th>
-    <th>Total</th>
-    <th>Expiry</th>
-  </tr></thead>
-  <tbody>
-    {
-      data&&data[0].doc.map((item,index)=>(
-      <tr key={index}>
-      <td data-label="Name">{item.name}</td>
-      <td data-label="Name">{item.productType}</td>
-      <td data-label="Name">{item.unit}</td>
-      <td data-label="Name">{item.quantity}</td>
-      <td data-label="Name">{item.price}</td>
-      <td data-label="Name">{parseInt(item.price)*parseInt(item.quantity)}</td>
-      <td data-label="Name">{moment.parseZone(item.expiry).local().format("DD/MM/YY")}</td>
-    </tr>
-      ))
-    }
-  </tbody>
-</table>
-
-    </div> */}
           <Box sx={{ height: 900, width: "100%" }}>
         <DataGrid
           // onRowClick={(item) => setUpdate(item.row)}

@@ -10,6 +10,7 @@ import MaterialTable from 'material-table';
 import {ThemeProvider,createTheme,} from "@mui/material";
 import { utils, writeFile } from 'xlsx';
 import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver';
 const Productslist = (props) => { 
   const navigate = useNavigate();
  
@@ -62,25 +63,42 @@ console.log(data,"i am data ")
   setPageSize(newPageSize)
 
  }
- const handleExport = () => {
-  const csvData = [
-    // Generate the CSV content
-    ['Company Name'],
-    ...data.map((row) => [row.companyName ?? '']),
-  ];
+ 
 
-  const csvContent = csvData.map((row) => row.join(',')).join('\n');
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
+const saveExcelFile = () => {
+const selectedFields = data.map(item=>({
+  name:item.name,
+  name:item.product.type[0],
+  quantity:item.quantity
+}));
 
-  const link = document.createElement('a');
-  link.setAttribute('href', url);
-  link.setAttribute('download', 'export.csv');
-  link.style.display = 'none';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+const workbook = XLSX.utils.book_new();
+const worksheet = XLSX.utils.json_to_sheet(selectedFields);
+XLSX.utils.book_append_sheet(workbook, worksheet, 'Stock List');
+
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const excelData = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  saveAs(excelData, 'data.xlsx');
 };
+//  const handleExport = () => {
+//   const csvData = [
+//     // Generate the CSV content
+//     ['Company Name'],
+//     ...data.map((row) => [row.companyName ?? '']),
+//   ];
+
+//   const csvContent = csvData.map((row) => row.join(',')).join('\n');
+//   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+//   const url = URL.createObjectURL(blob);
+
+//   const link = document.createElement('a');
+//   link.setAttribute('href', url);
+//   link.setAttribute('download', 'export.csv');
+//   link.style.display = 'none';
+//   document.body.appendChild(link);
+//   link.click();
+//   document.body.removeChild(link);
+// };
 //  const handleExport = () => {
 //   const csvData = [
 
@@ -141,9 +159,10 @@ console.log(data,"i am data ")
                     columns={columns2}
                     autoPageSize
                     onRowClick={(item,ev)=>navigate(`/transactionlist/${item.row.name}`)}
-                />
+                /> 
             </div> */}
             <h1 className='text-center my-8 font-bold text-2xl'>Stock List</h1>
+           
           {/* <div style={{ height: '100vh', width: '100%' }}>
                 <DataGrid
                     rows={data2}
@@ -162,7 +181,7 @@ console.log(data,"i am data ")
       // onRowClick={(item,ev)=>navigate(`/transactionlist/${item.row.name}`)}  
       options={{
         exportButton: true,
-        exportCsv:handleExport,
+        exportCsv:saveExcelFile,
         exportFileName:'export',
         pageSize:pageSize,
         pageSizeOptions: pageSizeOptions,
