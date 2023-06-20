@@ -162,7 +162,7 @@ console.log(updatedArrayOfObjects);
           <Stack direction="row" justifyContent="center" spacing={2}>
             <TextField
               {...register("docNo", { required: true })}
-              disabled
+              // disabled
               type="number"
               sx={{ width: 100 }}
               id="outlined-basic"
@@ -254,9 +254,9 @@ console.log(updatedArrayOfObjects);
                 singleItem.stock = val
                 setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
               }}
-              sx={{ width: 800 }}
+              sx={{ width: 600 }}
               renderInput={(params) => (
-                <TextField {...params} label="Stock Name" />
+                <TextField {...params} label="Stock List" />
               )}
             />
   
@@ -276,7 +276,7 @@ console.log(updatedArrayOfObjects);
                 getOptionLabel={(e) => `${e.name}  `}
                 sx={{ width: 350 }}
                 renderInput={(params) => (
-                  <TextField {...params} label=" Products" />
+                  <TextField {...params} label=" Products List" />
                 )}
               />
               <Autocomplete
@@ -368,9 +368,9 @@ console.log(updatedArrayOfObjects);
 
                 setSelectedStock(val);
               }}
-              sx={{ width: 800 }}
+              sx={{ width: 600 }}
               renderInput={(params) => (
-                <TextField {...params} label="Stock Name" />
+                <TextField {...params} label="Stock List" />
               )}
             />
 
@@ -386,7 +386,7 @@ console.log(updatedArrayOfObjects);
               // getOptionLabel={(e) => `${e.name} `}
               sx={{ width: 350 }}
               renderInput={(params) => (
-                <TextField {...params} label=" Products" />
+                <TextField {...params} label=" Products List" />
               )}
             />
             <Autocomplete

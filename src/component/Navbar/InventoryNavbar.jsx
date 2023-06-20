@@ -10,7 +10,7 @@ import logo from '../../images/logo.jpeg'
 const InventoryNavbar = () => {
   return (
     <div>
-           <h1 className='text-center mt-2 mb-2'> Inventory Mangament System</h1>
+           <h1 className='text-center mt-2 mb-2'>Inventroy Management System</h1>
         <Navbar bg="light" expand="lg" className=''>
           <Container>
           

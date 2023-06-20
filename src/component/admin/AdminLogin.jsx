@@ -16,9 +16,14 @@ const AdminLogin = () => {
     const res= await axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/user/loginUser`, data,
     {headers:{token:`${accessToken}`}})
     .then(response=>{
-    console.log(response, 'res')
+    // console.log(response, 'Heer i cheack adming login')
+    if(response.data.result.userInfo.role == "admin"){
+      navigate('/adminpanel')
+    }else{
+      alert("Only for admin")
+    }
   })
-  navigate('/adminpanel')
+  // navigate('/adminpanel')
    } catch (error) {
     setIsValid(true);
     setTimeout(() => {

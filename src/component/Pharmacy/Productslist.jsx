@@ -9,7 +9,7 @@ import MaterialTable from 'material-table';
 // import { ThemeProvider } from '@emotion/react';
 import {ThemeProvider,createTheme,} from "@mui/material";
 import { utils, writeFile } from 'xlsx';
-import * as XLSX from 'xlsx'
+import * as XLSX from 'xlsx' 
 import { saveAs } from 'file-saver';
 const Productslist = (props) => { 
   const navigate = useNavigate();
@@ -67,9 +67,13 @@ console.log(data,"i am data ")
 
 const saveExcelFile = () => {
 const selectedFields = data.map(item=>({
-  name:item.name,
-  name:item.product.type[0],
-  quantity:item.quantity
+  name: item.name,
+  companyName: item.product.companyName[0], // Assuming the type is an array, accessing the first element
+  type: item.product.type[0], // Assuming the type is an array, accessing the first element
+  unit: item.product.unit[0], // Assuming the type is an array, accessing the first element
+  quantity: item.quantity,
+
+
 }));
 
 const workbook = XLSX.utils.book_new();
@@ -80,69 +84,7 @@ XLSX.utils.book_append_sheet(workbook, worksheet, 'Stock List');
   const excelData = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   saveAs(excelData, 'data.xlsx');
 };
-//  const handleExport = () => {
-//   const csvData = [
-//     // Generate the CSV content
-//     ['Company Name'],
-//     ...data.map((row) => [row.companyName ?? '']),
-//   ];
 
-//   const csvContent = csvData.map((row) => row.join(',')).join('\n');
-//   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-//   const url = URL.createObjectURL(blob);
-
-//   const link = document.createElement('a');
-//   link.setAttribute('href', url);
-//   link.setAttribute('download', 'export.csv');
-//   link.style.display = 'none';
-//   document.body.appendChild(link);
-//   link.click();
-//   document.body.removeChild(link);
-// };
-//  const handleExport = () => {
-//   const csvData = [
-
-//     // Generate the CSV content
-//     ['Name','Company Name','Tpye','Unit','Available Quantity'],
-    
-//     ...data.map((row) =>
-//     // console.log(row,"i am a all"))
-//     [row.name ?? '',row.companyName ?? '',row.type ?? '',row.unit ?? '', row.quantity !== undefined ? row.quantity.toString() : '',]
-
-    
-//     ),
-//   ];
-
-//   const csvContent = csvData.map((row) => row.join(',')).join('\n');
-//   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-//   const url = URL.createObjectURL(blob);
-
-//   const link = document.createElement('a');
-//   link.setAttribute('href', url);
-//   link.setAttribute('download', 'export.csv');
-//   link.style.display = 'none';
-//   document.body.appendChild(link);
-//   link.click();
-//   document.body.removeChild(link);
-// };
-//  const handleExport =()=>{
-
-//   const filteredData = data.map((row)=>({
-//     ...row,
-
-//     companyName: row.companyName?.toString(),
-//     type: row.type?.toString(),
-//     unit: row.unit?.toString(),
-//     quantity: row.quantity?.toString(),
-  
-//   }));
-
-  
-//     const worksheet = XLSX.utils.json_to_sheet(filteredData);
-//     const  workbook = XLSX.utils.book_new();
-//     XLSX.utils.book_append_sheet(workbook,worksheet,'sheet 1')
-//     XLSX.writeFile (workbook,'export.xlsx');
-//   };
   const handleRowClick = (event, rowData) => {
     // Use the rowData or any other logic you need
     // For example, navigating to a different route
@@ -179,13 +121,24 @@ XLSX.utils.book_append_sheet(workbook, worksheet, 'Stock List');
       data={data}      
       onRowClick={handleRowClick} 
       // onRowClick={(item,ev)=>navigate(`/transactionlist/${item.row.name}`)}  
+      // options={{
+      //   search: true,
+      //   exportButton: true,
+      //   exportAllData: true,
+      //   // exportCsv:saveExcelFile,
+      //   // exportFileName:'export',
+
+      //   pageSize:pageSize,
+      //   pageSizeOptions: pageSizeOptions,
+      //   actionsColumnIndex:-1
+      // }}
       options={{
+        headerStyle: {
+          fontWeight: 'bold',
+        },
         exportButton: true,
-        exportCsv:saveExcelFile,
-        exportFileName:'export',
-        pageSize:pageSize,
-        pageSizeOptions: pageSizeOptions,
-        actionsColumnIndex:-1
+        pageSize: 400,
+        search: true,
       }}
       onRowsPerPageChange={handleChangePageSize}
     />
@@ -211,16 +164,24 @@ const columns1 = [
   //{ field: 'brand', headerName: 'Brand Name',valueGetter:(param)=>param.value.name,width:150},
   { field: 'name', title: 'Name',valueGetter:(param)=>param.row.name,width:150},
   // { field: 'companyName', title: 'company Name',valueGetter:(param)=>!param.row.product?"":param.row.product.companyName,width:200},
-  {field: 'companyName',title: 'Company Name',render: (rowData) => (!rowData.product ? '' : rowData.product.companyName),
-  export: true,
-  width: 200},
+  // {field: 'companyName',title: 'Company Name',render: (rowData) => (!rowData.product ? '' : rowData.product.companyName),
+  { field: 'product.companyName[0]', title: 'companyName',width:150},
+  // export: true,
+  // width: 200},
+  { field: 'product.type[0]', title: 'Type',width:150},
+  // { field: 'type', title: 'Type', render: rowData => rowData.product ? rowData.product.type.join(', ') : '' ,
+  // { field: 'type', title: 'Type',render:(rowData)=>(!rowData.product ? '': rowData.product.type.map((item)=>item)),
+  // export: true,
 
-
-  { field: 'type', title: 'Type',render:(rowData)=>(!rowData.product ? '': rowData.product.type.map((item)=>item)),
-  export: true,
-  width:150},
   // { field: 'type', title: 'Type',valueGetter:(param)=>!param.row.product?"":param.row.product.type.map((item)=>item),width:150},
-  { field: 'unit', title: 'Unit',render:(rowData)=>(!rowData.product?"":rowData.product.unit.map((item)=>item)),width:150},
+  // {
+  //   field: 'unit',
+  //   title: 'Unit',
+  //   render: (rowData) => rowData.product && rowData.product.unit.length > 0 ? rowData.product.unit[0] : '',
+  //   customExport: (rowData) => rowData.product && rowData.product.unit.length > 0 ? rowData.product.unit[0] : ''
+  // },
+  { field: 'product.unit[0]', title: 'Unit',width:150},
+  // render:(rowData)=>(!rowData.product?"":rowData.product.unit.map((item)=>item)),width:150},
   // { field: 'unit', title: 'Unit',valueGetter:(param)=>!param.row.product?"":param.row.product.unit.map((item)=>item),width:150},
   { field: 'quantity', title: 'Available Quantity',
 

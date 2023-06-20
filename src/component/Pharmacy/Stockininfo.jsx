@@ -7,7 +7,8 @@ import axios from 'axios';
   import moment from 'moment' 
   import DeleteIcon from "@mui/icons-material/Delete";
   import EditIcon from "@mui/icons-material/Edit";
-
+import './pharmacy.css'
+import { ClassNames } from '@emotion/react';
 
 const Stockininfo = () => {
   const [data, setData] = useState([]);
@@ -111,20 +112,21 @@ const updateRow = async () => {
   
     },[])
   const columns = [
-    { field: 'id', headerName: 'SrNO', width: 70 },
-    { field: 'name', headerName: 'Products name', width: 300 },
+    { field: 'id', headerName: <b>Sr No</b>, width: 70 ,},
+    { field: 'name', headerName: <b>Products Name </b> , width: 300 , },
     // { field: 'supplier', headerName: 'supplier Name', width: 130 },
-    { field: 'productType', headerName: 'Products type', width: 150 },
-    { field: 'companyName', headerName: 'company Name', width: 200 },
-    {field: 'unit',headerName: 'unit',type: 'number',width: 130,},
-    {field: 'quantity',headerName: 'Quantity',type: 'number',width: 90,},
-    {field: 'price',headerName: 'Price',type: 'number',width: 90,},
+    { field: 'productType', headerName:  <b>Products Type</b>, width: 150 },
+    { field: 'companyName', headerName: <b>Company Name</b> , width: 200 },
+    {field: 'unit',headerName:<b>Unit </b>,type: 'number',width: 130,},
+    {field: 'quantity',headerName:<b>Quantity</b> ,type: 'number',width: 90,},
+    {field: 'price',headerName: <b>Price</b>,type: 'number',width: 90,},
     // {field: 'total',headerName: 'total',type: 'number',
     // valueGetter:(param)=>  (price)*parseInt(quantity),
     // width: 90,},
-    {field: 'expiry',headerName: 'Expiry',valueGetter:(param)=>moment.parseZone(param.row.date).local().format("DD/MM/YY"),width: 150,},
+    // {field: 'expiry',headerName:<b>Expiry</b> ,valueGetter:(param)=>moment.parseZone(param.row.date).format("DD/MM/YY"),width: 150,},
+    {field:"expiry",headerName:<b>Expiry</b>, valueGetter:(params)=>moment(params.expiry).format("DD-MM-YY") , width:150},
      {
-      title: "Action", 
+      headerName: <b>Action</b>, 
       field: "Action", 
       width: 150,
       renderCell: () => (
@@ -136,7 +138,7 @@ const updateRow = async () => {
       ),
     },
     {
-      title: "Delete",
+      headerName: <b>Delete </b> ,
       field: "Delete",
       width: 150,
       renderCell: () => (
@@ -148,6 +150,7 @@ const updateRow = async () => {
       ),
     },
   ];
+  
   return (
     <div className=''>
         <InventoryNavbar/>
@@ -242,6 +245,7 @@ const updateRow = async () => {
                     name="quantity"
                     type='number'
                     required
+                  
                     value={update.quantity}
                     onChange={updateData }
                   />
@@ -267,7 +271,7 @@ const updateRow = async () => {
                     name="expiry"
                     required
                     disabled
-                    value={update.expiry}
+                    value={moment(update.expiry).format('YYYY-MM-DD')}
                     onChange={updateData}
                   />
              </Grid>
@@ -304,6 +308,7 @@ const updateRow = async () => {
           onRowClick={(item) => setUpdate(item.row)}
           rows={data}
           columns={columns}
+          headerCellClassName="header-cell"
           pageSize={50}
           rowsPerPageOptions={[50]}
           // checkboxSelection

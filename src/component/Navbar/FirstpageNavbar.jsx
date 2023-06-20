@@ -10,7 +10,7 @@ import logo from '../../images/logo.jpeg'
 const FirstpageNavbar = () => {
     return (
         <div>
-          <h1 className='text-center'>Inventory Managment System</h1>
+          <h1 className='text-center'>Inventroy Management System</h1>
                
             <Navbar bg="light" expand="lg">
               <Container>

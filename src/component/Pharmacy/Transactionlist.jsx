@@ -23,11 +23,11 @@ const Transactionlist = (props) => {
     })
   },[])
   const columns2 = [
-    { field: 'id', headerName: 'ID',width:20},
-    { field: 'docNo', headerName: 'Document Number',valueGetter:(param)=>param.row._id.docNo,width:150},
-    { field: 'name', headerName: 'Name',valueGetter:(param)=>params.name,width:150},
+    { field: 'id', headerName:<b>Id</b> ,width:20},
+    { field: 'docNo', headerName: <b>Document Number</b>,valueGetter:(param)=>param.row._id.docNo,width:150},
+    { field: 'name', headerName:<b>Name</b> ,valueGetter:(param)=>params.name,width:200},
     // { field: 'quantity', headerName: 'Quantity',valueGetter:(param)=>param.row.quantity.map((item)=>item),width:150},
-    {field:"createdAt",headerName:"Created At",valueGetter:(param)=>moment.parseZone(param.row.createdAt[0]).local().format("DD/MM/YY"),width:120}
+    {field:"createdAt",headerName:<b>Date</b>,valueGetter:(param)=>moment.parseZone(param.row.createdAt[0]).local().format("DD/MM/YY"),width:120}
   
   
   ];
@@ -53,6 +53,7 @@ const Transactionlist = (props) => {
                     rows={data.stockout.map((item,index)=>({...item,id:index+1}))}
                     columns={columns2}
                     autoPageSize
+                    headerClassName="datagrid-header"
                     onRowClick={(item,ev)=>navigate(`/stockoutinfo/${item.row._id.docNo}`)}
                     // onRowClick={(item,ev)=>props.history.push('/orderdetails',item.row)}
                 />

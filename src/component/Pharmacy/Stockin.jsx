@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertTitle,
   Autocomplete,
   Button,
   Container,
@@ -9,7 +11,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect } from "react";
 import axios from "axios";
@@ -66,7 +68,7 @@ const Stockin = () => {
   const [allStocks,setAllStocks] = React.useState([])
   const [sum ,setSum]=useState('')
   const [flag,setFlag] = React.useState(false)
-  
+  const [isValid, setIsValid] = useState(false);
   const {
     register,
     handleSubmit,
@@ -74,6 +76,8 @@ const Stockin = () => {
     formState: { errors },
     setValue
   } = useForm();
+
+  const autocompleteRef = useRef(null)
 
 console.log(selectedDate)
   const onSubmit = (stock) => {
@@ -102,13 +106,24 @@ console.log(selectedDate)
     .then(res=>{
       console.log(res)
       setAllStocks([...allStocks,{...obj,_id:res.data.result._id}])
+      setIsValid(true);
+      setTimeout(() => {
+        setIsValid(false);
+    }, 1000);
     })
+   
     .catch(err=>{
       console.log(err.response)
+      setIsValid(true);
+      setTimeout(() => {
+        setIsValid(false);
+    }, 5000);
     })
+    setValue('');
+    // setSelectedProduct(selectedProduct.name=null,selectedProduct.companyName=null,selectedProduct.unit=null,)
+    setSelectedProduct(null)
 
-    setSelectedProduct(selectedProduct.name="",selectedProduct.companyName="",selectedProduct.unit="",)
-
+ 
   };
   console.log(allStocks, 'allstokc')
 
@@ -203,7 +218,8 @@ console.log(selectedDate)
                 />                  
                   </Stack>
                   <Stack direction="row" spacing={2} mt="10px">
-                  <Autocomplete
+                  <Autocomplete  
+
                   id="combo-box-demo"
                   onChange={(event, newValue) => {
                     setSelectedProduct(newValue);
@@ -341,6 +357,15 @@ console.log(selectedDate)
               <div className="mt-3 ali">
                 <center>
                   <Button type="submit" variant="contained" alignitems="center"> Add </Button>
+           
+                  {
+                      isValid && 
+                      <Alert severity="success">
+                      <AlertTitle>Product has been added successfully</AlertTitle>
+                      <strong> {isValid} </strong>
+                    </Alert>
+                  }
+   
                   <Button onClick={()=>{
                     setSum("")
                     setAllStocks([])
