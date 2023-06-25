@@ -23,7 +23,7 @@ const Transactionlist = (props) => {
     })
   },[])
   const columns2 = [
-    { field: 'id', headerName:<b>Id</b> ,width:20},
+    { field: 'id', headerName:<b>No</b> ,width:20},
     { field: 'docNo', headerName: <b>Document Number</b>,valueGetter:(param)=>param.row._id.docNo,width:150},
     { field: 'name', headerName:<b>Name</b> ,valueGetter:(param)=>params.name,width:200},
     // { field: 'quantity', headerName: 'Quantity',valueGetter:(param)=>param.row.quantity.map((item)=>item),width:150},

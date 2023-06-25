@@ -53,7 +53,7 @@ const UserLogin = () => {
       <div className="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 bg-gray-10 dark:border-gray-600">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                  User login
+                  User Login
               </h1>
               <form className="space-y-4 md:space-y-6"  onSubmit={handleSubmit(onSubmit)}>
                   <div>
@@ -70,7 +70,7 @@ const UserLogin = () => {
 
                   </div>
                    
-                    <button type="submit" className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+                    <button type="submit" className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Login</button>
                       
             
                

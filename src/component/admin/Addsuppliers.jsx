@@ -138,12 +138,12 @@ const Addsuppliers = () => {
   )
 }
 const columns2 = [
-  { field: 'id', headerName: 'ID',width:20},
+  { field: 'id', headerName:<b>No</b> ,width:20},
   //{ field: 'brand', headerName: 'Brand Name',valueGetter:(param)=>param.value.name,width:150},
-  { field: 'name', headerName: 'Name',valueGetter:(param)=>param.row.name,width:150},
-  { field: 'location', headerName: 'Location',valueGetter:(param)=>param.row.location,width:200},
-  { field: 'contact', headerName: 'Contact',valueGetter:(param)=>param.row.contact,width:150},
-  {field:"createdAt",headerName:"Created At",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
+  { field: 'name', headerName: <b>Name</b>,valueGetter:(param)=>param.row.name,width:150},
+  { field: 'location', headerName:<b>Location</b>,valueGetter:(param)=>param.row.location,width:200},
+  { field: 'contact', headerName:<b>Contact</b> ,valueGetter:(param)=>param.row.contact,width:150},
+  {field:"createdAt",headerName:<b>Date</b> ,valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
 
 
 ];

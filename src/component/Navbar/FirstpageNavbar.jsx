@@ -22,9 +22,9 @@ const FirstpageNavbar = () => {
                   <Nav className="me-auto">
                     {/* <Nav.Link href="#home">Add User</Nav.Link>
                     <Nav.Link href="#link">Add Produuts</Nav.Link> */}
-                    <NavDropdown title="Menu" id="basic-nav-dropdown">
-                    <Link to="/adminlogin"><NavDropdown.Item href="#action/3.0">Admin login</NavDropdown.Item></Link>  
-                    <Link to="/userlogin">   <NavDropdown.Item href="#action/3.1">User login</NavDropdown.Item></Link>
+                    <NavDropdown title="Menu"  id="basic-nav-dropdown" style={{fontWeight:'bold'}}>
+                    <Link to="/adminlogin"><NavDropdown.Item href="#action/3.0"><b> Admin login</b> </NavDropdown.Item></Link>  
+                    <Link to="/userlogin">   <NavDropdown.Item href="#action/3.1"><b> User login</b> </NavDropdown.Item></Link>
                    
                       {/* <NavDropdown.Divider />
                       <NavDropdown.Item href="#action/3.4">

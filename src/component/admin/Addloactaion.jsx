@@ -103,13 +103,13 @@ const updateRow = async() =>{
     getLocations()
   },[flag])
   const columns2 = [
-    { field: 'id', headerName: 'ID',width:20},
+    { field: 'id', headerName:<b>No </b>,width:20},
     //{ field: 'brand', headerName: 'Brand Name',valueGetter:(param)=>param.value.name,width:150},
-    { field: 'name', headerName: 'Name',valueGetter:(param)=>param.row.name,width:150},
-    { field: 'trainerName', headerName: 'Trainer Name',valueGetter:(param)=>param.row.trainerName.map(item=>item),width:200},
-    { field: 'doctorName', headerName: 'Doctor Name',valueGetter:(param)=>param.row.doctorName.map(item=>item),width:200},
-    {field:"createdAt",headerName:"Created At",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120},
-    {title:"Action" ,
+    { field: 'name', headerName: <b>Name </b>  ,valueGetter:(param)=>param.row.name,width:150},
+    { field: 'trainerName', headerName:<b>Trainer Name </b> ,valueGetter:(param)=>param.row.trainerName.map(item=>item),width:200},
+    { field: 'doctorName', headerName:<b>Doctor Name </b> ,valueGetter:(param)=>param.row.doctorName.map(item=>item),width:200},
+    {field:"createdAt",headerName: <b>Date </b> ,valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120},
+    {headerName:<b> Action</b> ,
     field:'Action',
     width:150,
     renderCell:()=>(
@@ -119,7 +119,7 @@ const updateRow = async() =>{
       </Fragment>
     )
   },
-    {title:"Delete" ,
+    {headerName:<b> Delete</b> ,
     field:'Delete',
     width:150,
     renderCell:()=>(

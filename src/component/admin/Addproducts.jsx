@@ -407,7 +407,7 @@ getAlldata()
   const columns2 = [
     {
       field: 'id',
-      title: 'ID',
+      title: 'No',
       width: 20,
     },
     {

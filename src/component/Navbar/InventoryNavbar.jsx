@@ -23,11 +23,11 @@ const InventoryNavbar = () => {
                 {/* <Nav.Link href="#home">Add User</Nav.Link>
                 <Nav.Link href="#link">Add Produuts</Nav.Link> */}
                 
-                <NavDropdown title="Transaction" id="basic-nav-dropdown">
-                <Link to="/stockin">   <NavDropdown.Item href="#action/3.1">Stock In</NavDropdown.Item></Link>
-                <Link to="/stockout">    <NavDropdown.Item href="#action/3.2">Stock Out</NavDropdown.Item></Link>
-                  <Link to="/stockoutsearch">       <NavDropdown.Item href="#action/3.4">Stockout Search</NavDropdown.Item></Link>
-                <Link to="/productslist"><NavDropdown.Item href="#action/3.0">Stock List</NavDropdown.Item></Link>  
+                <NavDropdown title="Transaction" id="basic-nav-dropdown" style={{fontWeight:'bold'}}>
+                <Link to="/stockin">   <NavDropdown.Item href="#action/3.1"><b>Stock In</b> </NavDropdown.Item></Link>
+                <Link to="/stockout">    <NavDropdown.Item href="#action/3.2"><b>Stock Out</b> </NavDropdown.Item></Link>
+                  <Link to="/stockoutsearch">       <NavDropdown.Item href="#action/3.4"> <b> Stockout Search</b></NavDropdown.Item></Link>
+                <Link to="/productslist"><NavDropdown.Item href="#action/3.0"><b>Stock List</b> </NavDropdown.Item></Link>  
 
                   {/* <NavDropdown.Divider />
                   <NavDropdown.Item href="#action/3.4">
@@ -36,10 +36,10 @@ const InventoryNavbar = () => {
                 </NavDropdown>
 
 
-                <NavDropdown title="Inventory" id="basic-nav-dropdown"  >
+                <NavDropdown title="Inventory" id="basic-nav-dropdown" style={{fontWeight:'bold'}} >
 
-                  <Link to="/stockinventoty">       <NavDropdown.Item href="#action/3.3">Stock Inventory</NavDropdown.Item></Link>
-                  <Link to="/monthlyreport">       <NavDropdown.Item href="#action/3.4">Monthly Report</NavDropdown.Item></Link>
+                  <Link to="/stockinventoty">       <NavDropdown.Item href="#action/3.3"><b> Stock Inventory</b> </NavDropdown.Item></Link>
+                  <Link to="/monthlyreport">       <NavDropdown.Item href="#action/3.4"><b>  Monthly Report</b></NavDropdown.Item></Link>
                   {/* <NavDropdown.Divider />
                   <NavDropdown.Item href="#action/3.4">
                     Separated link

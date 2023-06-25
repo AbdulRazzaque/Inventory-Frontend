@@ -22,13 +22,13 @@ const AdminNavbar = () => {
               <Nav className="me-auto">
                 {/* <Nav.Link href="#home">Add User</Nav.Link>
                 <Nav.Link href="#link">Add Produuts</Nav.Link> */}
-                <NavDropdown title="Selection" id="basic-nav-dropdown">
-                <Link to="/adminpanel"><NavDropdown.Item href="#action/3.1">Add User</NavDropdown.Item></Link>  
-                <Link to="/addproducts">   <NavDropdown.Item href="#action/3.1">Add Product</NavDropdown.Item></Link>
+                <NavDropdown title="Selection" id="basic-nav-dropdown" style={{fontWeight:'bold'}}>
+                <Link to="/adminpanel"><NavDropdown.Item href="#action/3.1"><b>Add User</b> </NavDropdown.Item></Link>  
+                <Link to="/addproducts">   <NavDropdown.Item href="#action/3.1"><b>Add Product</b> </NavDropdown.Item></Link>
                 <Link to="/Addsuppliers">    <NavDropdown.Item href="#action/3.2">
-                    Add Supplier
+                   <b>  Add Supplier</b>
                   </NavDropdown.Item></Link>
-                  <Link to="/Addloactaion">       <NavDropdown.Item href="#action/3.3">Add Farm</NavDropdown.Item></Link>
+                  <Link to="/Addloactaion">       <NavDropdown.Item href="#action/3.3"><b> Add Farm</b> </NavDropdown.Item></Link>
                   {/* <NavDropdown.Divider />
                   <NavDropdown.Item href="#action/3.4">
                     Separated link

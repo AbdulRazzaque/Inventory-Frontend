@@ -112,7 +112,7 @@ const updateRow = async () => {
   
     },[])
   const columns = [
-    { field: 'id', headerName: <b>Sr No</b>, width: 70 ,},
+    { field: 'id', headerName: <b>No</b>, width: 70 ,},
     { field: 'name', headerName: <b>Products Name </b> , width: 300 , },
     // { field: 'supplier', headerName: 'supplier Name', width: 130 },
     { field: 'productType', headerName:  <b>Products Type</b>, width: 150 },
@@ -124,8 +124,11 @@ const updateRow = async () => {
     // valueGetter:(param)=>  (price)*parseInt(quantity),
     // width: 90,},
     // {field: 'expiry',headerName:<b>Expiry</b> ,valueGetter:(param)=>moment.parseZone(param.row.date).format("DD/MM/YY"),width: 150,},
-    {field:"expiry",headerName:<b>Expiry</b>, valueGetter:(params)=>moment(params.expiry).format("DD-MM-YY") , width:150},
-     {
+    // {field:"expiry",headerName:<b>Expiry</b>, valueGetter:(params)=>moment.parseZone(params.expiry).local().format("DD-MM-YY") , width:150},
+    {field:"expiry",headereName:"Expiry",valueGetter:(params)=>moment(params.row.expiry).format("DD/MM/YY") ,width:150},
+    // {field:"expiry",headereName:"Expiry",valueGetter:(params)=>moment.parseZone(params.expiry).local().format("DD/MM/YY") ,width:150},
+    // {field:"createdAt",headerName:<b>Date</b>,valueGetter:(param)=>moment.parseZone(param.row.createdAt[0]).local().format("DD/MM/YY"),width:12 
+    {
       headerName: <b>Action</b>, 
       field: "Action", 
       width: 150,
@@ -271,7 +274,7 @@ const updateRow = async () => {
                     name="expiry"
                     required
                     disabled
-                    value={moment(update.expiry).format('YYYY-MM-DD')}
+                    value={moment(update.expiry).format('DD-MM-YYYY')}
                     onChange={updateData}
                   />
              </Grid>

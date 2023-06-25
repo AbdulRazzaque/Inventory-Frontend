@@ -237,24 +237,24 @@ const deleteRow = async (updatedData) => {
   
     },[])
   const columns = [
-    { field: 'id', headerName: 'SrNO', width: 70 },
-    { field: 'name', headerName: 'Products name', width: 300 },
+    { field: 'id', headerName:<b>No </b>, width: 70 },
+    { field: 'name', headerName: <b>Products name </b> , width: 300 },
     // { field: 'supplier', headerName: 'supplier Name', width: 130 },
 
-    { field: 'unit', headerName: 'unit', width: 150 },
+    { field: 'unit', headerName:<b>unit </b> , width: 150 },
  
-    {field: 'quantity',headerName: 'Quantity',type: 'number',width: 90,},
+    {field: 'quantity',headerName: <b>Quantity</b> ,width: 90,},
 
-    {field: 'trainerName',headerName: 'trainer Name',width: 200,},
-    {field: 'doctorName',headerName: 'Doctor Name',width: 200,},
+    {field: 'trainerName',headerName:<b>trainer Name</b> ,width: 200,},
+    {field: 'doctorName',headerName: <b>  Doctor Name</b>,width: 200,},
     // {field: 'total',headerName: 'total',type: 'number',
     // valueGetter:(param)=>  (price)*parseInt(quantity),
     // width: 90,},
-    {field: 'expiry',headerName: 'Expiry',valueGetter:(param)=>moment.parseZone(param.row.date).local().format("DD/MM/YY"),width: 150,},
+    {field: 'createdAt',headerName: <b>Date</b>,valueGetter:(param)=>moment.parseZone(param.row.createdAt).local().format("DD/MM/YY"),width: 150,},
      {
-      title: "Action", 
+      headerName:<b>Action </b> , 
       field: "Action", 
-      width: 150,
+      width: 100,
       renderCell: () => (
         <Fragment>
           <Button onClick={() => setShowDialog(true)}>
@@ -264,9 +264,9 @@ const deleteRow = async (updatedData) => {
       ),
     },
     {
-      title: "Delete",
+      headerName:<b>Delete </b>,
       field: "Delete",
-      width: 150,
+      width: 100,
       renderCell: () => (
         <Fragment>
           <Button color="error" onClick={() => setAlert(true)}>

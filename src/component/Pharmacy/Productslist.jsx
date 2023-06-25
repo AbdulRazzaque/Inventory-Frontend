@@ -160,12 +160,12 @@ XLSX.utils.book_append_sheet(workbook, worksheet, 'Stock List');
 
 // ];
 const columns1 = [
-  { field: 'id', title: 'ID',width:20},
+  { field: 'id', title: 'No',width:20},
   //{ field: 'brand', headerName: 'Brand Name',valueGetter:(param)=>param.value.name,width:150},
   { field: 'name', title: 'Name',valueGetter:(param)=>param.row.name,width:150},
   // { field: 'companyName', title: 'company Name',valueGetter:(param)=>!param.row.product?"":param.row.product.companyName,width:200},
   // {field: 'companyName',title: 'Company Name',render: (rowData) => (!rowData.product ? '' : rowData.product.companyName),
-  { field: 'product.companyName[0]', title: 'companyName',width:150},
+  { field: 'product.companyName[0]', title: 'Company Name',width:150},
   // export: true,
   // width: 200},
   { field: 'product.type[0]', title: 'Type',width:150},

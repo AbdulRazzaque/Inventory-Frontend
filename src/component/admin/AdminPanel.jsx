@@ -164,13 +164,13 @@ useEffect(() => {
   )
 }
 const columns2 = [
-  { field: 'id', headerName: 'ID',width:20},
+  { field: 'id', headerName:<b>No</b> ,width:20},
   //{ field: 'brand', headerName: 'Brand Name',valueGetter:(param)=>param.value.name,width:150},
-  { field: 'name', headerName: 'Name',valueGetter:(param)=>param.row.userName,width:150},
-  { field: 'department', headerName: 'Department',valueGetter:(param)=>param.row.department,width:200},
-  { field: 'role', headerName: 'Role',valueGetter:(param)=>param.row.role,width:150},
+  { field: 'name', headerName: <b>Name</b>,valueGetter:(param)=>param.row.userName,width:150},
+  { field: 'department', headerName:<b>Department</b> ,valueGetter:(param)=>param.row.department,width:200},
+  { field: 'role', headerName:  <b>Role</b> ,valueGetter:(param)=>param.row.role,width:150},
   // { field: 'unit', headerName: 'Unit',valueGetter:(param)=>param.row.unit.map(item=>item),width:150},
-{field:"createdAt",headerName:"Created At",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
+{field:"createdAt",headerName: <b>Date</b>,valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
 
 
 ];

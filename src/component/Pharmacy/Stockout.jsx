@@ -483,13 +483,13 @@ console.log(updatedArrayOfObjects);
         <table className="ui celled table">
   <thead>
     <tr>
-    <th>Sr No</th>
+    <th>No</th>
     <th>Doc No</th>
     <th>Product Name</th>
     <th>Location Name</th>
     <th>Trainer Name</th>
     <th>Doctor Name</th>
-    <th>Date Name</th>
+    <th>Date</th>
     <th>Unit</th>
     <th>Quantity</th>
     <th></th>

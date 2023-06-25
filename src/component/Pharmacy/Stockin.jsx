@@ -45,7 +45,7 @@ const columns = [
   { field: "productunit", headerName: " Product Unit", width: 130 },
   { field: "Price", headerName: " Price", width: 130 },
   { field: "quantity", headerName: " Quantity", width: 130 },
-  { field: "expriy", headerName: " Expriy", width: 130 },];
+  { field: "expriy", headerName: " Expiry", width: 130 },];
 //  var array=[]
 // var b=[]
 
@@ -397,18 +397,18 @@ console.log(selectedDate)
                     <TableRow>
                      
 
-                      <TableCell align="right">Id</TableCell>
-                      <TableCell align="right">Suplier No</TableCell>
-                      <TableCell align="right">Suplier</TableCell>
-                      <TableCell align="right"> product</TableCell>
-                      <TableCell align="right">company Name</TableCell>
-                      <TableCell align="right">Product Type</TableCell>
-                      <TableCell align="right">Product Unit</TableCell>
-                      <TableCell align="right">Price</TableCell>
-                      <TableCell align="right"> Quantity</TableCell>
-                      <TableCell align="right"> Expriy</TableCell>
-                      <TableCell align="right"> Total</TableCell>
-                      <TableCell align="right"> Delete</TableCell>
+                      <TableCell align="right"><b> No </b></TableCell>
+                      <TableCell align="right"><b> Suplier No </b></TableCell>
+                      <TableCell align="right"><b> Suplier </b></TableCell>
+                      <TableCell align="right"><b>  Product </b></TableCell>
+                      <TableCell align="right"><b> Company Name </b></TableCell>
+                      <TableCell align="right"><b> Product Type </b></TableCell>
+                      <TableCell align="right"><b> Product Unit </b></TableCell>
+                      <TableCell align="right"><b> Price </b></TableCell>
+                      <TableCell align="right"><b>  Quantity </b></TableCell>
+                      <TableCell align="right"><b>  Expiry </b></TableCell>
+                      <TableCell align="right"><b>  Total </b></TableCell>
+                      <TableCell align="right"><b>  Delete </b></TableCell>
 
 
                     </TableRow>

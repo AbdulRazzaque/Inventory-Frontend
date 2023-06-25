@@ -10,12 +10,12 @@ import axios from 'axios'
 import moment from 'moment'
 import { useState } from 'react';
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'name', headerName: 'Products Name', width: 150 },
-  { field: 'quantity', headerName: 'Quantity', width: 150 },
+  { field: 'id', headerName:<b>No</b> , width: 70 },
+  { field: 'name', headerName:<b> Products Name</b> , width: 150 },
+  { field: 'quantity', headerName: <b> Quantity</b> ,width: 150 },
   
-  { field: 'price', headerName: 'price', width: 150 },
-  {field:"createdAt",headerName:"Date",valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
+  { field: 'price', headerName:<b>Price</b> ,width: 150 },
+  {field:"createdAt",headerName:<b>Date</b>,valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
 ];
 
 const Stockinventoty = () => {

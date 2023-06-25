@@ -25,9 +25,9 @@ const Monthlyreport = () => {
   const [data, setData] = useState([]);
   let navigate = useNavigate();
 
- 
+  
   const [columns, setColumns] = useState([
-    { title: "Sno", field: "sno" },
+    { title: "No", field: "sno" },
     {
       title: "Date",
       field: "createdAt",
@@ -241,7 +241,14 @@ const Monthlyreport = () => {
                     }, 1000);
                   }),
               }}
+              options={{
+                headerStyle: {
+                  fontWeight: 'bold',
+                },
+            
+              }}
             />
+            
             {/* {console.log(rowData.date,'date')} */}
           </ThemeProvider>
           <center>
