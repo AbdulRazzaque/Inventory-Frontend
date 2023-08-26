@@ -4,7 +4,7 @@
 // import InventoryNavbar from '../Navbar/InventoryNavbar';
 // import { useParams } from 'react-router-dom';
 // import axios from 'axios';
-
+ 
   
 // const columns = [
 //     { field: 'id', headerName: 'SrNO', width: 70 },
@@ -195,6 +195,41 @@ var updatedData;
 
 //---------------------------------------------------- Delete api call here------------------------------------------------------------
 
+// const deleteRow = async (updatedData) => {
+//   console.log(updatedData,"Herer i am calling obj")
+//   try {
+//     const updatedData = {
+//       id: update._id,
+//       quantity: update.quantity,
+//       productName: update.name,
+//       originalQuantity: update.prevQuantity,
+//       // Add any other properties you want to update
+//       ...update
+//     };
+//     await axios
+//       .delete(
+//       //  console.log(obj)
+//         `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOutDelete/${updatedData._id}`,
+//         // obj,
+      
+//         // // await  axios.delete(`${process.env.REACT_APP_DEVELOPMENT}/api/deletelab/`,
+//         // { headers: { token: `${accessToken}` } }
+//         {
+//           data: updatedData, // Pass the request body using the 'data' property
+//           headers: { token: accessToken }, // Include the token in the headers
+//         }
+//       )
+//       .then((response) => {
+//         console.log("Response", response);
+//         alldata();
+      
+//       });
+//     setAlert(false);
+    
+//   } catch (error) {
+//     console.log(error,"This error Delete function");
+//   }
+// };
 const deleteRow = async (updatedData) => {
   console.log(updatedData,"Herer i am calling obj")
   try {
@@ -202,14 +237,14 @@ const deleteRow = async (updatedData) => {
       id: update._id,
       quantity: update.quantity,
       productName: update.name,
-      originalQuantity: update.prevQuantity,
+      originalQuantity: update.quantity,
+     
       // Add any other properties you want to update
-      ...update
     };
     await axios
       .delete(
       //  console.log(obj)
-        `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOutDelete/${updatedData._id}`,
+      `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOutDelete/${updatedData._id}`,
         // obj,
       
         // // await  axios.delete(`${process.env.REACT_APP_DEVELOPMENT}/api/deletelab/`,
@@ -230,7 +265,6 @@ const deleteRow = async (updatedData) => {
     console.log(error,"This error Delete function");
   }
 };
-
 
   React.useEffect(()=>{
     alldata()
@@ -286,7 +320,7 @@ const deleteRow = async (updatedData) => {
             <DialogTitle>Delete Row</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                Are You sure You want to delete this.
+                Are you sure you want to delete this.
               </DialogContentText>
             </DialogContent>
             <DialogActions>
