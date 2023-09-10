@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import logo from '../../images/inventory.jpg'
 const UserLogin = () => {
     const [isValid, setIsValid] = useState(false);
+    const [userRole, setUserRole] = useState(""); // Initialize userRole state with an empty string
     const navigate = useNavigate();
     const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw"
      
@@ -18,8 +19,9 @@ const UserLogin = () => {
       const res= await axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/user/loginUser`, data,
       {headers:{token:`${accessToken}`}})
       .then(response=>{
-      console.log(response, 'res')
-      navigate('/productslist')
+       
+          console.log(response, 'res')
+          navigate('/productslist')
     })
 
      } catch (error) {

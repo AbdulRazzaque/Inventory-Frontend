@@ -95,12 +95,14 @@ const updateRow = async () => {
             headers: { token: accessToken }, // Include the token in the headers
           }
         )
-        .then((response) => {
-          console.log("Response", response);
-          alldata();
-        
-        });
-      setAlert(false);
+         // After successful deletion, update the state to remove the deleted item
+    setData(prevData => prevData.filter(item => item._id !== updatedData.id));
+
+    setAlert(false);
+    
+    // Now you can call the alldata() function to refresh the data
+    alldata();
+  
       
     } catch (error) {
       console.log(error,"This error Delete function");

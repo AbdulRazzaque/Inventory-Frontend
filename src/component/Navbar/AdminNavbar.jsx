@@ -4,10 +4,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
 import '../../app.css'
 import './navbar.css'
 // import logo from '../images/logo.jpeg'
 import logo from '../../images/logo.jpeg'
+import { Button } from '@mui/material';
 
 const AdminNavbar = () => {
     return (
@@ -16,7 +18,7 @@ const AdminNavbar = () => {
         <Navbar bg="light" expand="lg">
           <Container>
           <Link to="/">   <Navbar.Brand  className='navbr_brand'> </Navbar.Brand></Link> 
-          <Link to="/">    <img src={logo} className="navabar_logo" alt="" / ></Link> 
+             <img src={logo} className="navabar_logo ml-10" alt=""  / >
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
@@ -34,9 +36,15 @@ const AdminNavbar = () => {
                     Separated link
                   </NavDropdown.Item> */}
                 </NavDropdown>
+             
+
               </Nav>
             </Navbar.Collapse>
           </Container>
+         {/* <Link to="/" ><Button variant="contained" color="error" className='mr-4' >Log Out  <LogoutIcon className='mx-1'/></Button> </Link> */}
+
+          {/* <Link to="/">     <LogoutIcon/> fontSize="large" className='mr-5'/>  </Link> */}
+          <Link to="/" >  <button type="button" class="btn btn-danger mr-4">Log Out  <LogoutIcon className='mx-1'/></button> </Link>
         </Navbar>
         </div>
       );

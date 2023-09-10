@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import '../../app.css'
 import './navbar.css'
 import logo from '../../images/logo.jpeg'
+import { Button } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
 const InventoryNavbar = () => {
   return (
     <div>
@@ -15,7 +17,7 @@ const InventoryNavbar = () => {
           <Container>
           
         <Link to="/">   <Navbar.Brand  className='navbr_brand'>  </Navbar.Brand></Link> 
-        <Link to="/">    <img src={logo} className="navabar_logo" alt="" / ></Link> 
+          <img src={logo} className="navabar_logo" alt="" / >
 
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -48,6 +50,8 @@ const InventoryNavbar = () => {
               </Nav>
             </Navbar.Collapse>
           </Container>
+          {/* <Link to="/" ><Button variant="contained" color="error" className='mr-4' >Log Out  <LogoutIcon className='mx-1'/></Button> </Link> */}
+          <Link to="/" >  <button type="button" class="btn btn-danger mr-4">Log Out  <LogoutIcon className='mx-1'/></button> </Link>
         </Navbar>
     
     </div>

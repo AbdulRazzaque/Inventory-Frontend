@@ -329,16 +329,21 @@ import logo from '../../images/inventory.jpg'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form' 
 import axios from 'axios'
+
 import  { useEffect } from 'react'
-import {Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField} from '@mui/material'
+import {Alert, Autocomplete, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField} from '@mui/material'
 import AlertTitle from '@mui/material/AlertTitle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MaterialTable from 'material-table';
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
+import _ from 'lodash';
 const Addproducts = () => {
+  const [data,setData] = React.useState([])
     const [alert, setAlert] = useState(false);
     const [isValid, setIsValid] = useState(false);
-    const [data,setData] = React.useState([])
+   
     const [showDialog,setShowDialog]=useState(false)
     const [update,setUpdate]=useState([])
     const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw"
@@ -347,6 +352,33 @@ const Addproducts = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [arrayId,setArrayId] = React.useState([])
     const [flag,setFlag] = React.useState(false)
+    const [query,setQuery] = useState("")
+    // ------------------------------convert to xl --------------------------------------------
+    const exportToExcel = () => {
+      // Define the fields you want to export, including nested fields
+      // const fieldsToExport = ['companyName[0]', 'name', 'type[0]', 'unit[0]'];
+      const fieldsToExport = ['name', 'unit[0]', 'type[0]', 'companyName[0]'];
+    
+      // Create a new array with objects containing only the specified fields
+      const dataToExport = data.map((item) => {
+        const exportedItem = {};
+        fieldsToExport.forEach((field) => {
+          const value = _.get(item, field); // Use lodash to access nested fields
+          exportedItem[field] = value;
+        });
+        return exportedItem;
+      });
+    
+      // Generate the Excel file using dataToExport
+      const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const excelBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      saveAs(excelBlob, 'data.xlsx');
+    };
+    
+    
     const onSubmit = async(data,event) => {
      
         try {
@@ -399,73 +431,77 @@ const deleteRow = async (update) => {
   }
 };
 useEffect(()=>{
-getAlldata()
-},[flag])
+
+  if(query){
+    setData([query])
+  } else{
+    getAlldata()
+  }
+
+},[query])
+
+
+// useEffect(()=>{
+// getAlldata()
+// },[flag])
 
 
   console.log(arrayId)
   const columns2 = [
     {
       field: 'id',
-      title: 'No',
+      headerName: 'No',
       width: 20,
     },
     {
       field: 'name',
-      title: 'Medicine',
-      render: (rowData) => rowData.name,
+      headerName: 'Medicine',
+      // render: (rowData) => rowData.name,
       width: 200,
     },
     {
       field: 'companyName',
-      title: 'Company',
-      render: (rowData) => rowData.companyName,
+      headerName: 'Company',
+      // render: (rowData) => rowData.companyName,
       width: 200,
     },
     {
       field: 'type',
-      title: 'Type',
-      render: (rowData) => rowData.type.map((item) => item),
+      headerName: 'Type',
+      // render: (rowData) => rowData.type.map((item) => item),
       width: 150,
     },
     {
       field: 'unit',
-      title: 'Unit',
-      render: (rowData) => rowData.unit.map((item) => item),
+      headerName: 'Unit',
+      // render: (rowData) => rowData.unit.map((item) => item),
       width: 150,
     },
-    {
-      title: 'Action',
-      field: 'Action',
-      export:false,
-      width: 150,
-      render: (rowData) => (
-        <Button onClick={() => setShowDialog(true)}>
-          <EditIcon />
-        </Button>
-      ),
-    },
-    {
-      title: 'Delete',
-      field: 'Delete',
-      export:false,
-      width: 150,
-      render: (rowData) => (
+    {headerName:<b> Action</b> ,
+    field:'Action',
+    width:150,
+    renderCell:()=>(
+      <Fragment>
+          <Button  onClick={()=>setShowDialog(true)} ><EditIcon/></Button>
+       
+      </Fragment>
+    )
+  },
+    {headerName:<b> Delete</b> ,
+    field:'Delete',
+    width:150,
+    renderCell:()=>(
+      <Fragment>
         <Button color="error" onClick={() => setAlert(true)}>
-          <DeleteIcon />
-        </Button>
-      ),
-    },
+            <DeleteIcon />
+          </Button>
+       
+      </Fragment>
+    )
+  },
   ];
   
-  const handleCheckboxChange =()=>{
-    axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/product/deleteProduct`,{array:arrayId},{headers:{token:accessToken}})
-    .then(res=>{
-        console.log(res)
-        setArrayId([])
-        setFlag(!flag)
-    })
-  }
+
   
   const updateData=(e)=>{
     setUpdate({...update,[e.target.name]:e.target.value})
@@ -492,12 +528,15 @@ console.log(error)
 
 
 }
+const pageSize = Math.min(data.length, 100)
+
+// console.log(data.filter(data=>data.name.toLowerCase().includes('No')));
   return (
     <div>
           <AdminNavbar/>
     {/* <div className='mt-8'> */}
     <div className='my-10'>
-
+   
   <section className="bg-gray-50 ">
   <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
 
@@ -608,22 +647,39 @@ console.log(error)
 
 
     </div>
-    {/* <h1 className='my-2'>All product</h1> */}
 
-    <MaterialTable
-      columns={columns2}
-      data={data}
-      title="Products List"
-      options={{
-        headerStyle: {
-          fontWeight: 'bold',
-        }, 
-        // pageSize: 0,
-        exportButton: true,
-        search: true,
-      }}
-      onRowClick={(event, rowData) => setUpdate(rowData)}
-    />
+<div className="container">
+    <Grid container spacing={2}>
+      <Grid item xs={8}>
+     
+        <Autocomplete
+          className="my-3"
+          id="combo-box-demo"
+          options={data}
+          onChange={(e, v) => setQuery(v)}
+          getOptionLabel={(option) =>
+            `${option.name || ''} ${option.companyName || ''} ${option.unit || ''} ${option.type || ''}`
+          }
+          renderInput={(params) => <TextField {...params} label="Search...." />}
+        />
+      </Grid>
+      <Grid item xs={3} className='mt-4'>
+      <Button variant="contained" color="primary" onClick={exportToExcel}>
+          Export to Excel
+        </Button>
+      </Grid>
+    </Grid>
+    </div>
+  { data ?(     <DataGrid style={{ height: 1000, width: '100%' }}
+        rows={data}
+        columns={columns2}
+        pageSize={pageSize} // Set pageSize to the total number of rows to display all data
+        getRowId={(data) => data._id}
+        onRowClick={(item)=>setUpdate(item.row) }
+      />) : (
+        <h2>...loading</h2>
+      )}
+
     </div>
   )
 }

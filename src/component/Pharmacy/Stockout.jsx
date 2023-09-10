@@ -119,26 +119,6 @@ console.log("selectedUint",selectedUnit)
     setSelectedCompany(null)
     setValue("quantity","")
     setStockOutData([...stockOutData, {...obj,_id:stockOutData.length}]);
-
-    // axios
-    //   .post(
-    //     `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOut`,
-    //     { ...obj },
-    //     { headers: { token: accessToken } }
-    //   )
-    //   .then((res) => {
-    //     console.log(res);
-    //     setError("")
-    //     setStockOutData([...stockOutData, {...obj,_id:res.data.result._id}]);
-    //   })
-    //   .catch(err=>{
-    //     if(err.response){
-    //       setError(err.response.data)
-    //     }
-    //   })
-
-      
-      
   };
   const toComponentB=()=>{
     
@@ -156,7 +136,7 @@ console.log(updatedArrayOfObjects);
     <div className="">
       <InventoryNavbar />
       <h1 className="text-center my-8 font-bold text-2xl">Stock Out</h1>
-     <center> <p><b>  Note: if stock is currently present in the inventory please select stock from the dropdown</b></p></center>
+  
       <form onSubmit={handleSubmit(onSubmit)}>
       {/* <div className="mx-4"> */}
           <Stack direction="row" justifyContent="center" spacing={2}>
@@ -178,28 +158,44 @@ console.log(updatedArrayOfObjects);
               id="combo-box-demo"
               options={allLocations}
               getOptionLabel={(e) => `${ e.name}-${e.trainerName}-${e.doctorName}`}
-              onChange={(ev, val) => setSelectedLocation(val)}
-              sx={{ width: 500 }}
+              // onChange={(ev, val) => setSelectedLocation(val)}
+              onChange={(ev, val) => {
+             
+                if (val && val.name) {
+                  setSelectedLocation(val);
+                  setSelectedTrainerName(val.trainerName[0] || '');
+                  setSelectedDoctorName(val.doctorName[0] || '');
+                } else {
+                  setSelectedLocation(null);
+                  setSelectedTrainerName('');
+                  setSelectedDoctorName('');
+                }
+            
+                // setSelectedStock(val);
+              }}
+              sx={{ width: 650 }}
+              
               renderInput={(params) => (
                 <TextField {...params} label="Location" />)} />
 
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              // value={selectedLocation ? selectedLocation.trainerName :[]}
+              value={selectedLocation ? selectedLocation.trainerName :[]}
               options={selectedLocation ? selectedLocation.trainerName :[]}
-              onChange={(e, val) => setSelectedTrainerName(val)}
-              sx={{ width: 300 }}
-              // disabled
+              // onChange={(e, val) => setSelectedTrainerName(val)}
+              sx={{ width: 200 }}
+              disabled
               renderInput={(params) => (
                 <TextField {...params} label="Trainer" />
               )}/>
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              // value={selectedLocation ? selectedLocation.doctorName : []}
+
+              value={selectedLocation ? selectedLocation.doctorName : []}
               options={selectedLocation ? selectedLocation.doctorName : []}
-              // disabled
+              disabled
               onChange={(e, val) => setSelectedDoctorName(val)}
               sx={{ width: 200 }}
               renderInput={(params) => <TextField {...params} label="Doctor" />}
@@ -214,7 +210,7 @@ console.log(updatedArrayOfObjects);
                     console.log(newValue);
                     setSelectedDate(newValue);
                   }}
-                  renderInput={(params) => <TextField fullWidth {...params} />} />
+                  renderInput={(params) => <TextField sx={{ width: 200 }} {...params} />} />
               </LocalizationProvider>
             </section>
           </Stack>
@@ -226,39 +222,7 @@ console.log(updatedArrayOfObjects);
               spacing={2}
               marginTop="8px"
             >
-              {/* <section>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DesktopDatePicker
-                    label="Date"
-                    inputFormat="dd/MM/yyyy"
-                    value={item.date}
-                    onChange={(newValue) => {
-                      console.log(newValue);
-                      let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
-                      singleItem.date = newValue
-                      setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
-                    }}
-                    renderInput={(params) => <TextField fullWidth {...params} />} />
-                </LocalizationProvider>
-              </section> */}
 
-              <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              value={item.stock ? item.stock : { name: "" }}
-              options={allStocks}
-              getOptionLabel={(e) => `${e.name} ${e.product?.companyName?.[0] || ''} ${e.product?.unit?.[0] || ''}  `}
-              onChange={(ev, val) => {
-                let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
-                singleItem.stockId = val._id
-                singleItem.stock = val
-                setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
-              }}
-              sx={{ width: 600 }}
-              renderInput={(params) => (
-                <TextField {...params} label="Stock List" />
-              )}
-            />
   
               <Autocomplete
               className="hide"
@@ -273,8 +237,11 @@ console.log(updatedArrayOfObjects);
                   singleItem.product = val
                   setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
                 }}
-                getOptionLabel={(e) => `${e.name}  `}
-                sx={{ width: 350 }}
+               
+               
+                // getOptionLabel={(e) => `${e.name}  `}
+                getOptionLabel={(e) => `${e.name} ${e.companyName || ''} ${e.unit || ''} `}
+                sx={{ width: 780 }}
                 renderInput={(params) => (
                   <TextField {...params} label=" Products List" />
                 )}
@@ -314,22 +281,24 @@ console.log(updatedArrayOfObjects);
                   <TextField {...params} label=" Company Name" />
                 )}
               />
-  
-              <TextField
-                type="number"
-                sx={{ width: 200 }}
-                value={item.quantity}
-                onChange={(val) => {
-                  let singleItem = stockOutData.filter(i=>i._id===item._id)[0]
-                  singleItem.quantity = val.target.value
-                  setStockOutData([...stockOutData.filter(i=>i._id!==item._id),singleItem])
-                }}
-                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-               
-                id="outlined-basic"
-                label="Quantity"
-                variant="outlined"
-              />
+                        <TextField
+            type="number"
+            sx={{ width: 200 }}
+            value={item.quantity}
+            onChange={(val) => {
+              setStockOutData((prevData) =>
+                prevData.map((dataItem) =>
+                  dataItem._id === item._id
+                    ? { ...dataItem, quantity: val.target.value }
+                    : dataItem
+                )
+              );
+            }}
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+            id="outlined-basic"
+            label="Quantity"
+            variant="outlined"
+          />
             </Stack>
             ))
           }
@@ -338,62 +307,47 @@ console.log(updatedArrayOfObjects);
             justifyContent="center"
             spacing={2}
             marginTop="10px"
-          > 
-            {/* <section>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
-                  label="Date"
-                  inputFormat="dd/MM/yyyy"
-                  value={selectedDate}
-                  onChange={(newValue) => {
-                    console.log(newValue);
-                    setSelectedDate(newValue);
-                  }}
-                  renderInput={(params) => <TextField fullWidth {...params} />} />
-              </LocalizationProvider>
-            </section> */}
-
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options={allStocks}
-              getOptionLabel={(e) => `${e.name} ${e.product?.companyName?.[0] || ''} ${e.product?.unit?.[0] || ''} ` }
-              isSearchable
-              value={selectedStock?selectedStock:{name:""}}
-              onChange={(ev, val) => {
-                let sp = allProducts.filter((item) => item.name === val.name);
-                if (sp.length > 0) {
-                  setSelectedProduct(sp[0]);
-                }
-
-                setSelectedStock(val);
-              }}
-              sx={{ width: 600 }}
-              renderInput={(params) => (
-                <TextField {...params} label="Stock List" />
-              )}
-            />
-
-
-            <Autocomplete
-            className="hide"
-              disablePortal
-              id="combo-box-demo"
-              value={selectedProduct ? selectedProduct : { name: "" }}
-              options={allProducts}
-              onChange={(e, val) => setSelectedProduct(val)}
-              getOptionLabel={(e) => `${e.name} ${e.companyName || ''} ${e.unit || ''} `}
-              // getOptionLabel={(e) => `${e.name} `}
-              sx={{ width: 350 }}
-              renderInput={(params) => (
-                <TextField {...params} label=" Products List" />
-              )}
-            />
+          >
+                    <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={[ ...allProducts]}
+        
+            getOptionLabel={(e) => `${e.name} ${e.companyName || ''} ${e.unit || ''} `}
+          isSearchable
+          value={selectedStock ? selectedStock : { name: "" }}
+          onChange={(ev, val) => {
+            // if (val.name) {
+            //   let sp = allProducts.filter((item) => item.name === val.name);
+            //   if (sp.length > 0) {
+            //     setSelectedProduct(sp[0]);
+            //   }
+            // }
+            if (val && val.name) {
+              setSelectedProduct(val);
+              setSelectedCompany(val.companyName[0] || '');
+              setSelectedUnit(val.unit[0] || '');
+            } else {
+              setSelectedProduct(null);
+              setSelectedCompany('');
+              setSelectedUnit('');
+            }
+        
+            setSelectedStock(val);
+          }}
+          sx={{ width: 780 }}
+          renderInput={(params) => (
+            <TextField {...params} label="Product List" />
+          )}
+        />
             <Autocomplete
               disablePortal
               disabled
               id="combo-box-demo"
               getOptionLabel={(e) => e.toString()}
+              // value={selectedProduct ? selectedProduct.unit : []}
+              // options={selectedProduct ? selectedProduct.unit : []}
+              // onChange={(e, val) => setSelectedUnit(val)}
               value={selectedProduct ? selectedProduct.unit : []}
               options={selectedProduct ? selectedProduct.unit : []}
               onChange={(e, val) => setSelectedUnit(val)}
@@ -437,36 +391,11 @@ console.log(updatedArrayOfObjects);
           <div className="mt-3 ali">
             <center>
            
-              <Button type="submit" variant="contained" alignitems="center">
+              <Button type="submit" variant="contained" alignitems="center"  size="large"  >
                 Add
               </Button>
-              <Button onClick={()=>{
-                axios
-                .post(
-                  `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOuts`,
-                  { stockOuts:stockOutData },
-                  { headers: { token: accessToken } }
-                )
-                .then((res) => {
-                  console.log(res);
-                  console.log("Stock out Success")
-                  setError("")
-                  setStockOutData([]);
-                })
-                .catch(err=>{
-                  if(err.response){
-                    setError(err.response.data)
-                  }
-                })
-              }} variant="outlined">Save</Button>
-              <Button onClick={()=>{
-                window.location.reload(false);
-                // setStockOutData([])
-                // setFlag(!flag)
-              }}
-                >
-                Clear
-              </Button>
+           
+          
             </center>
           </div>
           {/* </div> */}
@@ -536,7 +465,8 @@ console.log(updatedArrayOfObjects);
       <div className="flex justify-center">
         <center>
        
-          <button
+          <Button
+          className="mx-3 my-2"
         onClick={()=>{
               axios
       .post(
@@ -556,11 +486,35 @@ console.log(updatedArrayOfObjects);
         }
       })
         }}
-            className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-2 " >
+        variant="contained"
+            >
               
             Print
             
-          </button>
+          </Button>
+          <Button  onClick={()=>{
+                axios
+                .post(
+                  `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOuts`,
+                  { stockOuts:stockOutData },
+                  { headers: { token: accessToken } }
+                )
+                .then((res) => {
+                  console.log(res);
+                  console.log("Stock out Success")
+                  setError("")
+                  setStockOutData([]);
+                  
+                }
+                )
+                
+                .catch(err=>{
+                  if(err.response){
+                    setError(err.response.data)
+                  }
+                })
+                window.location.reload(false);
+              }} variant="contained" color="success">Save</Button>
           {/* <Stockoutpdf props={stockOutData}/> */}
         </center>
         <center>

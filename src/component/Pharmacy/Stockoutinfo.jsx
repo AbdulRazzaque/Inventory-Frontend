@@ -194,7 +194,6 @@ var updatedData;
 
 
 //---------------------------------------------------- Delete api call here------------------------------------------------------------
-
 // const deleteRow = async (updatedData) => {
 //   console.log(updatedData,"Herer i am calling obj")
 //   try {
@@ -202,69 +201,60 @@ var updatedData;
 //       id: update._id,
 //       quantity: update.quantity,
 //       productName: update.name,
-//       originalQuantity: update.prevQuantity,
+//       originalQuantity: update.quantity,
+     
 //       // Add any other properties you want to update
-//       ...update
 //     };
 //     await axios
+   
 //       .delete(
-//       //  console.log(obj)
-//         `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOutDelete/${updatedData._id}`,
-//         // obj,
-      
-//         // // await  axios.delete(`${process.env.REACT_APP_DEVELOPMENT}/api/deletelab/`,
-//         // { headers: { token: `${accessToken}` } }
+
+//       `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOutDelete/${updatedData._id}`,
 //         {
 //           data: updatedData, // Pass the request body using the 'data' property
 //           headers: { token: accessToken }, // Include the token in the headers
-//         }
+//         },
+        
 //       )
-//       .then((response) => {
-//         console.log("Response", response);
-//         alldata();
-      
-//       });
-//     setAlert(false);
+
+//       setAlert(false);
     
 //   } catch (error) {
 //     console.log(error,"This error Delete function");
 //   }
+//   alldata()
 // };
-const deleteRow = async (updatedData) => {
-  console.log(updatedData,"Herer i am calling obj")
+const deleteRow = async (update) => {
   try {
     const updatedData = {
       id: update._id,
       quantity: update.quantity,
       productName: update.name,
       originalQuantity: update.quantity,
-     
       // Add any other properties you want to update
     };
-    await axios
-      .delete(
-      //  console.log(obj)
-      `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOutDelete/${updatedData._id}`,
-        // obj,
-      
-        // // await  axios.delete(`${process.env.REACT_APP_DEVELOPMENT}/api/deletelab/`,
-        // { headers: { token: `${accessToken}` } }
-        {
-          data: updatedData, // Pass the request body using the 'data' property
-          headers: { token: accessToken }, // Include the token in the headers
-        }
-      )
-      .then((response) => {
-        console.log("Response", response);
-        alldata();
-      
-      });
+
+    await axios.delete(
+      `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOutDelete/${updatedData.id}`,
+      {
+        data: updatedData,
+        headers: { token: accessToken },
+      }
+    );
+
+    // After successful deletion, update the state to remove the deleted item
+    setData(prevData => prevData.filter(item => item._id !== updatedData.id));
+
     setAlert(false);
     
+    // Now you can call the alldata() function to refresh the data
+    alldata();
   } catch (error) {
-    console.log(error,"This error Delete function");
+    console.log(error, "Error in the Delete function");
   }
 };
+
+
 
   React.useEffect(()=>{
     alldata()
