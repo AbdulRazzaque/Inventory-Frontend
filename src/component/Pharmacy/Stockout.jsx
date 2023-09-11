@@ -394,7 +394,33 @@ console.log(updatedArrayOfObjects);
               <Button type="submit" variant="contained" alignitems="center"  size="large"  >
                 Add
               </Button>
-           
+              {/* <Button onClick={()=>{
+                axios
+                .post(
+                  `${process.env.REACT_APP_DEVELOPMENT}/api/stock/stockOuts`,
+                  { stockOuts:stockOutData },
+                  { headers: { token: accessToken } }
+                )
+                .then((res) => {
+                  console.log(res);
+                  console.log("Stock out Success")
+                  setError("")
+                  setStockOutData([]);
+                })
+                .catch(err=>{
+                  if(err.response){
+                    setError(err.response.data)
+                  }
+                })
+              }} variant="outlined">Save</Button>
+              <Button onClick={()=>{
+                window.location.reload(false);
+                // setStockOutData([])
+                // setFlag(!flag)
+              }}
+                >
+                Clear
+              </Button> */}
           
             </center>
           </div>
@@ -501,19 +527,21 @@ console.log(updatedArrayOfObjects);
                 )
                 .then((res) => {
                   console.log(res);
+                  window.location.reload(false);
                   console.log("Stock out Success")
                   setError("")
                   setStockOutData([]);
-                  
+                   
                 }
                 )
                 
                 .catch(err=>{
                   if(err.response){
                     setError(err.response.data)
+                    console.log("Stock out erorr")
                   }
                 })
-                window.location.reload(false);
+             
               }} variant="contained" color="success">Save</Button>
           {/* <Stockoutpdf props={stockOutData}/> */}
         </center>

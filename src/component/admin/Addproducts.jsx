@@ -431,9 +431,13 @@ const deleteRow = async (update) => {
   }
 };
 useEffect(()=>{
+  getAlldata()
+})
+useEffect(()=>{
 
   if(query){
     setData([query])
+    // getAlldata()
   } else{
     getAlldata()
   }
@@ -670,13 +674,14 @@ const pageSize = Math.min(data.length, 100)
       </Grid>
     </Grid>
     </div>
-  { data ?(     <DataGrid style={{ height: 1000, width: '100%' }}
+  { data ?(   <DataGrid style={{ height: 1000, width: '100%' }}
         rows={data}
         columns={columns2}
         pageSize={pageSize} // Set pageSize to the total number of rows to display all data
         getRowId={(data) => data._id}
         onRowClick={(item)=>setUpdate(item.row) }
-      />) : (
+      />
+      ) : (
         <h2>...loading</h2>
       )}
 
