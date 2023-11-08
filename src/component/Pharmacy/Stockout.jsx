@@ -148,7 +148,7 @@ console.log(updatedArrayOfObjects);
               id="outlined-basic"
               // label="Doc Number"
               variant="outlined"
-              // disabled
+              disabled
             />
 
 

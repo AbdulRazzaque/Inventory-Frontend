@@ -10,7 +10,7 @@ const MonthlystockPdf = () => {
   let from= location.state.mdate1
   console.log(location.state.mdate,'mdate')
 
-    return (
+    return ( 
       
       <div className='background' >
           <img src={logo} alt="" className='w-[79px] h-[48px] '/>
