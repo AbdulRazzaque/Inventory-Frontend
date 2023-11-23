@@ -194,6 +194,7 @@ const Monthlyreport = () => {
             title="Monthly Report"
               data={data}
               columns={columns}
+              
               editable={{
                 isEditable: (rowData) =>
                   rowData.date ===
@@ -244,8 +245,9 @@ const Monthlyreport = () => {
               options={{
                 headerStyle: {
                   fontWeight: 'bold',
+                
                 },
-            
+                exportButton:true
               }}
             />
             

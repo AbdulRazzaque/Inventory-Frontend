@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Autocomplete, Button, Container, Stack, TextField } from '@mui/material'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
@@ -9,14 +9,9 @@ import InventoryNavbar from '../Navbar/InventoryNavbar';
 import axios from 'axios'
 import moment from 'moment'
 import { useState } from 'react';
-const columns = [
-  { field: 'id', headerName:<b>No</b> , width: 70 },
-  { field: 'name', headerName:<b> Products Name</b> , width: 150 },
-  { field: 'quantity', headerName: <b> Quantity</b> ,width: 150 },
-  
-  { field: 'price', headerName:<b>Price</b> ,width: 150 },
-  {field:"createdAt",headerName:<b>Date</b>,valueGetter:(param)=>moment.parseZone(param.value).local().format("DD/MM/YY"),width:120}
-];
+import MaterialTable from 'material-table';
+
+
 
 const Stockinventoty = () => {
   const [data,setData]=useState([])
@@ -24,7 +19,8 @@ const Stockinventoty = () => {
   const [selectedDate2,setSelectedDate2] = React.useState("")
   const [allProductType,setAllProductType] = React.useState([])
   const [selectedProductType,setSelectedProductType] = React.useState("")
-  const [Mytotal,setTotal]=useState([])
+  const [grandTotal,setGrandTotal]= useState()
+  // const [Mytotal,setTotal]=useState([])
   const [display ,setDisplay]=useState()
   //getPrevStockInInfo
   const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNoYXJqZWVsc2siLCJfaWQiOiI2M2JmZmE2OTY2ZWJiYzg0MGQ4ZmZiODkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM1MzEyNzd9.9TU3mS2SgZLA8P3Rqop9z83fX0iWsPC1_UBi8HJXAEw"
@@ -42,17 +38,39 @@ const Stockinventoty = () => {
     axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/stock/getPrevStockInInfo`,{to:date.format(selectedDate,'YYYY/MM/DD'),from:date.format(selectedDate2,'YYYY/MM/DD'),productType:selectedProductType.name},{headers:{token:accessToken}})
     .then(res=>{
       console.log(res)
-      setTotal(res.data.result)
+      // setTotal(res.data.result)
       let arr = res.data.result.map((item,index)=>({...item,id:index+1}))
       setData(arr)
      
-      console.log(Mytotal,"Geting  Price Only");
+      // console.log(Mytotal,"Geting  Price Only");
     })
 
   }
 
+  data.forEach((calculate)=>{
+   calculate.Total=  calculate.quantity * calculate.price;
+   
+  })
+  useEffect(() => {
+    const calculateGrandTotal = data.reduce((total, item) => {
+      return total + (item.price * item.quantity);
+    }, 0); // Initialize total to 0
+  
+    setGrandTotal(calculateGrandTotal);
+  }, [data]); // Include data in the dependency array
+  
 
-
+  const columns = [
+    { field: 'id', title:'No' , width: 70 },
+    { field: 'name', title:'Products Name' , width: 150 },
+    { field: 'quantity', title: 'Quantity' ,width: 150 },
+    { field: 'price', title:'Price' ,width: 150 },
+    { field: 'Total', title:'Total' ,width: 150 },
+      {field: "createdAt",title: "Date", type:'date',width: 150,render:(rowData)=>moment(rowData.createdAt).format("DD/MM/YYYY")},
+      {field: "expiry",title: "Expiry Date", type:'date',width: 150,render:(rowData)=>moment(rowData.expiry).format("DD/MM/YYYY")},
+      
+  ];
+  
   return (
     <div className=''>
         <InventoryNavbar/>
@@ -106,13 +124,14 @@ const Stockinventoty = () => {
  
     <div className='mt-3 ali'>
 
-  <center>  <Button onClick={()=>handleSubmit()} variant="contained" alignitems="center">Submit</Button></center> 
+  {/* <center>  <Button onClick={()=>handleSubmit()} variant="contained" alignitems="center">Submit</Button></center>  */}
+  <center>  <button type="button" class="btn btn-primary" onClick={()=>handleSubmit()}>Submit</button></center> 
     </div>
 
         </Container>
 
        
- <div style={{ height: 800, width: '100%', marginTop:'10px', padding:'5px'}}>
+ {/* <div style={{ height: 800, width: '100%', marginTop:'10px', padding:'5px'}}>
  <DataGrid
         rows={data}
         columns={columns}
@@ -120,24 +139,45 @@ const Stockinventoty = () => {
         rowsPerPageOptions={[10]}
         // checkboxSelection
       />
-    </div>
+    </div> */}
+    	 <MaterialTable
+      title="Stock-out Search"
+      columns={columns}
+      data={data}       
+    //  onRowClick={(event,rowData)=>handleRowClick(event,rowData)}
+      options={{
+        headerStyle: {
+          fontWeight: 'bold',
+        },
+        exportButton: true,
+        pageSize: 50, // Set the initial page size to 100
+        pageSizeOptions: [100,300,400], // Provide an array of possible page sizes
+        search: true,
+        filtering:true
+      }}
+     
 
-    {
+    /> 
+
+    {/* {
       Mytotal.map((row,id)=>{
        
         <p>Hello {parseInt(row.price)}</p> 
         var plus = row.price
+      var  alltotal= 0
        var plus1 = plus
-        var totalPrice = plus + plus1
+        var totalPrice = plus * plus1
+      var maintotal=  totalPrice + alltotal
         
         console.log(plus,"price");
         console.log(totalPrice,'all toltal here')
+        console.log(maintotal,"Grand Total here")
       })
-    }
+    } */}
 
      <div className='flex justify-center'  > 
   
-        {/* <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative ">Grand Total= </button></center>  */}
+        <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative ">Grand Total= {grandTotal}</button></center> 
         </div>
     </div>
   ) 

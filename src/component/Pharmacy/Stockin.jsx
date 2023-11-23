@@ -15,7 +15,7 @@ import React, { useRef, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect } from "react";
 import axios from "axios";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from 'react-hook-form';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -29,7 +29,9 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import date from 'date-and-time';
 import moment from 'moment'
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import dayjs from 'dayjs';
 
 // import { useGetProductsQuery, useUpdatePostMutation } from "../../services/stockin";
 import MaterialTable from "material-table";
@@ -60,23 +62,24 @@ const Stockin = () => {
   const [docNo,setDocNo] = React.useState(0)
   const [allSuppliers,setAllSuppliers] = React.useState([])
   const [allProducts,setAllProducts] = React.useState([])
-  const [selectedProduct,setSelectedProduct] = React.useState(null)
+  // const [selectedProduct,setSelectedProduct] = React.useState(null)
   const [selectedSupplier,setSelectedSupplier] = React.useState(null)
   const [productType, setProductType] = useState(null);
   const [unit, setUnit] = useState(null);
-  const [selectedDate,setSelectedDate] = React.useState('')
+  const [selectedDate,setSelectedDate] = React.useState(null)
   const [allStocks,setAllStocks] = React.useState([])
   const [sum ,setSum]=useState('')
   const [flag,setFlag] = React.useState(false)
-  const [isValid, setIsValid] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    reset ,
-    formState: { errors },
-    setValue
-  } = useForm();
 
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   reset ,
+  //   formState: { errors },
+  //   setValue
+  // } = useForm();
+  const { handleSubmit,register, control, reset,formState: { errors }, setValue, watch } = useForm();
+  const selectedProduct = watch('product'); // Watch the 'product' field
   const autocompleteRef = useRef(null)
 
 console.log(selectedDate)
@@ -106,22 +109,37 @@ console.log(selectedDate)
     .then(res=>{
       console.log(res)
       setAllStocks([...allStocks,{...obj,_id:res.data.result._id}])
-      setIsValid(true);
-      setTimeout(() => {
-        setIsValid(false);
-    }, 1000);
+      toast(res.data.msg,{
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      })
+      reset()
     })
-   
+    
     .catch(err=>{
-      console.log(err.response)
-      setIsValid(true);
-      setTimeout(() => {
-        setIsValid(false);
-    }, 5000);
+      // console.log(err.res.data.msg,"Here Cheack Error")
+      toast(err.response.data.msg,{
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark"
+      })
+      
+      
     })
     setValue('');
     // setSelectedProduct(selectedProduct.name=null,selectedProduct.companyName=null,selectedProduct.unit=null,)
-    setSelectedProduct(null)
+    // setSelectedProduct(null)
 
  
   };
@@ -158,7 +176,6 @@ console.log(selectedDate)
 
           }
         }
-        //console.log(err.response.data)
       })
      getAllSuppliers()
      getAllProducts()
@@ -167,6 +184,7 @@ console.log(selectedDate)
   return (
     <div className="">
        <InventoryNavbar/>
+       <ToastContainer />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <div>
@@ -188,8 +206,7 @@ console.log(selectedDate)
                 {/* docno cannot be zero */}
                 <TextField
                   type="number"
-                  //  value={value}
-                  // disablePortal
+
                   sx={{ width: 250 }}
                   id="outlined-basic"
                   label="Supplier Doc No"
@@ -200,11 +217,9 @@ console.log(selectedDate)
                     maxLength: 20,
                   })}
                 />
-
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  // value={supplierId}
                   onChange={(event, newValue) => {
                     setSelectedSupplier(newValue);
                   }}
@@ -218,7 +233,24 @@ console.log(selectedDate)
                 />                  
                   </Stack>
                   <Stack direction="row" spacing={2} mt="10px">
-                  <Autocomplete  
+                  <Controller 
+              name="product"
+              control={control}
+              defaultValue={null}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  onChange={(event, newValue) => {
+                    setValue('product', newValue); // Set the value in the form state
+                  }}
+                  options={allProducts}
+                  getOptionLabel={(product) => `${product.name}  ${product.companyName}  ${product.unit}`}
+                  renderInput={(params) => <TextField {...params} label="Product" />}
+                  sx={{ width: 1200 }}
+          />
+        )}
+      />
+                  {/* <Autocomplete  
 
                   id="combo-box-demo"
                   onChange={(event, newValue) => {
@@ -232,7 +264,8 @@ console.log(selectedDate)
                   fullWidth
                   renderInput={(params) => (
                     <TextField {...params} label="Product " />
-                  )} />
+                  )} /> */}
+               
                   </Stack>
               <Stack direction="row" spacing={2} mt="10px">
 
@@ -241,7 +274,7 @@ console.log(selectedDate)
                <Autocomplete
                   id="combo-box-demo"
                   onChange={(event, newValue) => {
-                    setSelectedProduct(newValue);
+                    // setSelectedProduct(newValue);
 
                   }}
                   disabled
@@ -282,17 +315,6 @@ console.log(selectedDate)
                   renderInput={(params) => (
                     <TextField {...params} label="Product Unit" /> )}/>
 
-                {/* <TextField
-                  type="number"
-                  name="Price"
-                  sx={{ width: 200 }}
-                  id="outlined-basic"
-                  label="Price"
-                  variant="outlined"
-                  inputProps={{
-                    step: 0.44,
-                  }}
-                  {...register("price", { required: true, })}/> */}
                     <FormControl  sx={{ m: 1 }}>
                 <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
                 <OutlinedInput
@@ -328,29 +350,6 @@ console.log(selectedDate)
       />
       </LocalizationProvider>
 
-
-
-{/* <LocalizationProvider 
-        
-        dateAdapter={AdapterDateFns} >
-        <DesktopDatePicker
-        label="Start Date"
-        inputFormat="dd/MM/yyyy"
-        value={selectedDate}
-      
-        onChange={(newValue) => {
-        var d = moment.parseZone(newValue).local().format("DD/MM/YY")
-          
-          setSelectedDate(d)
-          console.log(d ,'dgsgdgndsjkn')
-         
-        }}
-       
-        renderInput={(params) =>   <TextField fullWidth {...params} />}
-
-        
-      />
-      </LocalizationProvider> */}
       </section>
           </Stack>
 
@@ -358,14 +357,6 @@ console.log(selectedDate)
                 <center>
                   <Button type="submit" variant="contained" alignitems="center"> Add </Button>
            
-                  {
-                      isValid && 
-                      <Alert severity="success">
-                      <AlertTitle>Product has been added successfully</AlertTitle>
-                      <strong> {isValid} </strong>
-                    </Alert>
-                  }
-   
                   <Button onClick={()=>{
                     setSum("")
                     setAllStocks([])
@@ -468,9 +459,6 @@ console.log(selectedDate)
           </div>
         </div>
         <div className='flex justify-center'>
-          {/* <center> <button type="submit" className=" text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-2 ">Print </button></center> */}
-
-          {/* <center> <button type="submit" className=" text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-10 mb-1 mt-1 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 relative mx-3">Grand Total ={sum} </button></center> */}
         </div>
 
       </form>

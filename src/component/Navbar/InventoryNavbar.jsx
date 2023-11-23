@@ -12,7 +12,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 const InventoryNavbar = () => {
   return (
     <div>
-           <h1 className='text-center mt-2 mb-2'>Inventroy Management System</h1>
+           <h1 className='text-center mt-2 mb-2'>Inventory Management System</h1>
         <Navbar bg="light" expand="lg" className=''>
           <Container>
           
